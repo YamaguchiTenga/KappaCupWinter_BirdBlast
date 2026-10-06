@@ -361,3 +361,19 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# ビルドに必要な外部ライブラリを保存する
+!/exlib/
+!/exlib/x64/
+!/exlib/x64/Debug/
+!/exlib/x64/Release/
+!/exlib/x64/Debug/*.lib
+!/exlib/x64/Release/*.lib
+
+# 自分でビルドできるエンジンの生成物は除外する
+/exlib/x64/Debug/k2Engine.lib
+/exlib/x64/Debug/k2EngineLow.lib
+/exlib/x64/Release/k2Engine.lib
+/exlib/x64/Release/k2EngineLow.lib
+
+*.idb
