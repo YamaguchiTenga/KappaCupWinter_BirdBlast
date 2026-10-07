@@ -4,6 +4,7 @@
 
 class Player;
 class GameCamera;
+class Stage;
 
 class Game : public IGameObject
 {
@@ -15,8 +16,10 @@ public:
 	void Render(RenderContext& rc);
 
 private:
-	Player* player;
-	GameCamera* gameCamera;
+	Player* m_player;
+	GameCamera* m_gameCamera;
+	Stage* m_stage;
+
 	ModelRender m_modelRender;
 	Vector3 m_pos;
 };

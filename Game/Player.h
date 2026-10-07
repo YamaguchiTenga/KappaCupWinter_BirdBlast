@@ -12,6 +12,8 @@ public:
 
 	void Move();
 
+	void Jump();
+
 	void Rotation();
 
 	void Render(RenderContext& rc);
@@ -25,5 +27,8 @@ private:
 	Vector3 m_inputMoveSpeed = Vector3::Zero;
 	Vector3 m_externalMoveSpeed = Vector3::Zero;
 	CharacterController m_characterController;
+	float m_jumpPower = 500.0f;
+	float m_verticalSpeed = 0.0f;
+	float m_gravity = 1500.0f; 
 };
 
