@@ -46,7 +46,6 @@ void Player::Move()
 	right *= stickL.x * 500.0f;
 	forward *= stickL.y * 500.0f;
 
-	//移動速度にスティックの入力量を加算する。
 	m_inputMoveSpeed = right + forward;
 
 	if (m_characterController.IsOnGround())
