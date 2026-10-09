@@ -6,6 +6,7 @@ class Player;
 class GameCamera;
 class Stage;
 class Enemy;
+class Bullet;
 
 class Game : public IGameObject
 {
@@ -21,6 +22,7 @@ private:
 	GameCamera* m_gameCamera;
 	Stage* m_stage;
 	Enemy* m_enemy;
+	Bullet* m_bullet;
 
 	ModelRender m_modelRender;
 	Vector3 m_pos;

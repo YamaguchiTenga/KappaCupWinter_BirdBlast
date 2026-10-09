@@ -24,7 +24,5 @@ void Actor::Update()
 
 void Actor::Render(RenderContext& rc)
 {
-
 	m_modelRender.Draw(rc);
-
 }

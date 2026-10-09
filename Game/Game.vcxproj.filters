@@ -17,6 +17,9 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BulletManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -29,5 +32,8 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Stage.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BulletManager.h" />
   </ItemGroup>
 </Project>
