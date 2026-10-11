@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Player.h"
-
+#include"BulletManager.h"
 
 Player::Player()
 {
@@ -12,6 +12,8 @@ Player::~Player()
 
 bool Player::Start()
 {
+	m_bulletManager = FindGO<BulletManager>("bulletManager");
+
 	m_modelRender.Init("Assets/modelData/unityChan.tkm");
 	m_transform.m_scale = { 1.0f, 1.0f, 1.0f };
 
@@ -24,6 +26,7 @@ void Player::Update()
 {
 	Move();
 	Rotation();
+	Attack();
 	Actor::Update();
 }
 
@@ -72,14 +75,31 @@ void Player::Rotation()
 	//xかzの移動速度があったら(スティックの入力があったら)。
 	if (fabsf(m_inputMoveSpeed.x) >= 0.001f || fabsf(m_inputMoveSpeed.z) >= 0.001f)
 	{
-		//キャラクターの方向を変える。
 		m_transform.m_rotation.SetRotationYFromDirectionXZ(m_inputMoveSpeed);
+		//移動速度のX・Z成分から向きを求め、プレイヤーを移動方向へ回転させる。
+		//移動速度が{ 500, 0, 100 }の場合、少しだけZ方向を向いたX方向になる
 	}
 }
 
 void Player::Jump()
 {
 	m_verticalSpeed = m_jumpPower;
+}
+
+void Player::Attack()
+{
+	if (g_pad[0]->IsTrigger(enButtonX))
+	{
+		Vector3 direction = Vector3::AxisZ;//正面を指す
+		m_transform.m_rotation.Apply(direction);//direction をプレイヤーの回転に合わせた方向へ変える処理。
+
+		Vector3 bulletSpeed = direction * 500.0f;//発射方向に速さを掛けて、弾の移動速度を求める。
+
+		Vector3 firePosition = m_transform.m_position;//プレイヤーの位置をコピーし、発射位置を50だけ高くする。
+		firePosition.y += 50.0f;//コピーなので、プレイヤー自身の位置は変わらない。
+
+		m_bulletManager->RequestFire(firePosition, bulletSpeed);//Managerの処理を呼び出す。
+	}
 }
 
 void Player::Render(RenderContext& rc)

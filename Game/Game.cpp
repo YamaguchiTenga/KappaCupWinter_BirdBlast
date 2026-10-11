@@ -5,14 +5,15 @@
 #include"Stage.h"
 #include"Enemy.h"
 #include"Bullet.h"
+#include"BulletManager.h"
 bool Game::Start()
 {
 	m_player = NewGO<Player>(0, "player");
 	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	m_stage = NewGO<Stage>(0, "stage");
 	m_enemy = NewGO<Enemy>(0, "enemy");
-	m_bullet = NewGO<Bullet>(0, "bullet");
-
+	//m_bullet = NewGO<Bullet>(0, "bullet");
+	m_bulletManager = NewGO<BulletManager>(0, "bulletManager");
 	return true;
 }
 

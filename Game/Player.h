@@ -1,5 +1,7 @@
 #pragma once
 #include"Actor.h"
+
+class BulletManager;
 class Player : public Actor
 {
 public:
@@ -18,6 +20,8 @@ public:
 
 	void Render(RenderContext& rc);
 
+	void Attack();
+
 	const Vector3& GetPosition() const
 	{
 		return m_transform.m_position;
@@ -28,7 +32,9 @@ private:
 	Vector3 m_externalMoveSpeed = Vector3::Zero;
 	CharacterController m_characterController;
 	float m_jumpPower = 500.0f;
-	float m_verticalSpeed = 0.0f;
+	float m_verticalSpeed = 0.0f;//verticalは縦という意味
 	float m_gravity = 1500.0f; 
+
+	BulletManager* m_bulletManager = nullptr;
 };
 

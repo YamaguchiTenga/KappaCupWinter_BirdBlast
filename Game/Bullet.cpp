@@ -57,11 +57,11 @@ void Bullet::Update()
 		return;
 	}
 
-	m_transform.m_position += m_moveSpeed *g_gameTime->GetFrameDeltaTime();
+	m_transform.m_position += m_moveSpeed *g_gameTime->GetFrameDeltaTime();//移動
 
 	Actor::Update();
 
-	m_collisionObject->SetPosition(m_transform.m_position);
+	m_collisionObject->SetPosition(m_transform.m_position);//位置の更新
 
 }
 
