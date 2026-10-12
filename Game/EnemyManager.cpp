@@ -12,7 +12,6 @@ bool EnemyManager::Start()
 
 EnemyManager::EnemyManager()
 {
-
 }
 
 EnemyManager::~EnemyManager()

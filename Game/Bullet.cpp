@@ -46,7 +46,7 @@ Bullet::~Bullet()
 
 void Bullet::Update()
 {
-	if (!m_isActive)
+	if (!m_isActive)//アクティブ中だけ動かす
 	{
 		return;
 	}
@@ -105,12 +105,18 @@ void Bullet::CheckHit()
 		while (first != enemies.end())//末尾の次に到達するまで繰り返す
 		{
 			//今の要素からEnemyのポインタを取り出す
-			Enemy* enemy = *first;//*firstでfirstの中身が取り出せるkie
+			Enemy* enemy = *first;//*firstでfirstの中身が取り出せる
 			first++;//次の要素へ進む
+
+			if (!enemy->IsActive())//敵がアクティブ中だったら
+			{
+				continue;
+			}
 
 			//敵に当たったら
 			if (m_collisionObject->IsHit(enemy->GetCharacterController()))
 			{
+				enemy->TakeDamage(1);
 				Deactivate();
 				return;
 			}
@@ -120,7 +126,6 @@ void Bullet::CheckHit()
 
 void Bullet::Render(RenderContext& rc)
 {
-	//アクティブ中だけ動かす
 	if (!m_isActive)
 	{
 		return;

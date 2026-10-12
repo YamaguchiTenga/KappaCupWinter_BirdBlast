@@ -34,6 +34,6 @@ private:
 	float m_activeTimer = 0.0f;
 	float m_limitTime = 0.0f;
 
-	EnemyManager* m_enemyManager;
+	EnemyManager* m_enemyManager = nullptr;
 };
 

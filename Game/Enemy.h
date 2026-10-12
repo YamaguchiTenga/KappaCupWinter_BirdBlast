@@ -13,6 +13,12 @@ public:
 
 	void Move();
 
+	void TakeDamage(int damage);
+
+	void CheckDeath();
+
+	void Deactivate();//停止させるという意味
+
 	void Render(RenderContext& rc);
 
 	//ここのconstは関数内でpositionの変更ができなくなるということ
@@ -27,6 +33,14 @@ public:
 	{
 		return m_characterController;
 	}
+
+	bool IsActive() const
+	{
+		return m_isActive;
+	}
 private:
 	CharacterController m_characterController;
+
+	int m_hp = 0;
+	bool m_isActive = true;
 };
