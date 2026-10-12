@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
-
+#include"EnemyManager.h"
 
 bool Bullet::Start()
 {
@@ -25,6 +25,8 @@ bool Bullet::Start()
 	m_collisionObject->SetIsEnable(false);
 
 	m_limitTime = 2.0f;
+
+	m_enemyManager = FindGO<EnemyManager>("enemyManager");
 	return true;
 }
 
@@ -65,6 +67,8 @@ void Bullet::Update()
 
 	m_collisionObject->SetPosition(m_transform.m_position);//位置の更新
 
+	CheckHit();
+
 }
 
 void Bullet::Fire(const Vector3& position, const Vector3& moveSpeed)
@@ -87,6 +91,31 @@ void Bullet::Deactivate()//弾の状態をfalaseにする
 	//状態をfalseにする
 	m_isActive = false;
 	m_collisionObject->SetIsEnable(false);//当たり判定も同時にfalseに
+}
+
+void Bullet::CheckHit()
+{
+	if (m_enemyManager != nullptr)
+	{
+		//EnemyManagerをincludeすることで間接的にEnemyクラスが使用可能になっている
+		//GetEnemiesという敵一覧をenemiesに入れる
+		const std::vector<Enemy*>& enemies = m_enemyManager->GetEnemies();
+
+		auto first = enemies.begin();//先頭の要素を指すイテレータ
+		while (first != enemies.end())//末尾の次に到達するまで繰り返す
+		{
+			//今の要素からEnemyのポインタを取り出す
+			Enemy* enemy = *first;//*firstでfirstの中身が取り出せるkie
+			first++;//次の要素へ進む
+
+			//敵に当たったら
+			if (m_collisionObject->IsHit(enemy->GetCharacterController()))
+			{
+				Deactivate();
+				return;
+			}
+		}
+	}
 }
 
 void Bullet::Render(RenderContext& rc)

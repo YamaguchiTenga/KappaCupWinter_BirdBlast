@@ -23,6 +23,10 @@ public:
 		m_transform.m_position = position;
 	}
 
+	CharacterController& GetCharacterController()
+	{
+		return m_characterController;
+	}
 private:
 	CharacterController m_characterController;
 };

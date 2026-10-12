@@ -1,6 +1,8 @@
 #pragma once
 #include "Actor.h"
 
+class EnemyManager;
+
 class Bullet : public Actor
 {
 public:
@@ -31,5 +33,7 @@ private:
 	bool m_isActive = false;
 	float m_activeTimer = 0.0f;
 	float m_limitTime = 0.0f;
+
+	EnemyManager* m_enemyManager;
 };
 
