@@ -59,6 +59,8 @@ void Bullet::Update()
 
 	m_transform.m_position += m_moveSpeed *g_gameTime->GetFrameDeltaTime();//移動
 
+
+
 	Actor::Update();
 
 	m_collisionObject->SetPosition(m_transform.m_position);//位置の更新
@@ -80,7 +82,7 @@ void Bullet::Fire(const Vector3& position, const Vector3& moveSpeed)
 	m_activeTimer = 0.0f;
 }
 
-void Bullet::Deactivate()
+void Bullet::Deactivate()//弾の状態をfalaseにする
 {
 	//状態をfalseにする
 	m_isActive = false;

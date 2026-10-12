@@ -1,5 +1,6 @@
 #pragma once
 #include "Actor.h"
+
 class Bullet : public Actor
 {
 public:
@@ -15,6 +16,8 @@ public:
 	void Fire(const Vector3& position, const Vector3& moveSpeed);
 
 	void Deactivate();//停止させるという意味
+
+	void CheckHit();
 
 	bool isActive()const
 	{
