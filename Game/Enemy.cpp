@@ -61,10 +61,30 @@ void Enemy::Move()
 {
 	Vector3 toPlayer = m_player->GetPosition() - m_transform.m_position;
 	toPlayer.y = 0.0f;
-	toPlayer.Normalize();
+	float distance = toPlayer.Length();//ベクトルの長さを求める
+	toPlayer.Normalize();//ベクトルの長さを1にする
 
-	// 向きと速さから、移動速度を作る
-	Vector3 velocity = toPlayer * m_moveSpeed;
+
+	Vector3 velocity = Vector3::Zero;//速度。距離によって値を変更していく
+
+	if (distance >= 800.0f)
+	{
+		//追跡範囲外。停止
+	}
+	else if (distance >= 400.0f)
+	{
+		velocity = toPlayer * m_moveSpeed;//向きと速さから、移動速度を作る
+	}
+	else if (distance >= 200.0f)
+	{
+		//停止
+	}
+	else
+	{
+		velocity = toPlayer * -m_backMoveSpeed;//速度を後退用のものに変更
+	}
+
+	//最終的な速度で動かす
 	m_transform.m_position = m_characterController.Execute(velocity, g_gameTime->GetFrameDeltaTime());
 }
 

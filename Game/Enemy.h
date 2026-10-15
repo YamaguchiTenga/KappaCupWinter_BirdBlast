@@ -44,7 +44,8 @@ private:
 	CharacterController m_characterController;
 	int m_hp = 0;
 	bool m_isActive = true;
-	float m_moveSpeed = 10.0f;
+	float m_moveSpeed = 50.0f;
+	float m_backMoveSpeed = 30.0f;
 
 	Player* m_player;
 };
