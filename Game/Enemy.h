@@ -1,6 +1,8 @@
 #pragma once
 #include"Actor.h"
 
+class Player;
+
 class Enemy : public Actor
 {
 public:
@@ -40,7 +42,9 @@ public:
 	}
 private:
 	CharacterController m_characterController;
-
 	int m_hp = 0;
 	bool m_isActive = true;
+	float m_moveSpeed = 10.0f;
+
+	Player* m_player;
 };
