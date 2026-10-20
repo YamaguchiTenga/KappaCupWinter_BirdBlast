@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Bullet.h"
+#include "Player.h"
 #include"EnemyManager.h"
 
 bool Bullet::Start()
@@ -27,6 +28,7 @@ bool Bullet::Start()
 	m_limitTime = 2.0f;
 
 	m_enemyManager = FindGO<EnemyManager>("enemyManager");
+	m_player = FindGO<Player>("player");
 	return true;
 }
 
@@ -61,8 +63,6 @@ void Bullet::Update()
 
 	m_transform.m_position += m_moveSpeed *g_gameTime->GetFrameDeltaTime();//移動
 
-
-
 	Actor::Update();
 
 	m_collisionObject->SetPosition(m_transform.m_position);//位置の更新
@@ -71,8 +71,9 @@ void Bullet::Update()
 
 }
 
-void Bullet::Fire(const Vector3& position, const Vector3& moveSpeed)
+void Bullet::Fire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team)
 {
+	m_team = team;
 	//場所と速度の設定
 	m_transform.m_position = position;
 	m_moveSpeed = moveSpeed;
@@ -95,8 +96,10 @@ void Bullet::Deactivate()//弾の状態をfalaseにする
 
 void Bullet::CheckHit()
 {
-	if (m_enemyManager != nullptr)
+	if (m_team == BulletTeam::Player)
 	{
+		if (m_player == nullptr) return;
+
 		//EnemyManagerをincludeすることで間接的にEnemyクラスが使用可能になっている
 		//GetEnemiesという敵一覧をenemiesに入れる
 		const std::vector<Enemy*>& enemies = m_enemyManager->GetEnemies();
@@ -122,6 +125,18 @@ void Bullet::CheckHit()
 			}
 		}
 	}
+	
+		if (m_player == nullptr) return;
+		else if (m_team == BulletTeam::Enemy)
+		{
+			if (m_collisionObject->IsHit(m_player->GetCharacterController()))
+			{
+				Deactivate();
+				return;
+			}
+		}
+		
+	
 }
 
 void Bullet::Render(RenderContext& rc)

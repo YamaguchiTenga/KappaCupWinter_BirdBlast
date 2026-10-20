@@ -26,7 +26,16 @@ public:
 	{
 		return m_transform.m_position;
 	}
+
+	CharacterController& GetCharacterController()
+	{
+		return m_characterController;
+	}
 private:
+	void UpdateAnimation();
+	AnimationClip m_animationClips[2];
+	int m_currentAnimation = 0;
+
 	Vector3 m_moveSpeed = Vector3::Zero;
 	Vector3 m_inputMoveSpeed = Vector3::Zero;
 	Vector3 m_externalMoveSpeed = Vector3::Zero;

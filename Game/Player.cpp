@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Player.h"
 #include"BulletManager.h"
+#include"Bullet.h"
 
 Player::Player()
 {
@@ -14,8 +15,13 @@ bool Player::Start()
 {
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
-	m_transform.m_scale = { 1.0f, 1.0f, 1.0f };
+	m_animationClips[0].Load("Assets/modelData/Player/Idle_Player.tka");
+	m_animationClips[0].SetLoopFlag(true);
+	m_animationClips[1].Load("Assets/modelData/Player/Walk_Player.tka");
+	m_animationClips[1].SetLoopFlag(true);
+	m_modelRender.Init("Assets/modelData/Player/Player_Animated.tkm", m_animationClips, 2);
+	m_modelRender.PlayAnimation(0);
+	m_transform.m_scale = { 2.0f, 2.0f, 2.0f };
 
 	m_transform.m_rotation.SetRotationDegY(90.0f);
 	m_characterController.Init(25.0f, 75.0f, m_transform.m_position);
@@ -27,7 +33,23 @@ void Player::Update()
 	Move();
 	Rotation();
 	Attack();
+	UpdateAnimation();
 	Actor::Update();
+}
+
+void Player::UpdateAnimation()
+{
+	// 0: Idle, 1: Walk. Change clips only when the movement state changes.
+	int animation = 0;
+	if (fabsf(m_inputMoveSpeed.x) >= 0.001f || fabsf(m_inputMoveSpeed.z) >= 0.001f)
+	{
+		animation = 1;
+	}
+	if (animation != m_currentAnimation)
+	{
+		m_modelRender.PlayAnimation(animation, 0.15f);
+		m_currentAnimation = animation;
+	}
 }
 
 void Player::Move()
@@ -98,7 +120,7 @@ void Player::Attack()
 		Vector3 firePosition = m_transform.m_position;//プレイヤーの位置をコピーし、発射位置を50だけ高くする。
 		firePosition.y += 50.0f;//コピーなので、プレイヤー自身の位置は変わらない。
 
-		m_bulletManager->RequestFire(firePosition, bulletSpeed);//Managerの処理を呼び出す。
+		m_bulletManager->RequestFire(firePosition, bulletSpeed,BulletTeam::Player);//Managerの処理を呼び出す。
 	}
 }
 
