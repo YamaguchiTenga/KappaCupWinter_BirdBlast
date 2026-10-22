@@ -34,17 +34,26 @@ void Player::Update()
 	Rotation();
 	Attack();
 	UpdateAnimation();
+	UpdateAbility();
 	Actor::Update();
 }
 
 void Player::UpdateAnimation()
 {
-	// 0: Idle, 1: Walk. Change clips only when the movement state changes.
-	int animation = 0;
-	if (fabsf(m_inputMoveSpeed.x) >= 0.001f || fabsf(m_inputMoveSpeed.z) >= 0.001f)
+	int animation;
+
+	// 横方向に移動する入力があるか調べる。
+	if (fabsf(m_inputMoveSpeed.x) >= 0.001f ||
+		fabsf(m_inputMoveSpeed.z) >= 0.001f)
 	{
-		animation = 1;
+		animation = 1; // Walk
 	}
+	else
+	{
+		animation = 0; // Idle
+	}
+
+	// 今と違うアニメーションなら切り替える。
 	if (animation != m_currentAnimation)
 	{
 		m_modelRender.PlayAnimation(animation, 0.15f);
@@ -121,6 +130,24 @@ void Player::Attack()
 		firePosition.y += 50.0f;//コピーなので、プレイヤー自身の位置は変わらない。
 
 		m_bulletManager->RequestFire(firePosition, bulletSpeed,BulletTeam::Player);//Managerの処理を呼び出す。
+	}
+}
+
+void Player::UpdateAbility()
+{
+	//使用状態に応じて、ゲージを増加・冷却する。
+	m_abilityController.Update(g_gameTime->GetFrameDeltaTime());
+
+	if (g_pad[0]->IsTrigger(enButtonRB1))
+	{
+		if (m_abilityController.IsSpeedActive())
+		{
+			m_abilityController.StopSpeed();
+		}
+		else
+		{
+			m_abilityController.StartSpeed();
+		}
 	}
 }
 

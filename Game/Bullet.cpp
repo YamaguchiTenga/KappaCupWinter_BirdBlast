@@ -53,6 +53,9 @@ void Bullet::Update()
 		return;
 	}
 
+	const AbilityController& abilityController = m_player->GetAbilityController();//プレイヤーが持つabilityを取得
+	float deltaTime = abilityController.GetSlowDeltaTime(g_gameTime->GetFrameDeltaTime());
+
 	//時間経過でTimerを増やして、limitTimeに達したらDeactivateを呼び出す
 	m_activeTimer += g_gameTime->GetFrameDeltaTime();
 	if (m_activeTimer >= m_limitTime)
@@ -61,7 +64,7 @@ void Bullet::Update()
 		return;
 	}
 
-	m_transform.m_position += m_moveSpeed *g_gameTime->GetFrameDeltaTime();//移動
+	m_transform.m_position += m_moveSpeed * deltaTime;//移動
 
 	Actor::Update();
 

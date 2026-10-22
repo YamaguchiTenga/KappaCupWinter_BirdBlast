@@ -1,5 +1,6 @@
 #pragma once
 #include"Actor.h"
+#include "AbilityController.h"
 
 class BulletManager;
 class Player : public Actor
@@ -31,6 +32,13 @@ public:
 	{
 		return m_characterController;
 	}
+
+	const AbilityController& GetAbilityController() const
+	{
+		return m_abilityController;
+	}
+
+	void UpdateAbility();
 private:
 	void UpdateAnimation();
 	AnimationClip m_animationClips[2];
@@ -45,5 +53,7 @@ private:
 	float m_gravity = 1500.0f; 
 
 	BulletManager* m_bulletManager = nullptr;
+
+	AbilityController m_abilityController;
 };
 

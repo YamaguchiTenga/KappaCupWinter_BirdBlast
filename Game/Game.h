@@ -29,6 +29,5 @@ private:
 	EnemyManager* m_enemyManager;
 
 	ModelRender m_modelRender;
-	Vector3 m_pos;
 };
 

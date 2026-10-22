@@ -5,7 +5,12 @@
 
 bool Enemy::Start()
 {
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	m_animationClips[0].Load("Assets/animData/idle.tka");
+	m_animationClips[0].SetLoopFlag(true);
+	m_animationClips[1].Load("Assets/animData/run.tka");
+	m_animationClips[1].SetLoopFlag(true);
+	m_modelRender.Init("Assets/modelData/unityChan.tkm", m_animationClips, 2, enModelUpAxisY);
+	m_modelRender.PlayAnimation(0);
 	m_characterController.Init(30.0f, 30.0f, m_transform.m_position);
 	m_player = FindGO<Player>("player");
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
@@ -30,12 +35,23 @@ void Enemy::Update()
 	{
 		return;
 	}
+
+	const AbilityController& abilityController = m_player->GetAbilityController();//プレイヤーが持つabilityを取得
+	float deltaTime = abilityController.GetSlowDeltaTime(g_gameTime->GetFrameDeltaTime());
+	m_modelRender.SetAnimationSpeed(abilityController.GetSlowTimeScale());//アニメーションの速度を調整する
+
 	UpdatePlayerInfo();
 	CheckDeath();
-	Actor::Update();
-	Move();
+	if (!m_isActive)
+	{
+		return;
+	}
+	Move(deltaTime);
 	Rotate();
 	Attack();
+	UpdateAnimation();
+	Actor::Update();
+
 }
 
 void Enemy::UpdatePlayerInfo()
@@ -80,12 +96,9 @@ void Enemy::Deactivate()
     m_characterController.RemoveRigidBoby();
 }
 
-void Enemy::Move()
+void Enemy::Move(float deltaTime)
 {
-	Vector3 toPlayer = m_player->GetPosition() - m_transform.m_position;
-	toPlayer.y = 0.0f;
-	float distance = toPlayer.Length();//ベクトルの長さを求める
-	toPlayer.Normalize();//ベクトルの長さを1にする
+	const Vector3& toPlayer = m_toPlayer;
 
 	Vector3 velocity = Vector3::Zero;//速度。距離によって値を変更していく
 
@@ -106,8 +119,10 @@ void Enemy::Move()
 		velocity = toPlayer * -m_backMoveSpeed;//速度を後退用のものに変更
 	}
 
+	velocity = toPlayer * m_moveSpeed;//検証用のために常に向かってくるようにする
 	//最終的な速度で動かす
-	m_transform.m_position = m_characterController.Execute(velocity, g_gameTime->GetFrameDeltaTime());
+	m_isMoving = fabsf(velocity.x) >= 0.001f || fabsf(velocity.z) >= 0.001f;
+	m_transform.m_position = m_characterController.Execute(velocity, deltaTime);
 }
 
 void Enemy::Rotate()
@@ -143,6 +158,27 @@ void Enemy::Attack()
 		firePosition, bulletSpeed, BulletTeam::Enemy);
 
 	m_attackTimer = 0.0f;
+}
+
+void Enemy::UpdateAnimation()
+{
+	int animation;
+
+	if (m_isMoving)
+	{
+		animation = 1; // 移動中はWalk
+	}
+	else
+	{
+		animation = 0; // 停止中はIdle
+	}
+
+	// 今と違うアニメーションなら切り替える。
+	if (animation != m_currentAnimation)
+	{
+		m_modelRender.PlayAnimation(animation, 0.15f);
+		m_currentAnimation = animation;
+	}
 }
 
 void Enemy::Render(RenderContext& rc)
