@@ -24,6 +24,8 @@ public:
 
 	void Rotate();
 
+	void Rotate(float deltaTime);
+
 	void Attack();
 
 	void UpdateAnimation();
@@ -63,6 +65,7 @@ private:
 	float m_attackInterval = 1.0f;
 	Vector3 m_toPlayer = Vector3::Zero; // プレイヤーへ向かう方向
 	float m_distanceToPlayer = 0.0f;    // 横方向の距離
+	float m_turnSpeed = 200.0f; // 1秒で旋回できる角度
 
 	Player* m_player = nullptr;
 	BulletManager* m_bulletManager = nullptr;

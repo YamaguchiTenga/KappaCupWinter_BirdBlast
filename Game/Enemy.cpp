@@ -47,7 +47,7 @@ void Enemy::Update()
 		return;
 	}
 	Move(deltaTime);
-	Rotate();
+	Rotate(deltaTime);
 	Attack();
 	UpdateAnimation();
 	Actor::Update();
@@ -179,6 +179,51 @@ void Enemy::UpdateAnimation()
 		m_modelRender.PlayAnimation(animation, 0.15f);
 		m_currentAnimation = animation;
 	}
+}
+
+void Enemy::Rotate(float deltaTime)
+{
+	if (m_distanceToPlayer <= 0.001f)
+	{
+		return;
+	}
+
+	float maxTurnAngle = m_turnSpeed * deltaTime;//このフレームで回転する角度
+
+	Vector3 forward = Vector3::AxisZ;
+	m_transform.m_rotation.Apply(forward);//現在の正面の角度
+
+	//dotは内積
+	//2つのベクトルの同じ軸の成分を掛けて足すと内積になる(向く方向にyは使わないからx.zで計算)
+	float dot = forward.x * m_toPlayer.x + forward.z * m_toPlayer.z;
+
+	// 計算誤差で内積が -1～1 を超えないようにする。(コサインも-1から1のため)
+	if (dot > 1.0f) dot = 1.0f;
+	if (dot < -1.0f) dot = -1.0f;
+
+	float angle = acosf(dot);//2つの方向の角度差（ラジアン）
+
+	float angleDeg = angle * (180.0f / 3.14159265f);//度数法に変換
+
+	if (angleDeg <= maxTurnAngle)//角度差が回れる量以下なら、そのままプレイヤーへ向ける
+	{
+		m_transform.m_rotation.SetRotationYFromDirectionXZ(m_toPlayer);
+		return;
+	}
+
+	//2つのベクトルの異なる軸の成分を掛けて引くと外積になる。y軸を求めている
+	float crossY = forward.z * m_toPlayer.x - forward.x * m_toPlayer.z;
+
+	if (crossY < 0.0f)//どっちに回転するか決める
+	{
+		maxTurnAngle = -maxTurnAngle;
+	}
+
+	Quaternion rotation;
+	rotation.SetRotationDegY(maxTurnAngle);//rotationにmaxTurnAngle分回すという設定をする
+	rotation.Apply(forward);//rotation分、forwardを変更
+
+	m_transform.m_rotation.SetRotationYFromDirectionXZ(forward);//敵自身のrotationを変更させる
 }
 
 void Enemy::Render(RenderContext& rc)

@@ -104,7 +104,7 @@ namespace nsK2EngineLow {
 		// DXRのサポートを調べる。
 		if (IsSupportDXR(m_d3dDevice)) {
 			// DXRがサポートされていて、かつRTXシリーズならレイトレ可能にする。
-			m_isPossibleRaytracing = m_isPossibleRaytracing && true;
+			m_isPossibleRaytracing = m_isPossibleRaytracing && false;
 		}
 		//コマンドキューの作成。
 		if (!CreateCommandQueue()) {
