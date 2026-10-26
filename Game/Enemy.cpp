@@ -48,7 +48,7 @@ void Enemy::Update()
 	}
 	Move(deltaTime);
 	Rotate(deltaTime);
-	Attack();
+	Attack(deltaTime);
 	UpdateAnimation();
 	Actor::Update();
 
@@ -119,37 +119,30 @@ void Enemy::Move(float deltaTime)
 		velocity = toPlayer * -m_backMoveSpeed;//速度を後退用のものに変更
 	}
 
-	velocity = toPlayer * m_moveSpeed;//検証用のために常に向かってくるようにする
+	//velocity = toPlayer * m_moveSpeed;//検証用のために常に向かってくるようにする
 	//最終的な速度で動かす
 	m_isMoving = fabsf(velocity.x) >= 0.001f || fabsf(velocity.z) >= 0.001f;
 	m_transform.m_position = m_characterController.Execute(velocity, deltaTime);
 }
 
-void Enemy::Rotate()
-{
-	Vector3 toPlayer = m_player->GetPosition() - m_transform.m_position;
-	toPlayer.y = 0.0f;
-
-	m_transform.m_rotation.SetRotationYFromDirectionXZ(toPlayer);
-}
-
-void Enemy::Attack()
+void Enemy::Attack(float deltaTime)
 {
 	// 攻撃する距離でなければ、今回は何もしない。
-	if (m_distanceToPlayer < 200.0f ||
-		m_distanceToPlayer >= 400.0f)
+	if (m_distanceToPlayer >= m_attackRange)
 	{
 		return;
 	}
 
-	m_attackTimer += g_gameTime->GetFrameDeltaTime();
+	m_attackTimer += deltaTime;
 	if (m_attackTimer < m_attackInterval)
 	{
 		return;
 	}
 
-	// UpdatePlayerInfo()で求めた方向を使う。
-	Vector3 bulletSpeed = m_toPlayer * 500.0f;
+	Vector3 forward = Vector3::AxisZ;
+	m_transform.m_rotation.Apply(forward);
+
+	Vector3 bulletSpeed = forward * 500.0f;
 
 	Vector3 firePosition = m_transform.m_position;
 	firePosition.y += 50.0f;

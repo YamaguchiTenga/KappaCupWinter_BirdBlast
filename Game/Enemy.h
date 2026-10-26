@@ -22,11 +22,9 @@ public:
 
 	void Deactivate();//停止させるという意味
 
-	void Rotate();
-
 	void Rotate(float deltaTime);
 
-	void Attack();
+	void Attack(float deltaTime);
 
 	void UpdateAnimation();
 
@@ -66,6 +64,7 @@ private:
 	Vector3 m_toPlayer = Vector3::Zero; // プレイヤーへ向かう方向
 	float m_distanceToPlayer = 0.0f;    // 横方向の距離
 	float m_turnSpeed = 200.0f; // 1秒で旋回できる角度
+	float m_attackRange = 400.0f; // 攻撃できる距離
 
 	Player* m_player = nullptr;
 	BulletManager* m_bulletManager = nullptr;
