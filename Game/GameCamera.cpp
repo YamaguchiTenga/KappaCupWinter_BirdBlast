@@ -18,6 +18,10 @@ bool GameCamera::Start()
 
 	m_player = FindGO<Player>("player");
 
+	// カメラを半径50の球として扱い、壁や床との間に余裕を持たせる。
+	// この値を大きくすると地形から離れる距離も大きくなる。
+	m_cameraCollisionSolver.Init(50.0f);
+
 	//カメラのニアクリップとファークリップを設定する。
 	g_camera3D->SetNear(1.0f);
 	g_camera3D->SetFar(30000.0f);
@@ -62,7 +66,12 @@ void GameCamera::Update()
 
 	//メインカメラに注視点と視点を設定する。
 	g_camera3D->SetTarget(target);
-	g_camera3D->SetPosition(pos);
+	// 注視点から予定位置まで球を動かし、途中の地形にぶつかるか調べる。
+	// ぶつかる場合は壁の手前へ補正し、ぶつからなければ予定位置を使う。
+	Vector3 correctedPosition = pos;
+	m_cameraCollisionSolver.Execute(correctedPosition, pos, target);
+	// m_toCameraPositionは変更しないので、障害物がなくなると元の距離に戻る。
+	g_camera3D->SetPosition(correctedPosition);
 
 	//カメラの更新。
 	g_camera3D->Update();
