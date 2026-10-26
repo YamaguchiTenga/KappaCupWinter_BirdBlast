@@ -55,13 +55,14 @@ void Bullet::Update()
 
 	const AbilityController& abilityController = m_player->GetAbilityController();//プレイヤーが持つabilityを取得
 	float deltaTime = g_gameTime->GetFrameDeltaTime();
+
 	if (m_team == BulletTeam::Enemy)
 	{
 		deltaTime = abilityController.GetSlowDeltaTime(g_gameTime->GetFrameDeltaTime());
 	}
 
 	//時間経過でTimerを増やして、limitTimeに達したらDeactivateを呼び出す
-	m_activeTimer += g_gameTime->GetFrameDeltaTime();
+	m_activeTimer += deltaTime;
 	if (m_activeTimer >= m_limitTime)
 	{
 		Deactivate();

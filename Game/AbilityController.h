@@ -41,7 +41,7 @@ private:
 	bool m_isSpeedActive = false;
 	bool m_isOverheat = false;
 
-	float m_maxGauge = 100.0f;
+	float m_maxGauge = 500.0f;
 	float m_gauge = 0.0f;
 
 	float m_gaugeIncreseSpeed = 20.0f;//1秒あたりの増加量

@@ -192,7 +192,7 @@ void Player::UpdateDebugText()
 	wchar_t text[256];
 	swprintf_s(
 		text,
-		L"State: %ls\nHeat: %.1f",
+		L"State: %ls\nGage: %.1f",
 		state,
 		m_abilityController.GetGauge()
 	);
