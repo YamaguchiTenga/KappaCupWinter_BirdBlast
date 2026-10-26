@@ -18,6 +18,23 @@ void AbilityController::StopSpeed()
 	m_isSpeedActive = false;
 }
 
+void AbilityController::StartPower()
+{
+	if (m_isOverheat)
+	{
+		return;
+	}
+
+	m_isPowerActive = true;
+
+	m_isSpeedActive = false;
+}
+
+void AbilityController::StopPower()
+{
+	m_isPowerActive = false;
+}
+
 void AbilityController::Update(float deltaTime)
 {
 	if (m_isSpeedActive || m_isPowerActive)

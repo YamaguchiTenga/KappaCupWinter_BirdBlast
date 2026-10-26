@@ -23,6 +23,8 @@ public:
 
 	void Attack();
 
+	void UpdateDebugText();//デバック用
+
 	const Vector3& GetPosition() const
 	{
 		return m_transform.m_position;
@@ -55,5 +57,7 @@ private:
 	BulletManager* m_bulletManager = nullptr;
 
 	AbilityController m_abilityController;
+
+	FontRender m_debugFont;//デバック用
 };
 

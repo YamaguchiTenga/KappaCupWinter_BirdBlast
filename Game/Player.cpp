@@ -13,6 +13,7 @@ Player::~Player()
 
 bool Player::Start()
 {
+
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
 	m_animationClips[0].Load("Assets/modelData/Player/Idle_Player.tka");
@@ -35,6 +36,7 @@ void Player::Update()
 	Attack();
 	UpdateAnimation();
 	UpdateAbility();
+	UpdateDebugText();//デバック用
 	Actor::Update();
 }
 
@@ -138,7 +140,7 @@ void Player::UpdateAbility()
 	//使用状態に応じて、ゲージを増加・冷却する。
 	m_abilityController.Update(g_gameTime->GetFrameDeltaTime());
 
-	if (g_pad[0]->IsTrigger(enButtonRB1))
+	if (g_pad[0]->IsTrigger(enButtonLB1))
 	{
 		if (m_abilityController.IsSpeedActive())
 		{
@@ -149,9 +151,51 @@ void Player::UpdateAbility()
 			m_abilityController.StartSpeed();
 		}
 	}
+
+	if (g_pad[0]->IsTrigger(enButtonRB1))
+	{
+		if (m_abilityController.IsPowerActive())
+		{
+			m_abilityController.StopPower();
+		}
+		else
+		{
+			m_abilityController.StartPower();
+		}
+	}
 }
 
 void Player::Render(RenderContext& rc)
 {
 	Actor::Render(rc);
+	m_debugFont.Draw(rc);
+}
+
+//デバック用
+void Player::UpdateDebugText()
+{
+	const wchar_t* state = L"NORMAL";
+
+	if (m_abilityController.IsOverheat())
+	{
+		state = L"OVERHEAT";
+	}
+	else if (m_abilityController.IsSpeedActive())
+	{
+		state = L"SPEED";
+	}
+	else if (m_abilityController.IsPowerActive())
+	{
+		state = L"POWER";
+	}
+
+	wchar_t text[256];
+	swprintf_s(
+		text,
+		L"State: %ls\nHeat: %.1f",
+		state,
+		m_abilityController.GetGauge()
+	);
+
+	m_debugFont.SetText(text);
 }

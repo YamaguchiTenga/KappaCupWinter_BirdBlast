@@ -3,8 +3,10 @@ class AbilityController
 {
 public:
 	void StartSpeed();
-
 	void StopSpeed();
+
+	void StartPower();
+	void StopPower();
 
 	void Update(float deltaTime);
 
