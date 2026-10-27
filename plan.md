@@ -81,6 +81,57 @@
 - 各弾クラス：弾ごとの移動・命中・消滅などの固有動作を実装する。
 - AbilityController：引き続きSPEED・POWERの状態と共通ゲージを管理する。武器側はPOWER状態を受け取って攻撃内容を決める。
 
+### 現在の実装における所有・参照・更新の関係
+
+以下は武器管理の土台を接続した時点の構成。上記の将来設計とは区別する。
+
+#### 所有と寿命
+
+| 所有する側 | 所有するもの | 作成・破棄の扱い |
+|---|---|---|
+| Player | AbilityController、WeaponController | メンバ変数として持ち、Playerとともに作成・破棄される |
+| WeaponController | 各Weapon | std::array<std::unique_ptr<Weapon>, 4>で所有する。現在は0番にLaserWeaponを登録。Controllerの破棄時に武器も自動で削除される |
+| BulletManager | 再利用する弾の一覧 | NewGOで生成し、DeleteGOで削除する。弾はエンジンのゲームオブジェクトとして更新される。現在は共通のBulletで、派生する弾や複数種類への対応は今後行う |
+
+#### BulletManagerの取得・受け渡し
+
+1. Player::Start()がFindGO<BulletManager>("bulletManager")で既存のManagerを取得する。
+2. PlayerがWeaponController::Initialize(bulletManager)へ渡す。
+3. ControllerがLaserWeaponを作り、SetBulletManager(bulletManager)で参照先を渡す。
+4. ControllerがLaserWeaponの所有権をstd::moveで武器配列へ移す。
+5. LaserWeaponは受け取ったManagerへRequestFire()で発射を依頼する。
+
+- PlayerとLaserWeaponのBulletManager*は非所有の参照。Managerを新しく作ったり削除したりしない。
+- WeaponControllerは現状、Managerを武器へ渡す中継役で、Managerのポインター自体は保持しない。
+- 参照先のManagerは、武器が発射を依頼する間、有効である必要がある。
+- WeaponとWeaponControllerはIGameObjectを継承しない通常のC++クラスであり、StartやUpdateは自動では呼ばれない。
+- FindGOを利用できるかどうかは、IGameObjectの継承とは別の話。今回は各武器が探す代わりに、外からManagerを渡す。
+
+#### 毎フレームの更新と攻撃情報
+
+| 呼ぶ側 | 呼ぶ先 | 渡す情報・処理 |
+|---|---|---|
+| Player | AbilityController | 経過時間と、入力に応じたSPEED・POWERの開始／解除指示 |
+| Player | WeaponController::Update() | 通常の経過時間 |
+| WeaponController | 登録済みの全WeaponのUpdate() | 非選択中も含めて発射待ち時間を進める |
+| Player::Attack() | WeaponController::HandleAttack() | WeaponAttackContextにまとめた入力・発射位置・発射方向・POWER状態 |
+| WeaponController | 選択中のWeaponのHandleAttack() | 受け取った攻撃情報 |
+| LaserWeapon | BulletManager::RequestFire() | 発射位置・方向に弾速を掛けた移動速度・敵味方の区別 |
+
+- WeaponAttackContextはPlayer::Attack()内で毎フレーム作る一時的な情報。現在はisPressed・isHeld・isPower・position・directionを持つ。
+- LaserWeaponはPlayerやAbilityControllerを直接参照せず、必要な情報をWeaponAttackContextから受け取る。
+- 現在のLaserWeaponはisPressedを使う単発方式で、発射間隔は0.5秒。連射にするかは引き続き検討する。
+- RequestFire()は発射できた場合にtrue、空き弾がなかった場合にfalseを返す。LaserWeaponは成功時だけStartCooldown()を呼ぶ。
+- POWERの入力を同じフレームの攻撃へ反映するため、PlayerのUpdateAbility()はAttack()より前に呼ぶ。
+
+#### 現在の弾側の依存関係
+
+- BulletはFindGOでEnemyManagerとPlayerを参照する。
+- プレイヤー弾はEnemyManagerの敵一覧を使って命中判定を行う。
+- 敵弾はPlayerへの命中判定を行い、SPEED状態もPlayerのAbilityController経由で取得する。
+- 敵の射撃はEnemy::Attack()から直接BulletManagerを利用しており、プレイヤーのWeaponControllerを経由しない。
+- 弾の派生クラスや複数種類の管理へ進む際に、これらの依存関係も整理する。
+
 ### 攻撃の流れ
 1. Playerが攻撃入力を取得する。
 2. WeaponControllerが選択中の武器へ入力を渡す。
