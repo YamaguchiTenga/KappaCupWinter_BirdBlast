@@ -23,6 +23,8 @@
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="AbilityController.cpp" />
     <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="LaserWeapon.cpp" />
+    <ClCompile Include="WeaponController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -41,5 +43,7 @@
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="AbilityController.h" />
     <ClInclude Include="Weapon.h" />
+    <ClInclude Include="LaserWeapon.h" />
+    <ClInclude Include="WeaponController.h" />
   </ItemGroup>
 </Project>

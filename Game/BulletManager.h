@@ -13,7 +13,8 @@ public:
 
 	void Update();
 
-	void RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team);
+	//発射ができたかどうかの判断のためbool型にする
+	bool RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team);
 private:
 	static const int BulletCount = 10;//配列のサイズに使える定数にしている
 	Bullet* m_bullets[BulletCount] = {};

@@ -5,7 +5,7 @@
 
 bool Bullet::Start()
 {
-	m_modelRender.Init("Assets/modelData/unityChan.tkm");
+	m_modelRender.Init("Assets/modelData/Bullets/PlayerSphere.tkm");
 
 	m_collisionObject = NewGO<CollisionObject>(0);
 

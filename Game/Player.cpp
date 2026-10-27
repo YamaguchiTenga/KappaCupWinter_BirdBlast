@@ -16,6 +16,8 @@ bool Player::Start()
 
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
+	m_weaponController.Initialize(m_bulletManager);
+
 	m_animationClips[0].Load("Assets/modelData/Player/Idle_Player.tka");
 	m_animationClips[0].SetLoopFlag(true);
 	m_animationClips[1].Load("Assets/modelData/Player/Walk_Player.tka");
@@ -33,9 +35,10 @@ void Player::Update()
 {
 	Move();
 	Rotation();
+	m_weaponController.Update(g_gameTime->GetFrameDeltaTime());
+	UpdateAbility();
 	Attack();
 	UpdateAnimation();
-	UpdateAbility();
 	UpdateDebugText();//デバック用
 	Actor::Update();
 }
@@ -121,18 +124,27 @@ void Player::Jump()
 
 void Player::Attack()
 {
-	if (g_pad[0]->IsTrigger(enButtonX))
-	{
-		Vector3 direction = Vector3::AxisZ;//正面を指す
-		m_transform.m_rotation.Apply(direction);//direction をプレイヤーの回転に合わせた方向へ変える処理。
+	WeaponAttackContext context;
 
-		Vector3 bulletSpeed = direction * 500.0f;//発射方向に速さを掛けて、弾の移動速度を求める。
+	//攻撃ボタンの状態
+	context.isPressed = g_pad[0]->IsTrigger(enButtonX);
+	context.isHeld = g_pad[0]->IsPress(enButtonX);
 
-		Vector3 firePosition = m_transform.m_position;//プレイヤーの位置をコピーし、発射位置を50だけ高くする。
-		firePosition.y += 50.0f;//コピーなので、プレイヤー自身の位置は変わらない。
+	//発射位置：プレイヤーの位置から少し上
+	context.position = m_transform.m_position;
+	context.position.y += 50.0f;
 
-		m_bulletManager->RequestFire(firePosition, bulletSpeed,BulletTeam::Player);//Managerの処理を呼び出す。
-	}
+	//発射方向：プレイヤーが現在向いている方向
+	context.direction = Vector3::AxisZ;
+	m_transform.m_rotation.Apply(context.direction);
+
+	//現在のPOWER状態
+	context.isPower = m_abilityController.IsPowerActive();
+
+	//撃つかどうかの判断と発射は、武器側へ任せる
+	m_weaponController.HandleAttack(context);
+
+	//これでPlayer → Controller → LaserWeapon → BulletManagerの流れ
 }
 
 void Player::UpdateAbility()

@@ -23,16 +23,17 @@ BulletManager::~BulletManager()
 	}
 }
 
-void BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team)
+bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team)
 {
 	for (int i = 0; i < BulletCount; i++)//弾の数だけ調べる
 	{
 		if (!m_bullets[i]->isActive())//弾がactiveじゃなければ
 		{
 			m_bullets[i]->Fire(position, moveSpeed,team);//BulletクラスのFireを呼び出す。引数はこの関数とほぼ同じ形にしているので、そのまま渡して大丈夫
-			return;//一発しか撃たないようにリターンを入れる
+			return true;//一発しか撃たないようにリターンを入れる
 		}
 	}
+	return false;//全部調べても空きがなかった。発射できなかった
 }
 
 void BulletManager::Update()

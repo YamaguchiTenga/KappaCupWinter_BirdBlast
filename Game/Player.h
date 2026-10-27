@@ -1,6 +1,7 @@
 #pragma once
 #include"Actor.h"
 #include "AbilityController.h"
+#include "WeaponController.h"
 
 class BulletManager;
 class Player : public Actor
@@ -57,6 +58,8 @@ private:
 	BulletManager* m_bulletManager = nullptr;
 
 	AbilityController m_abilityController;
+
+	WeaponController m_weaponController;
 
 	FontRender m_debugFont;//デバック用
 };
