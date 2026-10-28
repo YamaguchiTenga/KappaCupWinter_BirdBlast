@@ -10,9 +10,9 @@ public:
 	Enemy();
 	~Enemy();
 
-	bool Start();
+	bool Start()override;
 
-	void Update();
+	void Update()override;
 
 	void Move(float deltaTime);
 
@@ -30,7 +30,7 @@ public:
 
 	void UpdatePlayerInfo();//プレイヤーへの向きと距離を更新するための関数
 
-	void Render(RenderContext& rc);
+	void Render(RenderContext& rc)override;
 
 	//ここのconstは関数内でpositionの変更ができなくなるということ
 	void SetPosition(const Vector3& position)

@@ -235,6 +235,7 @@
     <ClCompile Include="LaserWeapon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PowerLaserBullet.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -258,6 +259,7 @@
     <ClInclude Include="LaserBullet.h" />
     <ClInclude Include="LaserWeapon.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PowerLaserBullet.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="system\system.h" />

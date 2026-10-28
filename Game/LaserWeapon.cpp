@@ -19,9 +19,17 @@ void LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 		return;
 	}
 
+	if (context.isPower)
+	{
+		if (m_bulletManager->RequestPowerLaser(context.position, context.direction))
+		{
+			StartCooldown();
+		}
+
+		return;
+	}
 	Vector3 bulletSpeed = context.direction * m_bulletSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。
 
-	// TODO: POWER時の仕様が決まり次第、context.isPowerに応じて弾の性能を切り替える。
 	//現時点では通常時の性能で発射する。
 	if (m_bulletManager->RequestFire(context.position, bulletSpeed, BulletTeam::Player,BulletType::Laser))
 	{

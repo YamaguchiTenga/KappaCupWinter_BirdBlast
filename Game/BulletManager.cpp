@@ -2,6 +2,7 @@
 #include "BulletManager.h"
 #include "Bullet.h"
 #include "LaserBullet.h"
+#include "PowerLaserBullet.h"
 
 bool BulletManager::Start()
 {
@@ -14,6 +15,8 @@ bool BulletManager::Start()
 	{
 		m_laserBullets[i] = NewGO<LaserBullet>(0);
 	}
+
+	m_powerLaserBullet = NewGO<PowerLaserBullet>(0);
 
 	return true;
 }
@@ -33,6 +36,8 @@ BulletManager::~BulletManager()
 	{
 		DeleteGO(m_laserBullets[i]);
 	}
+
+	DeleteGO(m_powerLaserBullet);
 }
 
 bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team, BulletType type)
@@ -63,6 +68,17 @@ bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpee
 	}
 
 	return false;//全部調べても空きがなかった。発射できなかった
+}
+
+bool BulletManager::RequestPowerLaser(const Vector3& position, const Vector3& direction)
+{
+	if (!m_powerLaserBullet->IsActive())
+	{
+		m_powerLaserBullet->Fire(position, direction);
+		return true;
+	}
+
+	return false;
 }
 
 void BulletManager::Update()

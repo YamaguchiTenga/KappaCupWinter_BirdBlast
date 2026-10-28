@@ -10,9 +10,9 @@ public:
 	Player();
 	~Player();
 
-	bool Start();
+	bool Start()override;
 
-	void Update();
+	void Update()override;
 
 	void Move();
 
@@ -20,7 +20,7 @@ public:
 
 	void Rotation();
 
-	void Render(RenderContext& rc);
+	void Render(RenderContext& rc)override;
 
 	void Attack();
 
