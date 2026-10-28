@@ -43,17 +43,21 @@ public:
 protected:
 	virtual void Move(float deltaTime);
 
-private:
-	CollisionObject* m_collisionObject = nullptr;
+	//弾の見た目・当たり判定の大きさ・寿命を設定する。
+	//子クラスで弾の種類ごとの設定を行う。
+	virtual void Configure();
+
+	float m_limitTime = 0.0f;
 	Vector3 m_moveSpeed = Vector3::Zero;
 	Vector3 m_collisionSize = Vector3::Zero;
+
+	BulletTeam m_team = BulletTeam::Player;//敵の弾かプレイヤーの弾か判断する用
+private:
+	CollisionObject* m_collisionObject = nullptr;
 	bool m_isActive = false;
-	float m_activeTimer = 0.0f;
-	float m_limitTime = 0.0f;
+	float m_activeTimer = 0.0f;//発射して、何秒経過したか記録する
 
 	EnemyManager* m_enemyManager = nullptr;
 	Player* m_player = nullptr;
-
-	BulletTeam m_team = BulletTeam::Player;//敵の弾かプレイヤーの弾か判断する用
 };
 

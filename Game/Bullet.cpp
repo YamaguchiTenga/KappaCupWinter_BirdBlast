@@ -5,13 +5,10 @@
 
 bool Bullet::Start()
 {
-	m_modelRender.Init("Assets/modelData/Bullets/PlayerSphere.tkm");
+	Configure();
+
 
 	m_collisionObject = NewGO<CollisionObject>(0);
-
-	m_collisionSize = { 100.0f, 100.0f, 100.0f };
-
-	m_moveSpeed = { 0.0f, 0.0f, 500.0f };
 
 	m_collisionObject->CreateBox(
 		m_transform.m_position,
@@ -24,8 +21,6 @@ bool Bullet::Start()
 
 	//命中判定に使う。最初は待機中なので、命中判定には使わない
 	m_collisionObject->SetIsEnable(false);
-
-	m_limitTime = 2.0f;
 
 	m_enemyManager = FindGO<EnemyManager>("enemyManager");
 	m_player = FindGO<Player>("player");
@@ -159,4 +154,14 @@ void Bullet::Render(RenderContext& rc)
 		return;
 	}
 	Actor::Render(rc);
+}
+
+void Bullet::Configure()
+{
+	m_modelRender.Init("Assets/modelData/Bullets/PlayerSphere.tkm");
+
+	m_collisionSize = { 100.0f, 100.0f, 100.0f };
+
+	m_moveSpeed = { 0.0f, 0.0f, 500.0f };
+	m_limitTime = 2.0f;
 }
