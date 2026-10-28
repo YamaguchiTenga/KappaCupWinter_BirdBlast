@@ -147,8 +147,7 @@ void Enemy::Attack(float deltaTime)
 	Vector3 firePosition = m_transform.m_position;
 	firePosition.y += 50.0f;
 
-	m_bulletManager->RequestFire(
-		firePosition, bulletSpeed, BulletTeam::Enemy);
+	m_bulletManager->RequestFire(firePosition, bulletSpeed, BulletTeam::Enemy, BulletType::EnemyShot);
 
 	m_attackTimer = 0.0f;
 }

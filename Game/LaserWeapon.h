@@ -19,5 +19,7 @@ public:
 
 private:
 	BulletManager* m_bulletManager = nullptr;
+
+	float m_bulletSpeed = 1000.0f;//移動速度
 };
 

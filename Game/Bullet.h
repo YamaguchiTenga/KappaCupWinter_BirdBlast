@@ -10,6 +10,13 @@ enum class BulletTeam
 	Enemy,
 };
 
+enum BulletType
+{
+	Laser,     // プレイヤーの基本射撃
+	Bomb,      // ボム
+	EnemyShot, // 敵の基本射撃
+};
+
 class Bullet : public Actor
 {
 public:
@@ -32,6 +39,9 @@ public:
 	{
 		return m_isActive;
 	}
+
+protected:
+	virtual void Move(float deltaTime);
 
 private:
 	CollisionObject* m_collisionObject = nullptr;

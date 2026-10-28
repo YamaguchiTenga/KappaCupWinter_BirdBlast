@@ -231,6 +231,7 @@
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameCamera.cpp" />
+    <ClCompile Include="LaserBullet.cpp" />
     <ClCompile Include="LaserWeapon.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameCamera.h" />
+    <ClInclude Include="LaserBullet.h" />
     <ClInclude Include="LaserWeapon.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Stage.h" />

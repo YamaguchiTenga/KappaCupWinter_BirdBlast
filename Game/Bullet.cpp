@@ -69,7 +69,7 @@ void Bullet::Update()
 		return;
 	}
 
-	m_transform.m_position += m_moveSpeed * deltaTime;//移動
+	Move(deltaTime);
 
 	Actor::Update();
 
@@ -145,6 +145,11 @@ void Bullet::CheckHit()
 		}
 		
 	
+}
+
+void Bullet::Move(float deltaTime)
+{
+	m_transform.m_position += m_moveSpeed * deltaTime;
 }
 
 void Bullet::Render(RenderContext& rc)

@@ -25,6 +25,7 @@
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="LaserWeapon.cpp" />
     <ClCompile Include="WeaponController.cpp" />
+    <ClCompile Include="LaserBullet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -45,5 +46,6 @@
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="LaserWeapon.h" />
     <ClInclude Include="WeaponController.h" />
+    <ClInclude Include="LaserBullet.h" />
   </ItemGroup>
 </Project>
