@@ -36,3 +36,8 @@ void LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 		StartCooldown();//発射ができた時だけクールダウンを発生させる
 	}
 }
+
+bool LaserWeapon::IsMovementLocked() const
+{
+	return m_bulletManager->IsPowerLaserFiring();
+}

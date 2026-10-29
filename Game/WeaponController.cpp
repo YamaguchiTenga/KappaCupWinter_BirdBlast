@@ -34,3 +34,17 @@ void WeaponController::HandleAttack(const WeaponAttackContext& context)
 		weapon->HandleAttack(context);
 	}
 }
+
+
+bool WeaponController::IsMovementLocked() const
+{
+	for (const auto& weapon : m_weapons)
+	{
+		if (weapon && weapon->IsMovementLocked())
+		{
+			return true; // どれか1つでも制限中なら、playerから移動を制限する。
+		}
+	}
+
+	return false;
+}

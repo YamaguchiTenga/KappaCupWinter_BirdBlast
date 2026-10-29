@@ -19,6 +19,7 @@ public:
 
 	//パワー状態のレーザー
 	bool RequestPowerLaser(const Vector3& position, const Vector3& direction);
+	bool IsPowerLaserFiring() const;
 private:
 	static const int BulletCount = 10;//配列のサイズに使える定数にしている
 

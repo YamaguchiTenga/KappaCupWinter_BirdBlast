@@ -81,6 +81,11 @@ bool BulletManager::RequestPowerLaser(const Vector3& position, const Vector3& di
 	return false;
 }
 
+bool BulletManager::IsPowerLaserFiring() const
+{
+	return m_powerLaserBullet->IsFiring();
+}
+
 void BulletManager::Update()
 {
 

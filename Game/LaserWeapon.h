@@ -10,6 +10,8 @@ public:
 
 	virtual void HandleAttack(const WeaponAttackContext& context) override;
 
+	bool IsMovementLocked() const override;
+
 	// 外からBulletManagerのポインターを受け取り、発射を依頼する相手として保持する。
 	//IGameObjectを継承してなくてStartは自動で呼ばれないため、Controller経由でManagerを受け取る用
 	void SetBulletManager(BulletManager* bulletManager)

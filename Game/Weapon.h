@@ -24,6 +24,12 @@ public:
 	//純粋仮想関数（= 0）：ここには処理を書かず、各武器の子クラスで実装する。
 	virtual void HandleAttack(const WeaponAttackContext& context) = 0;//Handleは扱うという意味
 
+	//パワーレーザー用の移動制限
+	//通常は移動を制限しない。必要な武器だけ上書きする。
+	virtual bool IsMovementLocked() const
+	{
+		return false;
+	}
 private:
 	float m_fireInterval = 1.0f; //発射間隔（秒）
 	float m_fireCooldown = 0.0f; //次に撃てるまでの残り時間（秒）
