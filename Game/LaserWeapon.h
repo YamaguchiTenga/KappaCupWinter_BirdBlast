@@ -12,8 +12,9 @@ public:
 
 	bool IsMovementLocked() const override;
 
-	// 外からBulletManagerのポインターを受け取り、発射を依頼する相手として保持する。
-	//IGameObjectを継承してなくてStartは自動で呼ばれないため、Controller経由でManagerを受け取る用
+public:
+	// 外(Contoroller)から呼び出して,BulletManagerのポインターを受け取り、発射を依頼する相手として保持する。
+	//IGameObjectを継承してなくてStartは自動で呼ばれないため、FindGOではなくこのやり方に
 	void SetBulletManager(BulletManager* bulletManager)
 	{
 		m_bulletManager = bulletManager;

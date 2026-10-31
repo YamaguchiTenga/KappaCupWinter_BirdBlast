@@ -1,17 +1,33 @@
 #include "stdafx.h"
 #include <utility>//std::moveを使うためのもの
+
+// 各武器を生成し、必要なBulletManagerを渡して、配列で所有・管理する。
+// 更新や攻撃の指示は、共通の親クラスWeaponの関数を通して行う。
+// 発射方法などの具体的な処理は、LaserWeaponやBombWeapon側に任せる。
 #include "WeaponController.h"
+
+// 各武器の実物を生成するため、派生クラスの定義が必要。
+// h側ではWeaponの配列で所有するため、各派生クラスの前方宣言は不要。
 #include "LaserWeapon.h"
+#include"BombWeapon.h"
 void WeaponController::Initialize(BulletManager* bulletManager)
 {
 	//レーザーを作る
 	auto laserWeapon = std::make_unique<LaserWeapon>();//autoでstd::unique_ptr<LaserWeapon>型を省略している
 
-	//発射を依頼するManagerを設定する。
+	//PlayerのStartからInitializeへ渡されたBulletManagerのポインターを、
+	//武器へ渡し、発射の依頼先として覚えさせる。
 	laserWeapon->SetBulletManager(bulletManager);
 
 	//配列の0番へ所有権を移す。管理と削除の責任ごと渡す
 	m_weapons[0] = std::move(laserWeapon);
+
+	//ボム
+	auto bombWeapon = std::make_unique<BombWeapon>();
+
+	bombWeapon->SetBulletManager(bulletManager);
+
+	m_weapons[1] = std::move(bombWeapon);
 }
 
 void WeaponController::Update(float deltaTime)

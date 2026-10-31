@@ -3,6 +3,7 @@
 
 class Bullet;
 class PowerLaserBullet;
+class BombBullet;
 
 class BulletManager : public IGameObject
 {
@@ -25,7 +26,7 @@ private:
 
 	Bullet* m_laserBullets[BulletCount] = {};
 	Bullet* m_enemyBullets[BulletCount] = {};
-
+	BombBullet* m_bombBullets[BulletCount] = {};
 	PowerLaserBullet* m_powerLaserBullet = nullptr;
 };
 

@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "LaserBullet.h"
 #include "PowerLaserBullet.h"
+#include"BombBullet.h"
 
 bool BulletManager::Start()
 {
@@ -18,6 +19,10 @@ bool BulletManager::Start()
 
 	m_powerLaserBullet = NewGO<PowerLaserBullet>(0);
 
+	for (int i = 0;i < BulletCount;i++)
+	{
+		m_bombBullets[i] = NewGO<BombBullet>(0);
+	}
 	return true;
 }
 
@@ -38,6 +43,11 @@ BulletManager::~BulletManager()
 	}
 
 	DeleteGO(m_powerLaserBullet);
+
+	for (int i = 0;i < BulletCount;i++)
+	{
+		DeleteGO(m_bombBullets[i]);
+	}
 }
 
 bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team, BulletType type)
@@ -67,6 +77,17 @@ bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpee
 		}
 	}
 
+	else if (type == BulletType::Bomb)
+	{
+		for (int i = 0; i < BulletCount; i++)
+		{
+			if (!m_bombBullets[i]->isActive())//継承してるからisActiveもFireも使える
+			{
+				m_bombBullets[i]->Fire(position, moveSpeed, team);
+				return true;
+			}
+		}
+	}
 	return false;//全部調べても空きがなかった。発射できなかった
 }
 
