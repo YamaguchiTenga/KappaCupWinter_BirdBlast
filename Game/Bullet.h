@@ -52,12 +52,15 @@ protected:
 	Vector3 m_collisionSize = Vector3::Zero;
 
 	BulletTeam m_team = BulletTeam::Player;//敵の弾かプレイヤーの弾か判断する用
+
+protected:
+	EnemyManager* m_enemyManager = nullptr;
+
 private:
 	CollisionObject* m_collisionObject = nullptr;
 	bool m_isActive = false;
 	float m_activeTimer = 0.0f;//発射して、何秒経過したか記録する
 
-	EnemyManager* m_enemyManager = nullptr;
 	Player* m_player = nullptr;
 };
 

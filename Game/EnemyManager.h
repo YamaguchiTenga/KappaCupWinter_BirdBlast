@@ -17,6 +17,7 @@ public:
 
 	void SpawnEnemy(const Vector3& position);
 
+public:
 	const std::vector<Enemy*>& GetEnemies()const
 	{
 		return m_enemies;

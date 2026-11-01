@@ -26,6 +26,6 @@ private:
 	std::array<std::unique_ptr<Weapon>, WeaponCount> m_weapons{};
 
 
-	int m_selectedWeaponIndex = 0;//選択中の武器の番号
+	int m_selectedWeaponIndex = 1;//選択中の武器の番号
 };
 
