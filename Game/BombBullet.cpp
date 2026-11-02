@@ -47,7 +47,7 @@ void BombBullet::Move(float deltaTime)
 
 	Bullet::Move(deltaTime);
 
-	if (PhysicsWorld::GetInstance()->RayTest(previousPosition, m_transform.m_position, hitPosition))
+	if (CheckStageHit(previousPosition, m_transform.m_position, hitPosition))
 	{
 		//移動後の位置(第二引数)から実際に当たった位置へ戻し、そこを爆発の中心にする。
 		m_transform.m_position = hitPosition;
@@ -96,14 +96,57 @@ bool BombBullet::CheckStageHit(
 		//StageRayCallbackのコンストラクタ。初期化子リストで始点と終点を、親のコンストラクターに渡している。
 		StageRayCallback(const btVector3& start, const btVector3& end)	: btCollisionWorld::ClosestRayResultCallback(start, end)
 		{
+
+		}
+
+		//この物体を、線の判定対象にするか返す。
+		bool needsCollision(btBroadphaseProxy* proxy) const override
+		{
+			// 親が判定対象から外した物体は、こちらでも調べない。
+			//needsCollision()は物理の衝突の基本の条件			
+			if (!btCollisionWorld::ClosestRayResultCallback::needsCollision(proxy))
+			{
+				return false;
+			}
+
+			//判定候補の物体を取り出す。情報を読むだけなのでconstにする。
+			//proxyには、判定候補の物体の管理情報が入る。
+			//proxy->m_clientObjectから、候補の物体へのポインターを取り出せる。
+			const btCollisionObject* object = static_cast<const btCollisionObject*>(proxy->m_clientObject);
+
+			//剛体ならそのポインターを取得する。剛体でなければnullptrになる。
+			const btRigidBody* body = btRigidBody::upcast(object);
+
+			//物理計算で動かさない設定の剛体（床や壁など）だけを対象にする。
+			//今の速度が0かではなく、静止物体として登録されているかを調べる。
+			return body != nullptr && body->isStaticObject();
 		}
 	};
 
 	//線が当たった結果を受け取る。
 	//複数に当たった場合は、始点に最も近い結果を保持する。
-	btCollisionWorld::ClosestRayResultCallback callback(rayStart, rayEnd);
+	StageRayCallback callback(rayStart, rayEnd);
 
-	// 判定処理はこれから追加する。
-	return false;
+	// 始点から終点まで、callbackで指定した対象への命中を調べる。
+	PhysicsWorld::GetInstance()->GetDynamicWorld()->rayTest(
+		rayStart,
+		rayEnd,
+		callback
+	);
+
+	// 何にも当たらなかった場合。
+	if (!callback.hasHit())
+	{
+		return false;
+	}
+
+	// 当たった位置を、Vector3に変換して渡す。
+	hitPosition = Vector3(
+		callback.m_hitPointWorld.x(),
+		callback.m_hitPointWorld.y(),
+		callback.m_hitPointWorld.z()
+	);
+
+	return true;
 }
 

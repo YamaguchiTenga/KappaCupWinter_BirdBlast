@@ -66,6 +66,12 @@ void Bullet::Update()
 
 	Move(deltaTime);
 
+	// 移動中に爆発したなどで無効になった場合は、以降の更新を行わない。
+	if (!m_isActive)
+	{
+		return;
+	}
+
 	Actor::Update();
 
 	m_collisionObject->SetPosition(m_transform.m_position);//位置の更新

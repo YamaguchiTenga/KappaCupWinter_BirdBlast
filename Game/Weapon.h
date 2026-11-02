@@ -1,6 +1,6 @@
 #pragma once
 
-struct WeaponAttackContext
+struct WeaponAttackContext//Player::Attack()でこの変数を作る
 {
 	bool isPressed = false;
 	bool isHeld = false;
@@ -9,9 +9,9 @@ struct WeaponAttackContext
 	Vector3 direction = Vector3::AxisZ;
 };
 
-// 武器共通の基底クラス。
-// IGameObjectは継承せず、WeaponControllerが所有・管理する。
-// Start,Updateなどは自動では呼ばれず、WeaponControllerから呼び出す。
+//武器共通の基底クラス。
+//IGameObjectは継承せず、WeaponControllerが所有・管理する。
+//Start,Updateなどは自動では呼ばれず、WeaponControllerから呼び出す。
 class Weapon
 {
 public:
