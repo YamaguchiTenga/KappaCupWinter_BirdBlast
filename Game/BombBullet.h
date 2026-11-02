@@ -10,10 +10,12 @@ protected:
 
 	void Move(float deltaTIme) override;
 
+	void OnHitEnemy(Enemy* enemy)override;
+
 	void Explosion();
 private:
 	float m_gravity = 1000.0f;
-	float m_explosionRadius = 200.0f;
+	float m_explosionRadius = 100.0f;
 	int m_damage = 1;
 private:
 	CollisionObject* m_explosionCollision = nullptr;

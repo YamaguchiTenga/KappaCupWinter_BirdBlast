@@ -128,8 +128,7 @@ void Bullet::CheckHit()
 			//敵に当たったら
 			if (m_collisionObject->IsHit(enemy->GetCharacterController()))
 			{
-				enemy->TakeDamage(1);
-				Deactivate();
+				OnHitEnemy(enemy);
 				return;
 			}
 		}
@@ -169,4 +168,10 @@ void Bullet::Configure()
 	m_collisionSize = { 100.0f, 100.0f, 100.0f };
 
 	m_limitTime = 2.0f;
+}
+
+void Bullet::OnHitEnemy(Enemy* enemy)
+{
+	enemy->TakeDamage(1);
+	Deactivate();
 }

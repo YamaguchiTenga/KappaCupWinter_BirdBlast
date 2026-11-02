@@ -1,5 +1,9 @@
 #pragma once
 
+//各武器に共通する基底クラス。
+//発射待ち時間を管理し、具体的な攻撃方法は派生クラスで実装する。
+
+
 struct WeaponAttackContext//Player::Attack()でこの変数を作る
 {
 	bool isPressed = false;
@@ -17,7 +21,6 @@ class Weapon
 public:
 	Weapon() = default;
 	virtual ~Weapon() = default;//処理がないならこの書き方でもいい
-
 	virtual void Update(float deltaTime);
 
 	//構造体の情報をまとめて受け取る。

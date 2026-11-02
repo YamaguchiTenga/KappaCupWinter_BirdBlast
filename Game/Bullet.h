@@ -3,6 +3,7 @@
 
 class EnemyManager;
 class Player;
+class Enemy;
 
 enum class BulletTeam
 {
@@ -47,6 +48,9 @@ protected:
 	//子クラスで弾の種類ごとの設定を行う。
 	virtual void Configure();
 
+	//敵に命中したときの処理。
+	virtual void OnHitEnemy(Enemy* enemy);
+
 	float m_limitTime = 0.0f;
 	Vector3 m_moveSpeed = Vector3::Zero;
 	Vector3 m_collisionSize = Vector3::Zero;
@@ -55,7 +59,6 @@ protected:
 
 protected:
 	EnemyManager* m_enemyManager = nullptr;
-
 private:
 	CollisionObject* m_collisionObject = nullptr;
 	bool m_isActive = false;

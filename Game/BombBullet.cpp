@@ -150,3 +150,7 @@ bool BombBullet::CheckStageHit(
 	return true;
 }
 
+void BombBullet::OnHitEnemy(Enemy* enemy)
+{
+	Explosion();
+}

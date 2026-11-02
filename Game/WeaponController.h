@@ -1,4 +1,8 @@
 #pragma once
+
+//各武器を所有し、選択と攻撃指示を管理する。
+//非選択中も含め、全武器の発射待ち時間を更新する。
+
 #include <array>
 #include <memory>
 #include "Weapon.h"
