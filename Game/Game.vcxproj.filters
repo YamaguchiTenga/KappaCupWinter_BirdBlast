@@ -29,6 +29,7 @@
     <ClCompile Include="PowerLaserBullet.cpp" />
     <ClCompile Include="BombWeapon.cpp" />
     <ClCompile Include="BombBullet.cpp" />
+    <ClCompile Include="AimGuide.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -53,5 +54,6 @@
     <ClInclude Include="PowerLaserBullet.h" />
     <ClInclude Include="BombWeapon.h" />
     <ClInclude Include="BombBullet.h" />
+    <ClInclude Include="AimGuide.h" />
   </ItemGroup>
 </Project>

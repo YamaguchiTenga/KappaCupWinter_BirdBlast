@@ -25,7 +25,6 @@ void LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 		{
 			StartCooldown();
 		}
-
 		return;
 	}
 	Vector3 bulletSpeed = context.direction * m_bulletSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。

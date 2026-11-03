@@ -44,7 +44,7 @@ void WeaponController::HandleAttack(const WeaponAttackContext& context)
 
 	if (weapon)
 	{
-		weapon->HandleAttack(context);
+		weapon->HandleAttack(context);//子クラスに情報を渡して発射させる
 	}
 }
 
