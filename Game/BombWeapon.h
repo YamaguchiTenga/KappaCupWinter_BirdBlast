@@ -8,10 +8,11 @@ class BombWeapon : public Weapon
 {
 public:
 	void HandleAttack(const WeaponAttackContext& context)override;
+	bool IsMoveInputLocked() const override;
+	~BombWeapon() override;
 
 public:
 	void SetBulletManager(BulletManager* bulletManager);
-	~BombWeapon() override;
 
 public:
 	//指定した時間ぶん位置と速度を更新する。
@@ -47,6 +48,9 @@ private:
 	AimGuide* m_aimGuide = nullptr;
 
 	float m_bulletSpeed = 1000.0f;//移動速度
+
+	//前フレームに射撃ボタンが押されていたか。
+	bool m_wasAttackHeld = false;
 private:
 	//着弾予測が成功したか。成功した場合だけマーカーを表示する。
 	bool m_isLandingFound = false;

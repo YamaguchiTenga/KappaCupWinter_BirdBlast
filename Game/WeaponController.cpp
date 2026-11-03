@@ -61,3 +61,15 @@ bool WeaponController::IsMovementLocked() const
 
 	return false;
 }
+
+bool WeaponController::IsMoveInputLocked() const
+{
+	const auto& weapon = m_weapons[m_selectedWeaponIndex];
+
+	if (weapon)
+	{
+		return weapon->IsMoveInputLocked();
+	}
+
+	return false;
+}

@@ -23,6 +23,12 @@ BombWeapon::~BombWeapon()
 
 void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 {
+	//前フレームは押していて今は押していなければ、離した瞬間
+	bool isReleased = m_wasAttackHeld && !context.isHeld;
+
+	//次のフレームで比較するため今回の入力状態を保存する
+	m_wasAttackHeld = context.isHeld;
+
 	m_isLandingFound = false;
 
 	Vector3 bulletSpeed = CalculateVelocity(context.direction);//この初速は予測と発射の両方で使う
@@ -38,7 +44,7 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 		m_aimGuide->SetPosition(m_landingPosition);
 	}
 
-	if (!context.isPressed)//射撃ボタンを押した瞬間でなければ終了
+	if (!isReleased)//射撃ボタンを離した瞬間でなければ終了(射撃ボタンを離した瞬間に下の処理に移行)
 	{
 		return;
 	}
@@ -182,3 +188,7 @@ bool BombWeapon::CheckStageHit(
 	return true;
 }
 
+bool BombWeapon::IsMoveInputLocked()const
+{
+	return m_wasAttackHeld;
+}

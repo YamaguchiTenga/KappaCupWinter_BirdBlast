@@ -73,6 +73,7 @@ void Player::Move()
 		m_inputMoveSpeed = Vector3::Zero;
 		return;
 	}
+
 	Vector3 stickL = Vector3::Zero;
 	stickL.x = g_pad[0]->GetLStickXF();
 	stickL.y = g_pad[0]->GetLStickYF();
@@ -91,6 +92,11 @@ void Player::Move()
 	forward *= stickL.y * 500.0f;
 
 	m_inputMoveSpeed = right + forward;
+
+	if (m_weaponController.IsMoveInputLocked())//ボムの構え中
+	{
+		m_inputMoveSpeed = Vector3::Zero;
+	}
 
 	if (m_characterController.IsOnGround())
 	{

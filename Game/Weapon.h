@@ -33,6 +33,12 @@ public:
 	{
 		return false;
 	}
+
+	//ボム用の移動制限
+	virtual bool IsMoveInputLocked() const
+	{
+		return false;
+	}
 private:
 	float m_fireInterval = 1.0f; //発射間隔（秒）
 	float m_fireCooldown = 0.0f; //次に撃てるまでの残り時間（秒）

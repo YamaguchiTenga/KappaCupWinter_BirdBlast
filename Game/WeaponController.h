@@ -19,6 +19,7 @@ public:
 	void HandleAttack(const WeaponAttackContext& context);//WeaponAttackContextはWeapon.hの上の方にある構造体
 
 	bool IsMovementLocked() const;
+	bool IsMoveInputLocked() const;
 private:
 	static const int WeaponCount = 4;//staticをつけるとクラス共通の定数になる
 
