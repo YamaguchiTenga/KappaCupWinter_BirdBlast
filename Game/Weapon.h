@@ -11,6 +11,9 @@ struct WeaponAttackContext//Player::Attack()でこの変数を作る
 	bool isPower = false;
 	Vector3 position = Vector3::Zero;
 	Vector3 direction = Vector3::AxisZ;
+
+	//照準調整用の入力。Xは左右、Yは上下。
+	Vector3 aimInput = Vector3::Zero;
 };
 
 //武器共通の基底クラス。

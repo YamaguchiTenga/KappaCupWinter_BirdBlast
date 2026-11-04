@@ -25,7 +25,7 @@ public:
 
 	//実際の移動と着弾予測で共通して使う重力の強さ。
 	//static constexprなら、h内で値まで定義でき、cpp側の定義がいらなくなる
-	static constexpr float Gravity = 1000.0f;
+	static constexpr float Gravity = 3000.0f;
 
 	//移動経路が地面や壁に当たったか調べる。予測と、実弾の両方で使う
 	static bool CheckStageHit(
@@ -51,6 +51,10 @@ private:
 
 	//前フレームに射撃ボタンが押されていたか。
 	bool m_wasAttackHeld = false;
+
+	float m_minBulletSpeed = 100.0f;//速さの下限
+	float m_maxBulletSpeed = 1000.0f;//上限
+	float m_aimSpeedChangeRate = 1000.0f;//スティックを最大まで倒したとき、1秒で速さをどれだけ変えるか。
 private:
 	//着弾予測が成功したか。成功した場合だけマーカーを表示する。
 	bool m_isLandingFound = false;

@@ -3,7 +3,7 @@
 
 bool AimGuide::Start()
 {
-    // まずは既存の球モデルで、予測位置を確認する。
+    //まずは既存モデルで予測位置を確認
     m_modelRender.Init("Assets/modelData/Bullets/PlayerSphere.tkm");
 
     return true;

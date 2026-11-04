@@ -17,6 +17,7 @@ protected:
 private:
 	float m_explosionRadius = 100.0f;
 	int m_damage = 1;
+
 private:
 	CollisionObject* m_explosionCollision = nullptr;
 };

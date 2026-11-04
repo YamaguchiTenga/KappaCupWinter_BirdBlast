@@ -31,9 +31,23 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 
 	m_isLandingFound = false;
 
+	if (context.isHeld)//構え中に速さを調整
+	{
+		m_bulletSpeed += context.aimInput.y * m_aimSpeedChangeRate * g_gameTime->GetFrameDeltaTime();
+
+		if (m_bulletSpeed <= m_minBulletSpeed)
+		{
+			m_bulletSpeed = m_minBulletSpeed;
+		}
+		if (m_bulletSpeed >= m_maxBulletSpeed)
+		{
+			m_bulletSpeed = m_maxBulletSpeed;
+		}
+	}
+
 	Vector3 bulletSpeed = CalculateVelocity(context.direction);//この初速は予測と発射の両方で使う
 
-	if (context.isHeld)
+	if (context.isHeld)//着弾地点を予測
 	{
 		m_isLandingFound = PredictLandingPosition(context.position, bulletSpeed, m_landingPosition);//この返り値はtrueかfalseなので入れられる
 	}
@@ -70,7 +84,7 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 Vector3 BombWeapon::CalculateVelocity(const Vector3& direction) const
 {
 	Vector3 bulletSpeed = direction * m_bulletSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。
-	bulletSpeed.y = 500.0f;
+	bulletSpeed.y = 800.0f;
 
 	return bulletSpeed;
 }

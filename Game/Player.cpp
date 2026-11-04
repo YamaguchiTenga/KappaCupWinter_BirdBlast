@@ -70,7 +70,7 @@ void Player::Move()
 {
 	if (m_weaponController.IsMovementLocked())
 	{
-		m_inputMoveSpeed = Vector3::Zero;
+		m_inputMoveSpeed = Vector3::Zero;//アニメーション再生の関係で入力による移動を0にする
 		return;
 	}
 
@@ -123,6 +123,22 @@ void Player::Rotation()
 	{
 		return;
 	}
+
+	if (m_weaponController.IsMoveInputLocked())
+	{
+		//このフレームで左右に回す角度を求める。
+		float turnAngle = g_pad[0]->GetLStickXF()* m_aimTurnSpeed* g_gameTime->GetFrameDeltaTime();
+	
+		Vector3 forward = Vector3::AxisZ;
+		m_transform.m_rotation.Apply(forward);//現在の正面の角度
+
+		Quaternion rotation;
+		rotation.SetRotationDegY(turnAngle);//rotationがturnAngle分回すという設定をする
+		rotation.Apply(forward);//rotation分、forwardを変更
+
+		m_transform.m_rotation.SetRotationYFromDirectionXZ(forward);//rotationを変更させる
+		return;
+	}
 	//xかzの移動速度があったら(スティックの入力があったら)。
 	if (fabsf(m_inputMoveSpeed.x) >= 0.001f || fabsf(m_inputMoveSpeed.z) >= 0.001f)
 	{
@@ -156,10 +172,14 @@ void Player::Attack()
 	//現在のPOWER状態
 	context.isPower = m_abilityController.IsPowerActive();
 
+	context.aimInput.x = g_pad[0]->GetLStickXF();
+	context.aimInput.y = g_pad[0]->GetLStickYF();
+
 	//撃つかどうかの判断と発射は、武器側へ任せる
 	m_weaponController.HandleAttack(context);
 
 	//これでPlayer → Controller → LaserWeapon → BulletManagerの流れ
+
 }
 
 void Player::UpdateAbility()

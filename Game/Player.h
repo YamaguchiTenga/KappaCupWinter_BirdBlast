@@ -55,6 +55,8 @@ private:
 	float m_verticalSpeed = 0.0f;//verticalは縦という意味
 	float m_gravity = 1500.0f; 
 
+	float m_aimTurnSpeed = 120.0f;//構え中に左右入力を最大まで倒したとき、1秒で回転する角度。
+
 	BulletManager* m_bulletManager = nullptr;
 
 	AbilityController m_abilityController;
