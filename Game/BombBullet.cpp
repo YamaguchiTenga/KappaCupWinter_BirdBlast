@@ -4,6 +4,8 @@
 #include "Enemy.h"//各敵の位置や有効状態を調べ、ダメージを与えるため。
 #include"BombWeapon.h"//CalculateMovementを使うため
 
+const Vector3 BombBullet::CollisionSize = { 100.0f, 100.0f, 100.0f };
+
 BombBullet::~BombBullet()
 {
 	if (m_explosionCollision != nullptr)
@@ -20,7 +22,7 @@ bool BombBullet::Start()
 
 	m_explosionCollision->CreateSphere(m_transform.m_position, Quaternion::Identity, m_explosionRadius);
 
-	//一度作った当たり判定を残しておく
+	//一度作った当たり判定を使いまわすために自動削除をfalseに
 	m_explosionCollision->SetIsEnableAutoDelete(false);
 
 	//命中判定に使う。最初は待機中なので、命中判定には使わない
@@ -32,7 +34,7 @@ void BombBullet::Configure()
 {
 	m_modelRender.Init("Assets/modelData/Bullets/PlayerSphere.tkm");
 
-	m_collisionSize = { 100.0f, 100.0f, 100.0f };
+	m_collisionSize = BombBullet::CollisionSize;
 
 	m_limitTime = 2.0f;
 }
@@ -73,7 +75,6 @@ void BombBullet::Explosion()
 	m_explosionCollision->SetPosition(m_transform.m_position);
 	m_explosionCollision->CreateSphere(m_transform.m_position, Quaternion::Identity, explosionRadius);
 	m_explosionCollision->SetIsEnable(true);//当たり判定も同時にtrueに
-
 
 	if (m_enemyManager != nullptr)
 	{

@@ -6,9 +6,13 @@
 // h側ではWeaponの配列で所有するため、各派生クラスの前方宣言は不要。
 #include "LaserWeapon.h"
 #include"BombWeapon.h"
+#include "EnemyManager.h"
 
 void WeaponController::Initialize(BulletManager* bulletManager)
 {
+	// 既存のEnemyManagerを取得し、照準で必要な武器へ渡す。
+	auto enemyManager = FindGO<EnemyManager>("enemyManager");
+
 	//レーザーを作る
 	auto laserWeapon = std::make_unique<LaserWeapon>();//autoでstd::unique_ptr<LaserWeapon>型を省略している
 
@@ -23,6 +27,7 @@ void WeaponController::Initialize(BulletManager* bulletManager)
 	auto bombWeapon = std::make_unique<BombWeapon>();
 
 	bombWeapon->SetBulletManager(bulletManager);
+	bombWeapon->SetEnemyManager(enemyManager);
 
 	m_weapons[1] = std::move(bombWeapon);
 }

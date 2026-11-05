@@ -2,6 +2,7 @@
 #include"Weapon.h"
 
 class BulletManager;
+class EnemyManager;
 class AimGuide;
 
 class BombWeapon : public Weapon
@@ -13,6 +14,11 @@ public:
 	void OnDeselected() override;
 public:
 	void SetBulletManager(BulletManager* bulletManager);
+
+	void SetEnemyManager(EnemyManager* enemyManager)//controllerから受けとる
+	{
+		m_enemyManager = enemyManager;
+	}
 
 public:
 	//指定した時間ぶん位置と速度を更新する。
@@ -45,6 +51,7 @@ private:
 	) const;
 
 	BulletManager* m_bulletManager = nullptr;
+	EnemyManager* m_enemyManager = nullptr;
 	AimGuide* m_aimGuide = nullptr;
 
 	float m_bulletSpeed = 1000.0f;//移動速度
@@ -59,4 +66,6 @@ private:
 	bool m_isLandingFound = false;
 	//予測した着弾位置。
 	Vector3 m_landingPosition = Vector3::Zero;
+	//本物のボムと同じ大きさで予測位置と敵の接触を調べる。
+	CollisionObject* m_predictionCollision = nullptr;
 };

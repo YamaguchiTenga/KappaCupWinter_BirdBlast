@@ -13,6 +13,8 @@ public:
 		m_isPower = isPower;
 	}
 
+public:
+	static const Vector3 CollisionSize;
 protected:
 	void Configure() override;
 

@@ -2,6 +2,10 @@
 #include "BombWeapon.h"
 #include"BulletManager.h"
 #include "AimGuide.h"
+#include"BombBullet.h"
+#include"Enemy.h"
+#include"EnemyManager.h"
+
 
 void BombWeapon::SetBulletManager(BulletManager* bulletManager)
 {
@@ -11,6 +15,14 @@ void BombWeapon::SetBulletManager(BulletManager* bulletManager)
     {
         m_aimGuide = NewGO<AimGuide>(0);
     }
+
+	m_predictionCollision = NewGO<CollisionObject>(0);
+	m_predictionCollision->CreateBox(Vector3::Zero, Quaternion::Identity, BombBullet::CollisionSize);
+	//一度作った当たり判定を残しておく
+	m_predictionCollision->SetIsEnableAutoDelete(false);
+
+	//初期状態では無効フラグにしておく
+	m_predictionCollision->SetIsEnable(false);
 }
 
 BombWeapon::~BombWeapon()
@@ -19,6 +31,10 @@ BombWeapon::~BombWeapon()
     {
         DeleteGO(m_aimGuide);
     }
+	if (m_predictionCollision != nullptr)
+	{
+		DeleteGO(m_predictionCollision);
+	}
 }
 
 void BombWeapon::HandleAttack(const WeaponAttackContext& context)
@@ -121,6 +137,22 @@ bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& 
 			return true;//着弾地点が見つかったらPredictLandingPositionにtrueを返す。このtrueを描画の判断に使う
 		}
 
+		m_predictionCollision->SetPosition(predictedPosition);//予測用の判定を今回計算した位置へ移す。
+
+		for (Enemy* enemy : m_enemyManager->GetEnemies())
+		{
+			if (!enemy->IsActive())
+			{
+				continue;
+			}
+
+			if (m_predictionCollision->IsHit(enemy->GetCharacterController()))
+			{
+				landingPosition = predictedPosition;
+				return true;
+			}
+		}
+
 		simulatedTime += simulationDeltaTime;
 	}
 
@@ -128,10 +160,7 @@ bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& 
 }
 
 
-bool BombWeapon::CheckStageHit(
-	const Vector3& start,
-	const Vector3& end,
-	Vector3& hitPosition)
+bool BombWeapon::CheckStageHit(const Vector3& start,const Vector3& end,Vector3& hitPosition)
 {
 	//始点と終点を、物理ライブラリで使う座標の型へ変換する。
 	btVector3 rayStart(start.x, start.y, start.z);
