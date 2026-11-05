@@ -202,3 +202,10 @@ bool BombWeapon::IsMoveInputLocked()const
 {
 	return m_wasAttackHeld;
 }
+
+void BombWeapon::OnDeselected()
+{
+	m_wasAttackHeld = false;
+	m_isLandingFound = false;
+	m_aimGuide->SetVisible(false);
+}

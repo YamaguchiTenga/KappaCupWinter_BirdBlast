@@ -44,6 +44,8 @@ public:
 	void UpdateAbility();
 private:
 	void UpdateAnimation();
+	void UpdateWeaponSelection();
+private:
 	AnimationClip m_animationClips[2];
 	int m_currentAnimation = 0;
 

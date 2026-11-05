@@ -73,3 +73,20 @@ bool WeaponController::IsMoveInputLocked() const
 
 	return false;
 }
+
+void WeaponController::SelectWeapon(int index)
+{
+	const auto& weapon = m_weapons[m_selectedWeaponIndex];
+
+	if (!m_weapons[index])//この枠には武器が登録されていない
+	{
+		return; 
+	}
+	if (index == m_selectedWeaponIndex)//同じ武器なら切り替えない
+	{
+		return;
+	}
+
+	weapon->OnDeselected();
+	m_selectedWeaponIndex = index;
+}

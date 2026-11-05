@@ -33,6 +33,7 @@ bool Player::Start()
 
 void Player::Update()
 {
+	UpdateWeaponSelection();
 	Move();
 	Rotation();
 	m_weaponController.Update(g_gameTime->GetFrameDeltaTime());
@@ -209,6 +210,18 @@ void Player::UpdateAbility()
 		{
 			m_abilityController.StartPower();
 		}
+	}
+}
+
+void Player::UpdateWeaponSelection()
+{
+	if (g_pad[0]->IsTrigger(enButtonUp))
+	{
+		m_weaponController.SelectWeapon(0);
+	}
+	else if (g_pad[0]->IsTrigger(enButtonDown))
+	{
+		m_weaponController.SelectWeapon(1);
 	}
 }
 

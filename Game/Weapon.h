@@ -42,6 +42,12 @@ public:
 	{
 		return false;
 	}
+
+	// この武器の選択を外すときに呼ぶ。
+	//後始末が必要な武器だけ上書きする。
+	virtual void OnDeselected()
+	{
+	}
 private:
 	float m_fireInterval = 1.0f; //発射間隔（秒）
 	float m_fireCooldown = 0.0f; //次に撃てるまでの残り時間（秒）

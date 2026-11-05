@@ -10,7 +10,7 @@ public:
 	void HandleAttack(const WeaponAttackContext& context)override;
 	bool IsMoveInputLocked() const override;
 	~BombWeapon() override;
-
+	void OnDeselected() override;
 public:
 	void SetBulletManager(BulletManager* bulletManager);
 
@@ -49,8 +49,7 @@ private:
 
 	float m_bulletSpeed = 1000.0f;//移動速度
 
-	//前フレームに射撃ボタンが押されていたか。
-	bool m_wasAttackHeld = false;
+	bool m_wasAttackHeld = false;	//前フレームに射撃ボタンが押されていたか。
 
 	float m_minBulletSpeed = 100.0f;//速さの下限
 	float m_maxBulletSpeed = 1000.0f;//上限
