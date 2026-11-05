@@ -36,6 +36,7 @@ void PowerLaserBullet::Update()
 	{
 		return;
 	}
+
 	CheckHit(g_gameTime->GetFrameDeltaTime());
 	Actor::Update();
 }

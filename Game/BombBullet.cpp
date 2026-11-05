@@ -39,18 +39,25 @@ void BombBullet::Configure()
 
 void BombBullet::Move(float deltaTime)
 {
-	//移動前の位置を保存する。途中で地面などに当たったか調べるため。
+	//移動前の位置を保存する。途中で地面などに当たったか調べるため
 	Vector3 previousPosition = m_transform.m_position;
-	//RayTestで当たった位置を受け取る。
+	//RayTestで当たった位置を受け取る
 	Vector3 hitPosition = Vector3::Zero;
+	
+	if (m_isPower)
+	{
+		Bullet::Move(deltaTime);
+	}
+	else
+	{
+		//実際の移動と予測を同じものにするため、BombBWeaponのstaticの関数と変数を使って動きを計算
+		//staticなのでインスタンスがなくても関数、変数(Gravity)が使える
+		BombWeapon::CalculateMovement(m_transform.m_position, m_moveSpeed, BombWeapon::Gravity, deltaTime);
+	}
 
-	//実際の移動と予測を同じものにするため、BombBWeaponのstaticの関数と変数を使って動きを計算
-	//staticなのでインスタンスがなくても関数、変数(Gravity)が使える
-	BombWeapon::CalculateMovement(m_transform.m_position, m_moveSpeed, BombWeapon::Gravity, deltaTime);
-
+	//通常・POWERの両方で着弾を調べる。
 	if (BombWeapon::CheckStageHit(previousPosition, m_transform.m_position, hitPosition))
 	{
-		//移動後の位置(第二引数)から実際に当たった位置へ戻し、そこを爆発の中心にする。
 		m_transform.m_position = hitPosition;
 		Explosion();
 	}
@@ -58,8 +65,15 @@ void BombBullet::Move(float deltaTime)
 
 void BombBullet::Explosion()
 {
+	float explosionRadius = m_explosionRadius;
+	if (m_isPower)
+	{
+		explosionRadius = m_powerExplosionRadius;
+	}
 	m_explosionCollision->SetPosition(m_transform.m_position);
+	m_explosionCollision->CreateSphere(m_transform.m_position, Quaternion::Identity, explosionRadius);
 	m_explosionCollision->SetIsEnable(true);//当たり判定も同時にtrueに
+
 
 	if (m_enemyManager != nullptr)
 	{
@@ -76,7 +90,6 @@ void BombBullet::Explosion()
 			}
 
 		}
-
 	}
 	m_explosionCollision->SetIsEnable(false);
 	Deactivate();

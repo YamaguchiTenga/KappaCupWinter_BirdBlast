@@ -38,9 +38,9 @@ private:
 
 	enum class State
 	{
-		Idle, // 待機中
-		Firing,   // 照射中：攻撃判定あり
-		Ending,   // 終了演出中：攻撃判定なし
+		Idle, //待機中
+		Firing,  //照射中：攻撃判定あり
+		Ending,  //終了演出中：攻撃判定なし
 	};
 	State m_state = State::Idle;
 

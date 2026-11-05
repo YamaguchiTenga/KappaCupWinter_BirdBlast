@@ -15,7 +15,7 @@ bool Enemy::Start()
 	m_player = FindGO<Player>("player");
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
-	m_hp = 3;
+	m_hp = 1;
 	return true;
 }
 

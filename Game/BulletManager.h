@@ -20,7 +20,7 @@ public:
 	void Update();
 
 	//発射ができたかどうかの判断のためbool型にする
-	bool RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team, BulletType type);
+	bool RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team, BulletType type, bool isPower = false);
 
 	//パワー状態のレーザー
 	bool RequestPowerLaser(const Vector3& position, const Vector3& direction);

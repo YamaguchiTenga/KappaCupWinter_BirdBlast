@@ -50,7 +50,7 @@ BulletManager::~BulletManager()
 	}
 }
 
-bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team, BulletType type)
+bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpeed, BulletTeam team, BulletType type, bool isPower)
 {
 	if (type == BulletType::EnemyShot)
 	{
@@ -83,6 +83,7 @@ bool BulletManager::RequestFire(const Vector3& position, const Vector3& moveSpee
 		{
 			if (!m_bombBullets[i]->isActive())//継承してるからisActiveもFireも使える
 			{
+				m_bombBullets[i]->SetPower(isPower);
 				m_bombBullets[i]->Fire(position, moveSpeed, team);
 				return true;
 			}

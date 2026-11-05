@@ -36,7 +36,7 @@ public:
 
 private:
 	// 実際の発射と着弾予測で共通して使う初速を作る。
-	Vector3 CalculateVelocity(const Vector3& direction) const;
+	Vector3 CalculateVelocity(const Vector3& direction,bool isPower) const;
 
 	bool PredictLandingPosition(
 		const Vector3& position,

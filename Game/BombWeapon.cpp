@@ -45,9 +45,9 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 		}
 	}
 
-	Vector3 bulletSpeed = CalculateVelocity(context.direction);//この初速は予測と発射の両方で使う
+	Vector3 bulletSpeed = CalculateVelocity(context.direction,context.isPower);//この初速は予測と発射の両方で使う
 
-	if (context.isHeld)//着弾地点を予測
+	if (context.isHeld && !context.isPower)//着弾地点を予測
 	{
 		m_isLandingFound = PredictLandingPosition(context.position, bulletSpeed, m_landingPosition);//この返り値はtrueかfalseなので入れられる
 	}
@@ -68,24 +68,20 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 		return;
 	}
 
-	if (context.isPower)
-	{
-		return;
-	}
-
-
-	if (m_bulletManager->RequestFire(context.position, bulletSpeed, BulletTeam::Player, BulletType::Bomb))
+	if (m_bulletManager->RequestFire(context.position, bulletSpeed, BulletTeam::Player, BulletType::Bomb, context.isPower))
 	{
 		StartCooldown();//発射ができた時だけクールダウンを発生させる
 	}
 }
 
 //発射された瞬間の速度を計算
-Vector3 BombWeapon::CalculateVelocity(const Vector3& direction) const
+Vector3 BombWeapon::CalculateVelocity(const Vector3& direction, bool isPower) const
 {
 	Vector3 bulletSpeed = direction * m_bulletSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。
-	bulletSpeed.y = 800.0f;
-
+	if (!isPower)
+	{
+		bulletSpeed.y = 800.0f;
+	}
 	return bulletSpeed;
 }
 

@@ -7,7 +7,6 @@ bool Bullet::Start()
 {
 	Configure();
 
-
 	m_collisionObject = NewGO<CollisionObject>(0);
 
 	m_collisionObject->CreateBox(
