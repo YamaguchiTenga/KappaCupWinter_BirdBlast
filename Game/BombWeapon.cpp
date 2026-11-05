@@ -65,8 +65,9 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 
 	if (context.isHeld && !context.isPower)//着弾地点を予測
 	{
-		m_isLandingFound = PredictLandingPosition(context.position, bulletSpeed, m_landingPosition);//この返り値はtrueかfalseなので入れられる
+		m_isLandingFound = PredictLandingPosition(context.position, bulletSpeed, m_landingPosition, m_trajectoryPoints);//この返り値はtrueかfalseなので入れられる
 	}
+	m_aimGuide->SetTrajectoryPoints(m_trajectoryPoints);
 	m_aimGuide->SetVisible(m_isLandingFound);
 
 	if (m_isLandingFound)
@@ -110,12 +111,13 @@ void BombWeapon::CalculateMovement(Vector3& position, Vector3& velocity, float g
 }
 
 //着弾地点の予測
-bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& velocity, Vector3& landingPosition) const
+bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& velocity, Vector3& landingPosition, std::vector<Vector3>& trajectoryPoints) const
 {
 	Vector3 predictedPosition = position;//計算中の位置
 	Vector3 predictedVelocity = velocity;//計算中の速度
-
 	float simulationDeltaTime = g_gameTime->GetFrameDeltaTime();
+
+	trajectoryPoints.clear();
 
 	//時間が進まない場合は繰り返しを始めない。
 	if (simulationDeltaTime <= 0.0f)
@@ -124,8 +126,9 @@ bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& 
 	}
 
 	float simulatedTime = 0.0f;//計算済みの時間。
-	float predictionDuration = 2.0f;//予測する上限時間。今のボムの寿命に合わせた仮の値。staticにするのもありかも
+	float predictionDuration = 2.0f;//予測する上限時間。今のボムの寿命に合わせた仮の値なので、staticにするのもありかも
 
+	trajectoryPoints.push_back(predictedPosition);//発射位置を配列の最初へ追加
 	while (simulatedTime < predictionDuration)
 	{
 		Vector3 previousPosition = predictedPosition;//移動前をコピーして保存。予測した移動区間で、ステージに当たったか調べるため
@@ -134,6 +137,7 @@ bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& 
 
 		if (BombWeapon::CheckStageHit(previousPosition, predictedPosition, landingPosition))
 		{
+			trajectoryPoints.push_back(landingPosition);
 			return true;//着弾地点が見つかったらPredictLandingPositionにtrueを返す。このtrueを描画の判断に使う
 		}
 
@@ -149,9 +153,14 @@ bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& 
 			if (m_predictionCollision->IsHit(enemy->GetCharacterController()))
 			{
 				landingPosition = predictedPosition;
+				trajectoryPoints.push_back(landingPosition);
+
 				return true;
 			}
 		}
+
+		trajectoryPoints.push_back(predictedPosition);
+
 
 		simulatedTime += simulationDeltaTime;
 	}

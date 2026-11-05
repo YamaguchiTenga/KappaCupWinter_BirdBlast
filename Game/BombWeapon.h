@@ -1,5 +1,6 @@
 #pragma once
 #include"Weapon.h"
+#include<vector>
 
 class BulletManager;
 class EnemyManager;
@@ -47,7 +48,8 @@ private:
 	bool PredictLandingPosition(
 		const Vector3& position,
 		const Vector3& velocity,
-		Vector3& landingPosition//予測した着弾地点
+		Vector3& landingPosition,//予測した着弾地点
+		std::vector<Vector3>& trajectoryPoints
 	) const;
 
 	BulletManager* m_bulletManager = nullptr;
@@ -68,4 +70,6 @@ private:
 	Vector3 m_landingPosition = Vector3::Zero;
 	//本物のボムと同じ大きさで予測位置と敵の接触を調べる。
 	CollisionObject* m_predictionCollision = nullptr;
+
+	std::vector<Vector3> m_trajectoryPoints;//Trajectoryは軌跡
 };
