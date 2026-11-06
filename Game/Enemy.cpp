@@ -5,13 +5,13 @@
 
 bool Enemy::Start()
 {
-	m_animationClips[0].Load("Assets/animData/idle.tka");
+	m_animationClips[0].Load("Assets/modelData/Enemy/01/Mushroom_Monster/MushroomMon_Idle.tka");
 	m_animationClips[0].SetLoopFlag(true);
-	m_animationClips[1].Load("Assets/animData/run.tka");
+	m_animationClips[1].Load("Assets/modelData/Enemy/01/Mushroom_Monster/MushroomMon_Run.tka");
 	m_animationClips[1].SetLoopFlag(true);
-	m_modelRender.Init("Assets/modelData/unityChan.tkm", m_animationClips, 2, enModelUpAxisY);
+	m_modelRender.Init("Assets/modelData/Enemy/01/Mushroom_Monster/MushroomMon.tkm", m_animationClips, 2, enModelUpAxisZ);
 	m_modelRender.PlayAnimation(0);
-	m_characterController.Init(30.0f, 30.0f, m_transform.m_position);
+	m_characterController.Init(50.0f, 50.0f, m_transform.m_position);
 	m_player = FindGO<Player>("player");
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
