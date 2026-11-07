@@ -15,6 +15,13 @@ namespace nsK2Engine {
 		/// <param name="h">画像の縦幅。</param>
 		/// <param name="alphaBlendMode">デフォルトは半透明合成。</param>
 		void Init(const char* filePath, const float w, const float h, AlphaBlendMode alphaBlendMode = AlphaBlendMode_Trans);
+
+		//追加した。オーバーロードで区別
+		void Init(const SpriteInitData& initData)
+		{
+			m_sprite.Init(initData);
+		}
+
 		/// <summary>
 		/// 座標を設定。zは0.0fで。
 		/// </summary>
@@ -23,6 +30,7 @@ namespace nsK2Engine {
 		{
 			m_position = pos;
 		}
+
 		/// <summary>
 		/// 座標を取得。
 		/// </summary>

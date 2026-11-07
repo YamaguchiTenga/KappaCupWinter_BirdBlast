@@ -14,7 +14,7 @@ GameCamera::~GameCamera()
 
 bool GameCamera::Start()
 {
-	m_toCameraPosition.Set(100.0f, 500.0f, -400.0f);
+	m_toCameraPosition.Set(0.0f, 300.0f, -600.0f);
 
 	m_player = FindGO<Player>("player");
 
@@ -60,6 +60,14 @@ void GameCamera::Update()
 		//カメラが下向きすぎ。
 		m_toCameraPosition = toCameraPosOld;
 	}//toCameraPosOldで直前のカメラの位置を保存しておいて、カメラが上向きすぎたり下向きすぎたりしたら、直前の位置に戻す。
+
+// カメラから見た、水平な奥方向を求める。
+	Vector3 cameraForward = m_toCameraPosition * -1.0f;
+	cameraForward.y = 0.0f;
+	cameraForward.Normalize();
+
+	// 画面の中心を奥へずらし、プレイヤーを手前側に映す。
+	target += cameraForward * 200.0f;
 
 		//視点を計算する。
 	Vector3 pos = target + m_toCameraPosition;//m_toCameraPosition分座標をずらして三人称視点に

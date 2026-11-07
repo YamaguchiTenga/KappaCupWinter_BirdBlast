@@ -7,6 +7,15 @@
 #include"Bullet.h"
 #include"BulletManager.h"
 #include"EnemyManager.h"
+#include "GameUI.h"
+Game::~Game()
+{
+	if (m_gameUI != nullptr)
+	{
+		DeleteGO(m_gameUI);
+	}
+}
+
 bool Game::Start()
 {
 	m_player = NewGO<Player>(0, "player");
@@ -16,6 +25,7 @@ bool Game::Start()
 	//m_bullet = NewGO<Bullet>(0, "bullet");
 	m_bulletManager = NewGO<BulletManager>(0, "bulletManager");
 	m_enemyManager = NewGO<EnemyManager>(0, "enemyManager");
+	m_gameUI = NewGO<GameUI>(0, "gameUI");
 	return true;
 }
 

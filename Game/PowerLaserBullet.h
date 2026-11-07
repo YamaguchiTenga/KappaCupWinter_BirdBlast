@@ -45,7 +45,7 @@ private:
 	State m_state = State::Idle;
 
 	float m_remainingTime = 0.0f;//照射終了までの残り時間（秒）
-	float m_fireDuration = 1.0f;//照射する時間（秒）
+	float m_fireDuration = 0.3f;//照射する時間（秒）
 	float m_endDuration = 0.1f; //終了演出の時間（秒）
 
 

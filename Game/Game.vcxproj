@@ -225,6 +225,8 @@
   <ItemGroup>
     <ClCompile Include="AbilityController.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="HeatGaugeUI.cpp" />
+    <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="AimGuide.cpp" />
     <ClCompile Include="BombBullet.cpp" />
     <ClCompile Include="BombWeapon.cpp" />
@@ -233,6 +235,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="LaserBullet.cpp" />
     <ClCompile Include="LaserWeapon.cpp" />
@@ -253,6 +256,8 @@
   <ItemGroup>
     <ClInclude Include="AbilityController.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="HeatGaugeUI.h" />
+    <ClInclude Include="UIBase.h" />
     <ClInclude Include="AimGuide.h" />
     <ClInclude Include="BombBullet.h" />
     <ClInclude Include="BombWeapon.h" />
@@ -261,6 +266,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameUI.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="LaserBullet.h" />
     <ClInclude Include="LaserWeapon.h" />

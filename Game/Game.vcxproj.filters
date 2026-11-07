@@ -12,8 +12,10 @@
       <Filter>system</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="Stage.cpp" />
@@ -30,6 +32,7 @@
     <ClCompile Include="BombWeapon.cpp" />
     <ClCompile Include="BombBullet.cpp" />
     <ClCompile Include="AimGuide.cpp" />
+    <ClCompile Include="HeatGaugeUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -37,8 +40,10 @@
       <Filter>system</Filter>
     </ClInclude>
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameUI.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="UIBase.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="Stage.h" />
@@ -55,5 +60,6 @@
     <ClInclude Include="BombWeapon.h" />
     <ClInclude Include="BombBullet.h" />
     <ClInclude Include="AimGuide.h" />
+    <ClInclude Include="HeatGaugeUI.h" />
   </ItemGroup>
 </Project>

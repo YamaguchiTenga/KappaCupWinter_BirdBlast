@@ -102,15 +102,15 @@ void Enemy::Move(float deltaTime)
 
 	Vector3 velocity = Vector3::Zero;//速度。距離によって値を変更していく
 
-	if (m_distanceToPlayer >= 500.0f)
+	if (m_distanceToPlayer >= 800.0f)
 	{
 		//追跡範囲外。停止
 	}
-	else if (m_distanceToPlayer >= 300.0f)
+	else if (m_distanceToPlayer >= 500.0f)
 	{
 		velocity = toPlayer * m_moveSpeed;//向きと速さから、移動速度を作る
 	}
-	else if (m_distanceToPlayer >= 150.0f)
+	else if (m_distanceToPlayer >= 400.0f)
 	{
 		//停止
 	}

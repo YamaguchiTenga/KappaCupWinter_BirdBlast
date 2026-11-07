@@ -48,7 +48,7 @@ private:
     bool m_isVisible = false;
 
     int m_visibleTrajectoryCount = 0;//表示する数
-    static const int m_TrajectoryPointCount = 30;//配列の個数にはコンパイル時に確定できる整数が必要なのでstatic
+    static const int m_TrajectoryPointCount = 10;//配列の個数にはコンパイル時に確定できる整数が必要なのでstatic
     ModelRender m_trajectoryModels[m_TrajectoryPointCount];
     std::vector<Vector3> m_trajectoryPoints;
 };

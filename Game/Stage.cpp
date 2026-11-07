@@ -3,7 +3,7 @@
 
 bool Stage::Start()
 {
-	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//当たり判定可視化
+	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//当たり判定可視化
 	m_modelRender.Init("Assets/modelData/Floor/aka/aka.tkm");
 	m_modelRender.SetScale(5, 1, 5);
 	m_modelRender.SetPosition(0, -30.0f, 0);

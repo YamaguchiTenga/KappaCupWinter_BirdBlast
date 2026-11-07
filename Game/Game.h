@@ -9,12 +9,13 @@ class Enemy;
 class Bullet;
 class BulletManager;
 class EnemyManager;
+class GameUI;
 
 class Game : public IGameObject
 {
 public:
 	Game() {}
-	~Game() {}
+	~Game();
 	bool Start();
 	void Update();
 	void Render(RenderContext& rc);
@@ -27,6 +28,7 @@ private:
 	Bullet* m_bullet;
 	BulletManager* m_bulletManager;
 	EnemyManager* m_enemyManager;
+	GameUI* m_gameUI = nullptr;
 
 	ModelRender m_modelRender;
 };

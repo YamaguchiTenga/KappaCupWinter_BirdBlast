@@ -57,8 +57,8 @@ private:
 	CharacterController m_characterController;
 	int m_hp = 0;
 	bool m_isActive = true;
-	float m_moveSpeed = 500.0f;
-	float m_backMoveSpeed = 100.0f;
+	float m_moveSpeed = 300.0f;
+	float m_backMoveSpeed = 150.0f;
 	float m_attackTimer = 0.0f;
 	float m_attackInterval = 1.0f;
 	Vector3 m_toPlayer = Vector3::Zero; // プレイヤーへ向かう方向

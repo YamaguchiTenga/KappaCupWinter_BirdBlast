@@ -36,6 +36,11 @@ public:
 		return m_isSpeedActive ? m_slowTimeSpeed : 1.0f;
 	}
 
+	//現在のヒート量が上限の何割かを返す
+	float GetGaugeRatio() const
+	{
+		return m_gauge / m_maxGauge;
+	}
 private:
 	bool m_isPowerActive = false;
 	bool m_isSpeedActive = false;
