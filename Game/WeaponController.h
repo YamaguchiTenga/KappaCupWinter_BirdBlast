@@ -22,6 +22,11 @@ public:
 
 	bool IsMovementLocked() const;
 	bool IsMoveInputLocked() const;
+
+	int GetSelectedWeaponIndex() const
+	{
+		return m_selectedWeaponIndex;
+	}
 private:
 	static const int WeaponCount = 4;//武器配列の要素数
 

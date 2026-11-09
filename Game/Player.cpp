@@ -44,6 +44,20 @@ void Player::Update()
 	Actor::Update();
 }
 
+void Player::TakeDamage(int damage)
+{
+	if (damage <= 0)
+	{
+		return;
+	}
+
+	m_hp -= damage;
+	if (m_hp < 0)
+	{
+		m_hp = 0;
+	}
+}
+
 void Player::UpdateAnimation()
 {
 	int animation;

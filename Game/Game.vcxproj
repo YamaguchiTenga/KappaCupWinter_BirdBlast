@@ -226,6 +226,8 @@
     <ClCompile Include="AbilityController.cpp" />
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="HeatGaugeUI.cpp" />
+    <ClCompile Include="WeaponUI.cpp" />
+    <ClCompile Include="PlayerHpUI.cpp" />
     <ClCompile Include="UIBase.cpp" />
     <ClCompile Include="AimGuide.cpp" />
     <ClCompile Include="BombBullet.cpp" />
@@ -257,6 +259,8 @@
     <ClInclude Include="AbilityController.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="HeatGaugeUI.h" />
+    <ClInclude Include="WeaponUI.h" />
+    <ClInclude Include="PlayerHpUI.h" />
     <ClInclude Include="UIBase.h" />
     <ClInclude Include="AimGuide.h" />
     <ClInclude Include="BombBullet.h" />

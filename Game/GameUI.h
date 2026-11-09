@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 class HeatGaugeUI;
+class WeaponUI;
+class PlayerHpUI;
 
 //ゲーム中のUIをまとめて管理するクラス。
 class GameUI : public IGameObject
@@ -12,4 +14,6 @@ public:
 private:
     //このクラスで生成・破棄するヒートゲージUI。
     HeatGaugeUI* m_heatGaugeUI = nullptr;
+    WeaponUI* m_weaponUI = nullptr;
+    PlayerHpUI* m_playerHpUI = nullptr;
 };

@@ -41,6 +41,24 @@ public:
 		return m_abilityController;
 	}
 
+	//UIが欲しい情報(コントローラー)はプレイヤーのメンバなのでプレイヤーを経由して情報を得る
+	int GetSelectedWeaponIndex() const
+	{
+		return m_weaponController.GetSelectedWeaponIndex();
+	}
+
+	void TakeDamage(int damage);
+
+	int GetHp() const
+	{
+		return m_hp;
+	}
+
+	int GetMaxHp() const
+	{
+		return m_maxHp;
+	}
+
 	void UpdateAbility();
 private:
 	void UpdateAnimation();
@@ -60,6 +78,9 @@ private:
 	float m_aimTurnSpeed = 120.0f;//構え中に左右入力を最大まで倒したとき、1秒で回転する角度。
 
 	BulletManager* m_bulletManager = nullptr;
+
+	int m_maxHp = 100;
+	int m_hp = m_maxHp;
 
 	AbilityController m_abilityController;
 

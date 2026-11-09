@@ -33,6 +33,8 @@
     <ClCompile Include="BombBullet.cpp" />
     <ClCompile Include="AimGuide.cpp" />
     <ClCompile Include="HeatGaugeUI.cpp" />
+    <ClCompile Include="WeaponUI.cpp" />
+    <ClCompile Include="PlayerHpUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -61,5 +63,7 @@
     <ClInclude Include="BombBullet.h" />
     <ClInclude Include="AimGuide.h" />
     <ClInclude Include="HeatGaugeUI.h" />
+    <ClInclude Include="WeaponUI.h" />
+    <ClInclude Include="PlayerHpUI.h" />
   </ItemGroup>
 </Project>
