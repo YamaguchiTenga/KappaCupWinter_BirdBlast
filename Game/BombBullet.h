@@ -6,6 +6,8 @@ class BombBullet : public Bullet
 public:
 	~BombBullet();
 	bool Start() override;
+	void Update() override;
+	void Render(RenderContext& rc) override;
 
 public:
 	void SetPower(bool isPower)
@@ -32,5 +34,6 @@ private:
 
 private:
 	CollisionObject* m_explosionCollision = nullptr;
+	ModelRender m_powerModelRender;
 };
 

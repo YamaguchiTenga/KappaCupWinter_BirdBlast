@@ -3,6 +3,7 @@
 #include "EnemyManager.h"//GetEnemies()`で敵一覧を取得するため。
 #include "Enemy.h"//各敵の位置や有効状態を調べ、ダメージを与えるため。
 #include"BombWeapon.h"//CalculateMovementを使うため
+#include"EffectManager.h"
 
 const Vector3 BombBullet::CollisionSize = { 100.0f, 100.0f, 100.0f };
 
@@ -32,11 +33,40 @@ bool BombBullet::Start()
 }
 void BombBullet::Configure()
 {
-	m_modelRender.Init("Assets/modelData/Bullets/PlayerSphere.tkm");
+	m_modelRender.Init("Assets/modelData/Bullets/QuaterniusBomb/Bomb.tkm");
+	m_powerModelRender.Init("Assets/modelData/Bullets/PowerBomb/PowerBomb.tkm");
+	m_transform.m_scale = { 5.0f, 5.0f, 5.0f };
 
 	m_collisionSize = BombBullet::CollisionSize;
 
 	m_limitTime = 2.0f;
+}
+
+void BombBullet::Update()
+{
+	Bullet::Update();
+
+	if (m_isPower && isActive())
+	{
+		Quaternion rotation;
+		rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
+		m_powerModelRender.SetTRS(m_transform.m_position, rotation, m_transform.m_scale);
+		m_powerModelRender.Update();
+	}
+}
+
+void BombBullet::Render(RenderContext& rc)
+{
+	if (!m_isPower)
+	{
+		Bullet::Render(rc);
+		return;
+	}
+
+	if (isActive())
+	{
+		m_powerModelRender.Draw(rc);
+	}
 }
 
 void BombBullet::Move(float deltaTime)
@@ -72,6 +102,8 @@ void BombBullet::Explosion()
 	{
 		explosionRadius = m_powerExplosionRadius;
 	}
+	EffectManager::PlayEffect(EffectManager::Effect::BombExplosion,m_transform.m_position,{ explosionRadius, explosionRadius, explosionRadius });
+
 	m_explosionCollision->SetPosition(m_transform.m_position);
 	m_explosionCollision->CreateSphere(m_transform.m_position, Quaternion::Identity, explosionRadius);
 	m_explosionCollision->SetIsEnable(true);//当たり判定も同時にtrueに
