@@ -60,7 +60,7 @@ bool WeaponController::IsMovementLocked() const
 	{
 		if (weapon && weapon->IsMovementLocked())
 		{
-			return true; // どれか1つでも制限中なら、playerから移動を制限する。
+			return true; //どれか1つでも制限中なら、playerから移動を制限する。
 		}
 	}
 
@@ -71,9 +71,9 @@ bool WeaponController::IsMoveInputLocked() const
 {
 	const auto& weapon = m_weapons[m_selectedWeaponIndex];
 
-	if (weapon)
+	if (weapon)//nullptrじゃないなら
 	{
-		return weapon->IsMoveInputLocked();
+		return weapon->IsMoveInputLocked();//それぞれの武器のm_wasAttackHeldの状態を返す
 	}
 
 	return false;

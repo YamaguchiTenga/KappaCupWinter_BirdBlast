@@ -16,6 +16,8 @@ struct WeaponAttackContext//Player::Attack()でこの変数を作る
 	Vector3 aimInput = Vector3::Zero;
 };
 
+class AimGuide;
+
 //武器共通の基底クラス。
 //IGameObjectは継承せず、WeaponControllerが所有・管理する。
 //Start,Updateなどは自動では呼ばれず、WeaponControllerから呼び出す。
@@ -23,7 +25,7 @@ class Weapon
 {
 public:
 	Weapon() = default;
-	virtual ~Weapon() = default;//処理がないならこの書き方でもいい
+	virtual ~Weapon();
 	virtual void Update(float deltaTime);
 
 	//構造体の情報をまとめて受け取る。
@@ -37,7 +39,7 @@ public:
 		return false;
 	}
 
-	//ボム用の移動制限
+	//移動制限
 	virtual bool IsMoveInputLocked() const
 	{
 		return false;
@@ -63,7 +65,17 @@ protected://親と子クラスのみ使える
 	{
 		m_fireCooldown = m_fireInterval;//インターバルを入れる
 	}
-
+protected:
+	bool m_wasAttackHeld = false;	//前フレームに射撃ボタンが押されていたか。
+	void InitializeAimGuide();
+	AimGuide* m_aimGuide = nullptr;
+	//発射位置から前方直線へ、照準表示に使う点を並べる。
+	static void BuildStraightTrajectory(//親クラスのメンバ変数は使わないのでstatic
+		const Vector3& position,
+		const Vector3& direction,
+		float length,
+		std::vector<Vector3>& trajectoryPoints);
+protected:
 	void SetFireInterval(float fireInterval)//武器ごとにインターバルを設定
 	{
 		m_fireInterval = fireInterval;

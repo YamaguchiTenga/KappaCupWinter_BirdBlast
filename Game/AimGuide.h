@@ -8,6 +8,7 @@ public:
     bool Start() override;
     void Render(RenderContext& rc) override;
 
+public:
     // ガイドを表示する位置を受け取る。
     void SetPosition(const Vector3& position)
     {
@@ -22,6 +23,7 @@ public:
 
     void SetTrajectoryPoints(const std::vector<Vector3>& trajectoryPoints)
     {
+        m_drawLine = false;
         m_trajectoryPoints = trajectoryPoints;
 
         int pointCount = static_cast<int>(m_trajectoryPoints.size());//要素数
@@ -44,11 +46,36 @@ public:
         }
     }
 
+    void SetLine(const Vector3& start, const Vector3& end)
+    {
+        m_drawLine = true;
+        m_lineStart = start;
+        m_lineEnd = end;
+
+        Vector3 lineCenter = (start + end) * 0.5f;//始点と終点の中央
+
+        Vector3 lineOffset = end - start;
+        float lineLength = lineOffset.Length();
+
+        Quaternion lineRotation;
+        lineRotation.SetRotationYFromDirectionXZ(lineOffset);
+
+        constexpr float lineWidth = 4.0f;
+        m_lineModelRender.SetTRS(lineCenter, lineRotation, Vector3(lineWidth, lineWidth, lineLength));
+        m_lineModelRender.Update();
+    }
+
 private:
     bool m_isVisible = false;
+    bool m_drawLine = false;
 
     int m_visibleTrajectoryCount = 0;//表示する数
     static const int m_TrajectoryPointCount = 10;//配列の個数にはコンパイル時に確定できる整数が必要なのでstatic
     ModelRender m_trajectoryModels[m_TrajectoryPointCount];
     std::vector<Vector3> m_trajectoryPoints;
+
+    Vector3 m_lineStart = Vector3::Zero;
+    Vector3 m_lineEnd = Vector3::Zero;
+
+    ModelRender m_lineModelRender;
 };

@@ -4,7 +4,6 @@
 
 class BulletManager;
 class EnemyManager;
-class AimGuide;
 
 class BombWeapon : public Weapon
 {
@@ -54,11 +53,8 @@ private:
 
 	BulletManager* m_bulletManager = nullptr;
 	EnemyManager* m_enemyManager = nullptr;
-	AimGuide* m_aimGuide = nullptr;
 
 	float m_bulletSpeed = 1000.0f;//移動速度
-
-	bool m_wasAttackHeld = false;	//前フレームに射撃ボタンが押されていたか。
 
 	float m_minBulletSpeed = 100.0f;//速さの下限
 	float m_maxBulletSpeed = 1000.0f;//上限

@@ -18,6 +18,9 @@ Game::~Game()
 
 bool Game::Start()
 {
+	m_soundManager.Initialize();
+	m_effectManager.Initialize();
+
 	m_player = NewGO<Player>(0, "player");
 	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	m_stage = NewGO<Stage>(0, "stage");

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Level3DRender/LevelRender.h"
+#include "SoundManager.h"
+#include "EffectManager.h"
 
 class Player;
 class GameCamera;
@@ -29,6 +31,8 @@ private:
 	BulletManager* m_bulletManager;
 	EnemyManager* m_enemyManager;
 	GameUI* m_gameUI = nullptr;
+	SoundManager m_soundManager;
+	EffectManager m_effectManager;
 
 	ModelRender m_modelRender;
 };

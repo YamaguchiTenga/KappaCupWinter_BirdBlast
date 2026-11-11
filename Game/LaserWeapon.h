@@ -8,17 +8,12 @@ class LaserWeapon : public Weapon
 public:
 	LaserWeapon();
 
-	virtual void HandleAttack(const WeaponAttackContext& context) override;
-
+	void HandleAttack(const WeaponAttackContext& context) override;
+	void OnDeselected() override;
 	bool IsMovementLocked() const override;
-
+	bool IsMoveInputLocked() const override;
 public:
-	// 外(Contoroller)から呼び出して,BulletManagerのポインターを受け取り、発射を依頼する相手として保持する。
-	//IGameObjectを継承してなくてStartは自動で呼ばれないため、FindGOではなくこのやり方に
-	void SetBulletManager(BulletManager* bulletManager)
-	{
-		m_bulletManager = bulletManager;
-	}
+	void SetBulletManager(BulletManager* bulletManager);
 
 private:
 	BulletManager* m_bulletManager = nullptr;

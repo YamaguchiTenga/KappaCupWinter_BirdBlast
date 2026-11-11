@@ -11,10 +11,7 @@ void BombWeapon::SetBulletManager(BulletManager* bulletManager)
 {
     m_bulletManager = bulletManager;
 
-    if (m_aimGuide == nullptr)
-    {
-        m_aimGuide = NewGO<AimGuide>(0);
-    }
+    InitializeAimGuide();
 
 	m_predictionCollision = NewGO<CollisionObject>(0);
 	m_predictionCollision->CreateBox(Vector3::Zero, Quaternion::Identity, BombBullet::CollisionSize);
@@ -27,10 +24,6 @@ void BombWeapon::SetBulletManager(BulletManager* bulletManager)
 
 BombWeapon::~BombWeapon()
 {
-    if (m_aimGuide != nullptr)
-    {
-        DeleteGO(m_aimGuide);
-    }
 	if (m_predictionCollision != nullptr)
 	{
 		DeleteGO(m_predictionCollision);
@@ -66,9 +59,15 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 	if (context.isHeld && !context.isPower)//着弾地点を予測
 	{
 		m_isLandingFound = PredictLandingPosition(context.position, bulletSpeed, m_landingPosition, m_trajectoryPoints);//この返り値はtrueかfalseなので入れられる
+		m_aimGuide->SetTrajectoryPoints(m_trajectoryPoints);
 	}
-	m_aimGuide->SetTrajectoryPoints(m_trajectoryPoints);
-	m_aimGuide->SetVisible(m_isLandingFound);
+	else if (context.isHeld && context.isPower)
+	{
+		const Vector3 lineEnd = context.position + context.direction * 1000.0f;//1000は仮の数値
+		m_aimGuide->SetLine(context.position, lineEnd);
+	}
+
+	m_aimGuide->SetVisible(m_isLandingFound || (context.isPower && context.isHeld));
 
 	if (m_isLandingFound)
 	{
@@ -187,7 +186,7 @@ bool BombWeapon::CheckStageHit(const Vector3& start,const Vector3& end,Vector3& 
 		//この物体を、線の判定対象にするか返す。
 		bool needsCollision(btBroadphaseProxy* proxy) const override
 		{
-			// 親が判定対象から外した物体は、こちらでも調べない。
+			//親が判定対象から外した物体は、こちらでも調べない。
 			//needsCollision()は物理の衝突の基本の条件			
 			if (!btCollisionWorld::ClosestRayResultCallback::needsCollision(proxy))
 			{
