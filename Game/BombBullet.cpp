@@ -4,6 +4,7 @@
 #include "Enemy.h"//各敵の位置や有効状態を調べ、ダメージを与えるため。
 #include"BombWeapon.h"//CalculateMovementを使うため
 #include"EffectManager.h"
+#include"SoundManager.h"
 
 const Vector3 BombBullet::CollisionSize = { 100.0f, 100.0f, 100.0f };
 
@@ -102,7 +103,9 @@ void BombBullet::Explosion()
 	{
 		explosionRadius = m_powerExplosionRadius;
 	}
+
 	EffectManager::PlayEffect(EffectManager::Effect::BombExplosion,m_transform.m_position,{ explosionRadius, explosionRadius, explosionRadius });
+	SoundManager::PlaySE(SoundManager::Effect::BombExplosion);
 
 	m_explosionCollision->SetPosition(m_transform.m_position);
 	m_explosionCollision->CreateSphere(m_transform.m_position, Quaternion::Identity, explosionRadius);

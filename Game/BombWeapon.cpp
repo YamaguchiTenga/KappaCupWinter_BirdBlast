@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BombWeapon.h"
+#include "SoundManager.h"
 #include"BulletManager.h"
 #include "AimGuide.h"
 #include"BombBullet.h"
@@ -34,6 +35,11 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 {
 	//前フレームは押していて今は押していなければ、離した瞬間
 	bool isReleased = m_wasAttackHeld && !context.isHeld;
+
+	if (!m_wasAttackHeld && context.isHeld)
+	{
+		SoundManager::PlaySE(SoundManager::Effect::BombReady);
+	}
 
 	//次のフレームで比較するため今回の入力状態を保存する
 	m_wasAttackHeld = context.isHeld;
@@ -86,6 +92,7 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 
 	if (m_bulletManager->RequestFire(context.position, bulletSpeed, BulletTeam::Player, BulletType::Bomb, context.isPower))
 	{
+		SoundManager::PlaySE(SoundManager::Effect::BombThrow);
 		StartCooldown();//発射ができた時だけクールダウンを発生させる
 	}
 }

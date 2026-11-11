@@ -6,6 +6,9 @@ void SoundManager::Initialize()
 {
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::Laser), "Assets/SE/Laser.wav");
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::PowerLaser), "Assets/SE/PowerLaser.wav");
+    g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::BombReady), "Assets/SE/BombReady.wav");
+    g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::BombThrow), "Assets/SE/BombThrow.wav");
+    g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::BombExplosion), "Assets/SE/BombExplosion.wav");
 }
 
 void SoundManager::PlaySE(Effect effect)
