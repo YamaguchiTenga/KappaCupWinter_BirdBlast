@@ -1,5 +1,6 @@
 #pragma once
 #include"Actor.h"
+#include "HitStop.h"
 
 class Player;
 class BulletManager;
@@ -16,7 +17,7 @@ public:
 
 	void Move(float deltaTime);
 
-	void TakeDamage(int damage);
+	void TakeDamage(int damage, const Vector3& knockbackDirection = Vector3::Zero);
 
 	void CheckDeath();
 
@@ -40,6 +41,11 @@ public:
 		m_transform.m_position = position;
 	}
 
+	const Vector3& GetPosition() const
+	{
+		return m_transform.m_position;
+	}
+
 	CharacterController& GetCharacterController()
 	{
 		return m_characterController;
@@ -50,6 +56,15 @@ public:
 		return m_isActive;
 	}
 private:
+	void UpdateDeath(float deltaTime);
+	void UpdateHitStop(float deltaTime);
+
+	HitStop m_hitStop;
+	float m_hitShakeTime = 0.0f;
+	bool m_isDying = false; // 撃破演出中か
+	float m_deathTimeRemaining = 0.0f; // 消えるまでの残り時間（秒）
+	Vector3 m_deathVelocity = Vector3::Zero; // 撃破時に吹っ飛ぶ速度
+
 	AnimationClip m_animationClips[2]; // 0: Idle, 1: Walk
 	int m_currentAnimation = 0;
 	bool m_isMoving = false;

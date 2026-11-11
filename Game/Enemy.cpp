@@ -2,6 +2,9 @@
 #include "Enemy.h"
 #include"Player.h"
 #include"BulletManager.h"
+#include"SoundManager.h"
+#include "EffectManager.h"
+#include <cmath>
 
 bool Enemy::Start()
 {
@@ -15,7 +18,7 @@ bool Enemy::Start()
 	m_player = FindGO<Player>("player");
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
-	m_hp = 1;
+	m_hp = 5;
 	return true;
 }
 
@@ -42,10 +45,19 @@ void Enemy::Update()
 
 	UpdatePlayerInfo();
 	CheckDeath();
-	if (!m_isActive)
+
+	if (m_hitStop.IsActive())
 	{
+		UpdateHitStop(g_gameTime->GetFrameDeltaTime());
 		return;
 	}
+
+	if (m_isDying)
+	{
+		UpdateDeath(g_gameTime->GetFrameDeltaTime());
+		return;
+	}
+
 	Move(deltaTime);
 	Rotate(deltaTime);
 	Attack(deltaTime);
@@ -72,21 +84,82 @@ void Enemy::UpdatePlayerInfo()
 	}
 }
 
-void Enemy::TakeDamage(int damage)
+void Enemy::TakeDamage(int damage, const Vector3& knockbackDirection)
 {
 	if (!m_isActive)
 	{
 		return;
 	}
+
+	const bool wasAlive = m_hp > 0;
 	m_hp -= damage;
+	SoundManager::PlaySE(SoundManager::Effect::AttackHit);
+	m_hitStop.Start(0.2f);
+
+	if (!wasAlive || m_hp > 0)
+	{
+		return;
+	}
+
+	Vector3 awayFromAttack = knockbackDirection;
+	awayFromAttack.y = 0.0f;
+	if (awayFromAttack.Length() > 0.001f)
+	{
+		awayFromAttack.Normalize();
+		const float knockbackSpeed = 2000.0f;
+		m_deathVelocity = awayFromAttack * knockbackSpeed;
+	}
 }
 
 void Enemy::CheckDeath()
 {
-	if (m_hp <= 0)
+	if (m_hp <= 0 && !m_isDying)
 	{
-		Deactivate();
+		m_isDying = true;
+		m_deathTimeRemaining = 0.25f;
+		m_deathVelocity.y = 200.0f;
 	}
+}
+
+void Enemy::UpdateDeath(float deltaTime)
+{
+	m_deathTimeRemaining -= deltaTime;
+
+	if (m_deathTimeRemaining <= 0.0f)
+	{
+		SoundManager::PlaySE(SoundManager::Effect::EnemyDeath);
+		EffectManager::PlayEffect(EffectManager::Effect::EnemyDeathSmoke, m_transform.m_position, { 20.0f, 20.0f, 20.0f });
+		Deactivate();
+		return;
+	}
+
+	m_transform.m_position += m_deathVelocity * deltaTime;
+	Actor::Update();
+}
+
+void Enemy::UpdateHitStop(float deltaTime)
+{
+	m_hitStop.Update(deltaTime);
+
+	m_hitShakeTime += deltaTime;
+
+	const float shakeWidth = 5.0f;
+	const float shakeSpeed = 90.0f;
+
+	Vector3 renderPosition = m_transform.m_position;
+	if (m_hitStop.IsActive())
+	{
+		//std::sin() が-1から1の間を往復するので、それを利用して敵を振動させる
+		renderPosition.x += std::sin(m_hitShakeTime * shakeSpeed) * shakeWidth;
+	}
+	else
+	{
+		m_hitShakeTime = 0.0f;
+	}
+
+	m_modelRender.SetAnimationSpeed(0.0f);
+	m_modelRender.SetTRS(renderPosition, m_transform.m_rotation, m_transform.m_scale);
+	m_modelRender.Update();
 }
 
 void Enemy::Deactivate()

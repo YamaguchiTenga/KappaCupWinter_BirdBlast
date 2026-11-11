@@ -10,7 +10,9 @@ public:
         PowerLaser = 1,
         BombReady = 2,
         BombThrow = 3,
-        BombExplosion = 4
+        BombExplosion = 4,
+        AttackHit = 5,
+        EnemyDeath = 6
     };
 
     void Initialize();

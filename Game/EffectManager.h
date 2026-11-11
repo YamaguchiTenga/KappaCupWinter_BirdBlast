@@ -7,7 +7,8 @@ public:
     enum class Effect
     {
         LaserHit = 0,
-        BombExplosion = 1
+        BombExplosion = 1,
+        EnemyDeathSmoke = 2
     };
 
     void Initialize();

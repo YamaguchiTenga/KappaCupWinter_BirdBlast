@@ -69,5 +69,6 @@
     <ClInclude Include="HeatGaugeUI.h" />
     <ClInclude Include="WeaponUI.h" />
     <ClInclude Include="PlayerHpUI.h" />
+    <ClInclude Include="HitStop.h" />
   </ItemGroup>
 </Project>

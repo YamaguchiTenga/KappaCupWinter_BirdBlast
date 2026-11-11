@@ -122,7 +122,8 @@ void BombBullet::Explosion()
 
 			if (m_explosionCollision->IsHit(enemy->GetCharacterController()))
 			{
-				enemy->TakeDamage(m_damage);
+				const Vector3 knockbackDirection = enemy->GetPosition() - m_transform.m_position;
+				enemy->TakeDamage(m_damage, knockbackDirection);
 			}
 
 		}

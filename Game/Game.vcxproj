@@ -261,6 +261,7 @@
     <ClInclude Include="AbilityController.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="HeatGaugeUI.h" />
+    <ClInclude Include="HitStop.h" />
     <ClInclude Include="WeaponUI.h" />
     <ClInclude Include="PlayerHpUI.h" />
     <ClInclude Include="UIBase.h" />

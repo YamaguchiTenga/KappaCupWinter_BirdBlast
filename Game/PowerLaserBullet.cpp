@@ -113,6 +113,9 @@ void PowerLaserBullet::CheckHit(float deltaTime)
 		record.cooldown -= deltaTime;
 	}
 
+	Vector3 beamDirection = Vector3::AxisZ;
+	m_transform.m_rotation.Apply(beamDirection);
+
 	for (Enemy* enemy : m_enemyManager->GetEnemies())
 	{
 		if (!enemy->IsActive())
@@ -144,7 +147,7 @@ void PowerLaserBullet::CheckHit(float deltaTime)
 		if (hitRecord == nullptr) //今の敵の命中記録がまだない場合
 		{
 			//初めて当たったので、すぐにダメージを与える。
-			enemy->TakeDamage(m_damage);
+			enemy->TakeDamage(m_damage, beamDirection);
 
 			//この敵と、次にダメージを与えるまでの待ち時間をセットにする。
 			HitRecord record;
@@ -157,7 +160,7 @@ void PowerLaserBullet::CheckHit(float deltaTime)
 		else if (hitRecord->cooldown <= 0.0f) //記録があり、待ち時間も終わっている場合
 		{
 			//同じ敵に再びダメージを与える。
-			enemy->TakeDamage(m_damage);
+			enemy->TakeDamage(m_damage, beamDirection);
 
 			//一覧内の記録の待ち時間を設定し直す。
 			hitRecord->cooldown = m_damageInterval;
