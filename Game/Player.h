@@ -31,6 +31,11 @@ public:
 		return m_transform.m_position;
 	}
 
+	bool IsOnGround()
+	{
+		return m_characterController.IsOnGround();
+	}
+
 	CharacterController& GetCharacterController()
 	{
 		return m_characterController;

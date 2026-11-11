@@ -17,6 +17,7 @@ bool GameCamera::Start()
 	m_toCameraPosition.Set(0.0f, 300.0f, -600.0f);
 
 	m_player = FindGO<Player>("player");
+	m_followY = m_player->GetPosition().y;
 
 	// カメラを半径50の球として扱い、壁や床との間に余裕を持たせる。
 	// この値を大きくすると地形から離れる距離も大きくなる。
@@ -31,6 +32,28 @@ bool GameCamera::Start()
 void GameCamera::Update()
 {
 	Vector3 target = m_player->GetPosition();
+	if (m_player->IsOnGround())
+	{
+		const float verticalFollowSpeed = 600.0f;
+
+		//実際に動く量は残りの距離によって変わるからmax
+		const float maxStep = verticalFollowSpeed * g_gameTime->GetFrameDeltaTime();
+
+		const float heightDifference = target.y - m_followY;
+		if (heightDifference > maxStep)
+		{
+			m_followY += maxStep;
+		}
+		else if (heightDifference < -maxStep)
+		{
+			m_followY -= maxStep;
+		}
+		else
+		{
+			m_followY = target.y;
+		}
+	}
+	target.y = m_followY;
 
 	float x = g_pad[0]->GetRStickXF();
 	float y = g_pad[0]->GetRStickYF();

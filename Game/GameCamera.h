@@ -16,6 +16,7 @@ private:
 	CameraCollisionSolver m_cameraCollisionSolver;
 
 	Player* m_player;
+	float m_followY = 0.0f;
 
 	//注視点からカメラまでのベクトル
 	Vector3 m_toCameraPosition  = Vector3::Zero;
