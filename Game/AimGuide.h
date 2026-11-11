@@ -60,7 +60,7 @@ public:
         Quaternion lineRotation;
         lineRotation.SetRotationYFromDirectionXZ(lineOffset);
 
-        constexpr float lineWidth = 4.0f;
+        constexpr float lineWidth = 2.0f;
         m_lineModelRender.SetTRS(lineCenter, lineRotation, Vector3(lineWidth, lineWidth, lineLength));
         m_lineModelRender.Update();
     }
