@@ -23,6 +23,7 @@ protected:
 	void Move(float deltaTIme) override;
 
 	void OnHitEnemy(Enemy* enemy)override;
+	void OnLifetimeExpired() override;
 
 	void Explosion();
 private:

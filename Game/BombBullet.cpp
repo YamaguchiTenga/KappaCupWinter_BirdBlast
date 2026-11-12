@@ -51,7 +51,7 @@ void BombBullet::Update()
 	{
 		Quaternion rotation;
 		rotation.SetRotationYFromDirectionXZ(m_moveSpeed);
-		m_powerModelRender.SetTRS(m_transform.m_position, rotation, m_transform.m_scale);
+		m_powerModelRender.SetTRS(m_transform.m_position, rotation, m_transform.m_scale * 2);
 		m_powerModelRender.Update();
 	}
 }
@@ -94,6 +94,17 @@ void BombBullet::Move(float deltaTime)
 		m_transform.m_position = hitPosition;
 		Explosion();
 	}
+}
+
+void BombBullet::OnLifetimeExpired()
+{
+	if (m_isPower)
+	{
+		Explosion();
+		return;
+	}
+
+	Bullet::OnLifetimeExpired();
 }
 
 void BombBullet::Explosion()

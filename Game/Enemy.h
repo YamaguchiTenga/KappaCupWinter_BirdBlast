@@ -79,7 +79,10 @@ private:
 	Vector3 m_toPlayer = Vector3::Zero; // プレイヤーへ向かう方向
 	float m_distanceToPlayer = 0.0f;    // 横方向の距離
 	float m_turnSpeed = 200.0f; // 1秒で旋回できる角度
-	float m_attackRange = 400.0f; // 攻撃できる距離
+	float m_attackRange = 550.0f; // 攻撃できる距離
+	float m_verticalSpeed = 0.0f; //現在の上下方向の速度
+	float m_gravity = 1500.0f;//重力
+	float m_deathGravity = 2400.0f;
 
 	Player* m_player = nullptr;
 	BulletManager* m_bulletManager = nullptr;

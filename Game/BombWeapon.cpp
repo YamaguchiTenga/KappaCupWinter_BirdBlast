@@ -100,7 +100,8 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 //発射された瞬間の速度を計算
 Vector3 BombWeapon::CalculateVelocity(const Vector3& direction, bool isPower) const
 {
-	Vector3 bulletSpeed = direction * m_bulletSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。
+	const float speed = isPower ? m_powerBulletSpeed : m_bulletSpeed;
+	Vector3 bulletSpeed = direction * speed;//発射方向に速さを掛けて、弾の移動速度を求める。
 	if (!isPower)
 	{
 		bulletSpeed.y = 800.0f;

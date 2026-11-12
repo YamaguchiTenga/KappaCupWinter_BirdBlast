@@ -50,6 +50,7 @@ protected:
 
 	//敵に命中したときの処理。
 	virtual void OnHitEnemy(Enemy* enemy);
+	virtual void OnLifetimeExpired();
 
 	float m_limitTime = 0.0f;
 	Vector3 m_moveSpeed = Vector3::Zero;

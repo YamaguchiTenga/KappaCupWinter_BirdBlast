@@ -15,13 +15,10 @@ private:
     static const int BombIndex = 1;
 
     Player* m_player = nullptr;
-    int m_selectedWeaponIndex = LaserIndex; // 文字色とアイコンで共通の選択番号を使う。
-
-    FontRender m_laserFont; //十字キー上のレーザー表示。
-    FontRender m_bombFont;  //十字キー下のボム表示。
+    int m_selectedWeaponIndex = LaserIndex;
 
     SpriteRender m_laserIconRender; 
     SpriteRender m_bombIconRender;  
-    SpriteRender m_laserSelectedIconRender; // 選択中のレーザー用。
-    SpriteRender m_bombSelectedIconRender;  // 選択中のボム用。
+    SpriteRender m_laserSelectedIconRender; //選択中のレーザー用。
+    SpriteRender m_bombSelectedIconRender;  //選択中のボム用。
 };

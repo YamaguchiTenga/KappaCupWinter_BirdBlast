@@ -19,9 +19,9 @@ bool PlayerHpUI::Start()
     m_fillRender.SetPosition(m_position + Vector3(4.0f, -4.0f, 0.0f));
     m_backgroundRender.Update();
     m_fillRender.Update();
-    m_hpText.SetPivot(0.5f, 0.5f);
-    m_hpText.SetPosition(m_position + Vector3(196.0f, -20.0f, 0.0f));
-    m_hpText.SetColor(0.08f, 0.12f, 0.09f, 1.0f);
+    m_hpText.SetPivot(1.0f, 0.5f);
+    m_hpText.SetPosition(m_position + Vector3(120.0f, -5.0f, 0.0f));
+    m_hpText.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
     m_hpText.SetScale(0.8f);
     Update();
     return true;

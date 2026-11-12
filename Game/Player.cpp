@@ -13,7 +13,7 @@ Player::~Player()
 
 bool Player::Start()
 {
-
+	m_debugFont.SetPosition(200.0f, 150.0f, 0.0f);//デバック用
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
 	m_weaponController.Initialize(m_bulletManager);
@@ -117,7 +117,7 @@ void Player::Move()
 	{
 		m_verticalSpeed = 0.0f;
 
-		if (g_pad[0]->IsTrigger(enButtonB))
+		if (g_pad[0]->IsTrigger(enButtonA))
 		{
 			Jump();
 		}

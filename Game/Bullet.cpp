@@ -59,7 +59,7 @@ void Bullet::Update()
 	m_activeTimer += deltaTime;
 	if (m_activeTimer >= m_limitTime)
 	{
-		Deactivate();
+		OnLifetimeExpired();
 		return;
 	}
 
@@ -168,6 +168,11 @@ void Bullet::Configure()
 	m_collisionSize = { 100.0f, 100.0f, 100.0f };
 
 	m_limitTime = 2.0f;
+}
+
+void Bullet::OnLifetimeExpired()
+{
+	Deactivate();
 }
 
 void Bullet::OnHitEnemy(Enemy* enemy)

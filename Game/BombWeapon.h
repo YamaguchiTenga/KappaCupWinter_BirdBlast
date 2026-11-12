@@ -54,6 +54,7 @@ private:
 	BulletManager* m_bulletManager = nullptr;
 	EnemyManager* m_enemyManager = nullptr;
 
+	const float m_powerBulletSpeed = 2000.0f;
 	float m_bulletSpeed = 1000.0f;//移動速度
 
 	float m_minBulletSpeed = 100.0f;//速さの下限

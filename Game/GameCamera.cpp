@@ -14,7 +14,7 @@ GameCamera::~GameCamera()
 
 bool GameCamera::Start()
 {
-	m_toCameraPosition.Set(0.0f, 300.0f, -600.0f);
+	m_toCameraPosition.Set(0.0f, 300.0f, -1000.0f);
 
 	m_player = FindGO<Player>("player");
 	m_followY = m_player->GetPosition().y;

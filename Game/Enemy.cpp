@@ -54,7 +54,7 @@ void Enemy::Update()
 
 	if (m_isDying)
 	{
-		UpdateDeath(g_gameTime->GetFrameDeltaTime());
+		UpdateDeath(deltaTime);
 		return;
 	}
 
@@ -117,7 +117,7 @@ void Enemy::CheckDeath()
 	{
 		m_isDying = true;
 		m_deathTimeRemaining = 0.25f;
-		m_deathVelocity.y = 200.0f;
+		m_deathVelocity.y = 800.0f;
 	}
 }
 
@@ -133,6 +133,7 @@ void Enemy::UpdateDeath(float deltaTime)
 		return;
 	}
 
+	m_deathVelocity.y -= m_deathGravity * deltaTime;
 	m_transform.m_position += m_deathVelocity * deltaTime;
 	Actor::Update();
 }
@@ -192,7 +193,16 @@ void Enemy::Move(float deltaTime)
 		velocity = toPlayer * -m_backMoveSpeed;//速度を後退用のものに変更
 	}
 
-	//velocity = toPlayer * m_moveSpeed;//検証用のために常に向かってくるようにする
+	if (m_characterController.IsOnGround())
+	{
+		m_verticalSpeed = 0.0f;
+	}
+	else
+	{
+		m_verticalSpeed -= m_gravity * deltaTime;
+	}
+	velocity.y = m_verticalSpeed;
+
 	//最終的な速度で動かす
 	m_isMoving = fabsf(velocity.x) >= 0.001f || fabsf(velocity.z) >= 0.001f;
 	m_transform.m_position = m_characterController.Execute(velocity, deltaTime);
