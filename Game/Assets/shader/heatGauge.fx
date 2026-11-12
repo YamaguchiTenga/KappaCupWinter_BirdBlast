@@ -40,7 +40,10 @@ float4 PSMain( PSInput In ) : SV_Target0
 {
     float2 arcCenter = float2(0.5f, 1.0f); //仮の中心。画像の下辺の真ん中。
     float2 direction = In.uv - arcCenter; //中心から、いま描く点への向き。
-    float angle = atan2(-direction.y, -direction.x);//左からゲージをスタートさせたいから、-を掛けている
+	
+	//UVの縦と横を揃えるために*2をしている。こうすることでゲージとスピードが一定になった
+	//左からゲージをスタートさせたいから、-を掛けている
+    float angle = atan2(-direction.y, -direction.x * 2.0f);
     float arcRatio = angle / 3.14159265f; //半円の角度（πラジアン）で割る。
     clip(fillRatio - arcRatio); //arcRatio > fillRatioなら、この点の描画をスキップ
 	

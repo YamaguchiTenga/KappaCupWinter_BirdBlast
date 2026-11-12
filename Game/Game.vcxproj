@@ -237,6 +237,9 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Result.cpp" />
+    <ClCompile Include="GoalItem.cpp" />
+    <ClCompile Include="Title.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="EffectManager.cpp" />
@@ -273,6 +276,9 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Result.h" />
+    <ClInclude Include="GoalItem.h" />
+    <ClInclude Include="Title.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="EffectManager.h" />

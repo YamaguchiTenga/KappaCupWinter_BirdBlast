@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "UIBase.h"
 
 class Player;
@@ -13,5 +13,6 @@ public:
 private:
     const Player* m_player = nullptr;
     SpriteRender m_backgroundRender; // HPバーの背景。
-    SpriteRender m_fillRender;       // 残りHPを示す黄色いバー。
+    SpriteRender m_fillRender;       // 残りHPを示す緑のバー。
+    FontRender m_hpText;
 };

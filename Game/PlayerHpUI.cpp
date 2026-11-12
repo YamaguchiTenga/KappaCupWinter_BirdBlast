@@ -1,4 +1,4 @@
-﻿#include "stdafx.h"
+#include "stdafx.h"
 #include "PlayerHpUI.h"
 #include "Player.h"
 
@@ -14,11 +14,16 @@ bool PlayerHpUI::Start()
     m_backgroundRender.SetPivot({ 0.0f, 1.0f });
     m_fillRender.SetPivot({ 0.0f, 1.0f });
 
-    //基準位置に背景を置き、その内側に黄色いバーを重ねる。
+    //基準位置に背景を置き、その内側に緑のバーを重ねる。
     m_backgroundRender.SetPosition(m_position);
     m_fillRender.SetPosition(m_position + Vector3(4.0f, -4.0f, 0.0f));
     m_backgroundRender.Update();
     m_fillRender.Update();
+    m_hpText.SetPivot(0.5f, 0.5f);
+    m_hpText.SetPosition(m_position + Vector3(196.0f, -20.0f, 0.0f));
+    m_hpText.SetColor(0.08f, 0.12f, 0.09f, 1.0f);
+    m_hpText.SetScale(0.8f);
+    Update();
     return true;
 }
 
@@ -30,7 +35,13 @@ void PlayerHpUI::Update()
     }
 
     // HPの割合を小数で求め、バーの横幅に反映する。
-    const float hpRatio = static_cast<float>(m_player->GetHp()) / m_player->GetMaxHp();
+    const int hp = m_player->GetHp();
+    const int maxHp = m_player->GetMaxHp();
+    wchar_t hpText[32];
+    swprintf_s(hpText, L"%d / %d", hp, maxHp);
+    m_hpText.SetText(hpText);
+
+    const float hpRatio = static_cast<float>(hp) / maxHp;
     m_fillRender.SetScale({ hpRatio, 1.0f, 1.0f });
     m_fillRender.Update();
 }
@@ -41,5 +52,6 @@ void PlayerHpUI::Render(RenderContext& rc)
     {
         m_backgroundRender.Draw(rc);
         m_fillRender.Draw(rc);
+        m_hpText.Draw(rc);
     }
 }

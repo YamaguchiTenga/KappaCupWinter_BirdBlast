@@ -16,6 +16,10 @@ EnemyManager::EnemyManager()
 
 EnemyManager::~EnemyManager()
 {
+	for (Enemy* enemy : m_enemies)
+	{
+		DeleteGO(enemy);
+	}
 }
 
 void EnemyManager::Update()
