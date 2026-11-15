@@ -5,6 +5,7 @@
 #include"BombWeapon.h"//CalculateMovementを使うため
 #include"EffectManager.h"
 #include"SoundManager.h"
+#include "GameCamera.h"
 
 const Vector3 BombBullet::CollisionSize = { 100.0f, 100.0f, 100.0f };
 
@@ -113,6 +114,10 @@ void BombBullet::Explosion()
 	if (m_isPower)
 	{
 		explosionRadius = m_powerExplosionRadius;
+		if (auto* camera = FindGO<GameCamera>("gameCamera"))
+		{
+			camera->StartShake();
+		}
 	}
 
 	EffectManager::PlayEffect(EffectManager::Effect::BombExplosion,m_transform.m_position,{ explosionRadius, explosionRadius, explosionRadius });

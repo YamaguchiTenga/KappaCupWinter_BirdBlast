@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GameCamera.h"
 #include"player.h"
+#include <cmath>
 
 
 GameCamera::GameCamera()
@@ -27,6 +28,11 @@ bool GameCamera::Start()
 	g_camera3D->SetNear(1.0f);
 	g_camera3D->SetFar(30000.0f);
 	return true;
+}
+
+void GameCamera::StartShake()
+{
+	m_shakeTimeRemaining = ShakeDuration;
 }
 
 void GameCamera::Update()
@@ -99,6 +105,19 @@ void GameCamera::Update()
 	g_camera3D->SetTarget(target);
 	// 注視点から予定位置まで球を動かし、途中の地形にぶつかるか調べる。
 	// ぶつかる場合は壁の手前へ補正し、ぶつからなければ予定位置を使う。
+	if (m_shakeTimeRemaining > 0.0f)
+	{
+		const float shakeStrength = 60.0f;
+		const float shakeSpeed = 100.0f;
+		const float elapsedTime = ShakeDuration - m_shakeTimeRemaining;
+		const float fade = m_shakeTimeRemaining / ShakeDuration;
+
+		Vector3 right;
+		right.Cross(Vector3::AxisY, cameraForward);
+		pos += right * (std::sin(elapsedTime * shakeSpeed) * shakeStrength * fade);
+		m_shakeTimeRemaining -= g_gameTime->GetFrameDeltaTime();
+	}
+
 	Vector3 correctedPosition = pos;
 	m_cameraCollisionSolver.Execute(correctedPosition, pos, target);
 	// m_toCameraPositionは変更しないので、障害物がなくなると元の距離に戻る。
