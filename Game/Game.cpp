@@ -46,6 +46,16 @@ bool Game::Start()
 
 void Game::Update()
 {
+	// Ignore height so entering while jumping also starts the battle.
+	const Vector3 areaCenter{ 0.0f, 0.0f, 450.0f };
+	const float areaRadius = 150.0f;
+	Vector3 toPlayer = m_player->GetPosition() - areaCenter;
+	toPlayer.y = 0.0f;
+	if (toPlayer.Length() <= areaRadius && m_battleArea.BeginBattle())
+	{
+		OutputDebugStringW(L"\u6226\u95D8\u958B\u59CB\n");
+	}
+
 	if (m_goalItem->IsCollected())
 	{
 		NewGO<Result>(0, "result");

@@ -15,7 +15,7 @@ public:
 
 	void Update();
 
-	void SpawnEnemy(const Vector3& position);
+	Enemy* SpawnEnemy(const Vector3& position);
 
 public:
 	const std::vector<Enemy*>& GetEnemies()const

@@ -3,6 +3,7 @@
 #include "Level3DRender/LevelRender.h"
 #include "SoundManager.h"
 #include "EffectManager.h"
+#include "BattleArea.h"
 
 class Player;
 class GameCamera;
@@ -35,6 +36,7 @@ private:
 	GoalItem* m_goalItem = nullptr;
 	SoundManager m_soundManager;
 	EffectManager m_effectManager;
+	BattleArea m_battleArea;
 
 	ModelRender m_modelRender;
 };
