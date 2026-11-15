@@ -15,6 +15,7 @@
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="GoalItem.cpp" />
     <ClCompile Include="BattleArea.cpp" />
+    <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="GameUI.cpp" />
     <ClCompile Include="SoundManager.cpp" />
@@ -51,6 +52,7 @@
     <ClInclude Include="Result.h" />
     <ClInclude Include="GoalItem.h" />
     <ClInclude Include="BattleArea.h" />
+    <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="Title.h" />
     <ClInclude Include="GameUI.h" />
     <ClInclude Include="SoundManager.h" />

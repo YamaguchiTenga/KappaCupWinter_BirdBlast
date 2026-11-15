@@ -5,7 +5,7 @@
 bool GoalItem::Start()
 {
     m_player = FindGO<Player>("player");
-    m_transform.m_position.Set(0.0f, 50.0f, 800.0f);
+    m_transform.m_position.Set(40.0f, 50.0f, 1000.0f);
     m_transform.m_scale.Set(2.0f, 2.0f, 2.0f);
     m_modelRender.Init("Assets/modelData/Bullets/PlayerSphere.tkm");
     Actor::Update();

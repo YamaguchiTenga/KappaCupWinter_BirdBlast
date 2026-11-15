@@ -4,18 +4,13 @@
 bool Stage::Start()
 {
 	//PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//当たり判定可視化
-	m_modelRender.Init("Assets/modelData/Floor/aka/aka.tkm");
-	m_modelRender.SetScale(5, 1, 5);
-	m_modelRender.SetPosition(0, -30.0f, 0);
-
-	Quaternion rotation;
-
-	// ステージを上下方向に180度反転させる。
-	rotation.SetRotationDeg(Vector3::AxisY, 180.0f);
-	m_modelRender.SetRotation(rotation);
-
+	m_modelRender.Init("Assets/modelData/Floor/Forest/Forest.tkm", nullptr, 0, enModelUpAxisY);
 	m_modelRender.Update();
-	m_physicsStaticObject.CreateFromModel(m_modelRender.GetModel(), m_modelRender.GetModel().GetWorldMatrix());
+
+	ModelRender collisionModel;
+	collisionModel.Init("Assets/modelData/Floor/Forest/ForestCollision.tkm", nullptr, 0, enModelUpAxisY);
+	collisionModel.Update();
+	m_physicsStaticObject.CreateFromModel(collisionModel.GetModel(), collisionModel.GetModel().GetWorldMatrix());
 	return true;
 }
 

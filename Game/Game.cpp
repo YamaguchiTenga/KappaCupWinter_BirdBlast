@@ -35,6 +35,7 @@ bool Game::Start()
 	m_player = NewGO<Player>(0, "player");
 	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	m_stage = NewGO<Stage>(0, "stage");
+	m_battleArea.InitializeGate();
 	//m_enemy = NewGO<Enemy>(0, "enemy");
 	//m_bullet = NewGO<Bullet>(0, "bullet");
 	m_bulletManager = NewGO<BulletManager>(0, "bulletManager");
@@ -46,15 +47,7 @@ bool Game::Start()
 
 void Game::Update()
 {
-	// Ignore height so entering while jumping also starts the battle.
-	const Vector3 areaCenter{ 0.0f, 0.0f, 450.0f };
-	const float areaRadius = 150.0f;
-	Vector3 toPlayer = m_player->GetPosition() - areaCenter;
-	toPlayer.y = 0.0f;
-	if (toPlayer.Length() <= areaRadius && m_battleArea.BeginBattle())
-	{
-		OutputDebugStringW(L"\u6226\u95D8\u958B\u59CB\n");
-	}
+	m_battleArea.Update(m_player->GetPosition(), *m_enemyManager, g_gameTime->GetFrameDeltaTime());
 
 	if (m_goalItem->IsCollected())
 	{
@@ -65,5 +58,5 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-
+	m_battleArea.Render(rc);
 }
