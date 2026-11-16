@@ -11,7 +11,7 @@ bool Enemy::Start()
 	m_characterController.Init(50.0f, 50.0f, m_transform.m_position);
 	m_player = FindGO<Player>("player");
 
-	m_hp = 5;
+	m_hp = 3;
 	return true;
 }
 

@@ -33,6 +33,7 @@ bool Player::Start()
 	m_transform.m_scale = { 2.0f, 2.0f, 2.0f };
 
 	m_transform.m_rotation.SetRotationDegY(90.0f);
+	m_transform.m_position.z = -650.0f;
 	m_characterController.Init(25.0f, 75.0f, m_transform.m_position);
 	return true;
 }

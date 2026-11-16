@@ -5,9 +5,9 @@
 
 bool EnemyManager::Start()
 {
-	SpawnEnemy(Vector3(0.0f, 0.0f, 100.0f));
-	SpawnEnemy(Vector3(100.0f, 0.0f, 0.0f));
-	SpawnEnemy(Vector3(100.0f, 0.0f, 100.0f));
+	SpawnEnemy(Vector3(300.0f, 0.0f, 300.0f));
+	SpawnEnemy(Vector3(100.0f, 0.0f, 300.0f));
+	SpawnEnemy(Vector3(-300.0f, 0.0f, 300.0f));
 
 
 	return true;

@@ -15,6 +15,6 @@ private:
 	float m_backMoveSpeed = 150.0f;
 	float m_attackTimer = 0.0f;
 	float m_attackInterval = 1.0f;
-	float m_attackRange = 550.0f;
+	float m_attackRange = 650.0f;
 	BulletManager* m_bulletManager = nullptr;
 };
