@@ -54,6 +54,14 @@ void Game::Update()
 		return;
 	}
 
+	if (m_player->GetHp() <= 0)
+	{
+		Result* result = NewGO<Result>(0, "result");
+		result->SetGameOver();
+		DeleteGO(this);
+		return;
+	}
+
 	if (m_goalItem->IsCollected())
 	{
 		NewGO<Result>(0, "result");
