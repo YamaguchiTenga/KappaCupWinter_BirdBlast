@@ -10,6 +10,7 @@
 #include "GameUI.h"
 #include "GoalItem.h"
 #include "Result.h"
+#include "gameObject/GameObjectManager.h"
 Game::~Game()
 {
 	DeleteGO(m_gameCamera);
@@ -48,6 +49,10 @@ bool Game::Start()
 void Game::Update()
 {
 	UpdateWeaponWheel();
+	if (m_wasLtHeld)
+	{
+		return;
+	}
 
 	if (m_goalItem->IsCollected())
 	{
@@ -59,6 +64,7 @@ void Game::Update()
 void Game::UpdateWeaponWheel()
 {
 	const bool isLtHeld = g_pad[0]->IsPress(enButtonLB2);
+	GameObjectManager::GetInstance()->SetPaused(isLtHeld ? this : nullptr);
 
 	m_gameUI->SetWeaponWheelVisible(
 		isLtHeld,

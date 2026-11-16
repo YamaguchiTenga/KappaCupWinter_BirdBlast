@@ -26,6 +26,9 @@ namespace nsK2EngineLow {
 		for (auto& goList : m_gameObjectListArray) {
 			goList.remove_if([&](IGameObject* go) {
 				if (go->IsDead()) {
+					if (go == m_pauseUpdateObject) {
+						SetPaused(nullptr);
+					}
 					delete go;
 					return true;
 				}
@@ -41,12 +44,16 @@ namespace nsK2EngineLow {
 
 		for (auto& goList : m_gameObjectListArray) {
 			for (auto& go : goList) {
-				go->UpdateWrapper();
+				if (!IsPaused() || go == m_pauseUpdateObject) {
+					go->UpdateWrapper();
+				}
 			}
 		}
 		
 		//物理エンジンのアップデートを呼び出す。
-		PhysicsWorld::GetInstance()->Update(1.0f / 60.0f);
+		if (!IsPaused()) {
+			PhysicsWorld::GetInstance()->Update(1.0f / 60.0f);
+		}
 	}
 	void GameObjectManager::ExecuteRender(RenderContext& rc)
 	{

@@ -55,6 +55,17 @@ namespace nsK2EngineLow {
 		/// 更新処理を実行
 		/// </summary>
 		void ExecuteUpdate();
+
+		void SetPaused(IGameObject* objectToKeepUpdating)
+		{
+			m_pauseUpdateObject = objectToKeepUpdating;
+		}
+
+		bool IsPaused() const
+		{
+			return m_pauseUpdateObject != nullptr;
+		}
+
 		/// <summary>
 		/// 描画処理を実行。
 		/// </summary>
@@ -180,6 +191,7 @@ namespace nsK2EngineLow {
 		typedef std::list<IGameObject*>	 GameObjectList;
 		std::array<GameObjectList, GAME_OBJECT_PRIO_MAX>	m_gameObjectListArray;							//!<ゲームオブジェクトの優先度付きリスト。
 		static GameObjectManager* m_instance;		//唯一のインスタンスのアドレスを記録する変数。
+		IGameObject* m_pauseUpdateObject = nullptr;
 		bool												m_isActive = true;
 	};
 
