@@ -7,7 +7,6 @@ class HeatGaugeUI : public UIBase
 {
 public:
 	bool Start() override;
-
 	void Update() override;
 	void Render(RenderContext& rc)override;
 private:

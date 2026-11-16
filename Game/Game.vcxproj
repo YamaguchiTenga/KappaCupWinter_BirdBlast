@@ -263,6 +263,7 @@
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WeaponController.cpp" />
+    <ClCompile Include="WeaponWheelUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbilityController.h" />
@@ -301,6 +302,7 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="WeaponController.h" />
+    <ClInclude Include="WeaponWheelUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

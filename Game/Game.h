@@ -23,6 +23,7 @@ public:
 	void Update();
 	void Render(RenderContext& rc);
 
+	void UpdateWeaponWheel();
 private:
 	Player* m_player;
 	GameCamera* m_gameCamera;
@@ -37,5 +38,7 @@ private:
 	EffectManager m_effectManager;
 
 	ModelRender m_modelRender;
+
+	bool m_wasLtHeld = false;
 };
 

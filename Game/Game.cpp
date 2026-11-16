@@ -47,6 +47,8 @@ bool Game::Start()
 
 void Game::Update()
 {
+	UpdateWeaponWheel();
+
 	if (m_goalItem->IsCollected())
 	{
 		NewGO<Result>(0, "result");
@@ -54,6 +56,22 @@ void Game::Update()
 	}
 }
 
+void Game::UpdateWeaponWheel()
+{
+	const bool isLtHeld = g_pad[0]->IsPress(enButtonLB2);
+
+	m_gameUI->SetWeaponWheelVisible(
+		isLtHeld,
+		g_pad[0]->GetRStickXF(),
+		g_pad[0]->GetRStickYF());
+
+	if (m_wasLtHeld && !isLtHeld)
+	{
+			m_player->SelectWeapon(m_gameUI->GetHighlightedWeaponIndex());
+	}
+
+	m_wasLtHeld = isLtHeld;
+}
 void Game::Render(RenderContext& rc)
 {
 }

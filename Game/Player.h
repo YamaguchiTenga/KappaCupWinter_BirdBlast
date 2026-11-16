@@ -2,7 +2,6 @@
 #include"Actor.h"
 #include "AbilityController.h"
 #include "WeaponController.h"
-
 class BulletManager;
 class Player : public Actor
 {
@@ -46,10 +45,15 @@ public:
 		return m_abilityController;
 	}
 
-	//UIが欲しい情報(コントローラー)はプレイヤーのメンバなのでプレイヤーを経由して情報を得る
+	//WeaponControllerはプレイヤーのメンバでprivateになっているので、プレイヤーを経由して情報を得る
 	int GetSelectedWeaponIndex() const
 	{
 		return m_weaponController.GetSelectedWeaponIndex();
+	}
+	//同様にプレイヤーを経由して選択武器を変える
+	void SelectWeapon(int weaponIndex)
+	{
+		m_weaponController.SelectWeapon(weaponIndex);
 	}
 
 	void TakeDamage(int damage);
@@ -86,7 +90,7 @@ private:
 	float m_verticalSpeed = 0.0f;//verticalは縦という意味
 	float m_gravity = 1500.0f; 
 
-	float m_aimTurnSpeed = 120.0f;//構え中に左右入力を最大まで倒したとき、1秒で回転する角度。
+	float m_aimTurnSpeed = 200.0f;//構え中に左右入力を最大まで倒したとき、1秒で回転する角度。
 
 	BulletManager* m_bulletManager = nullptr;
 
