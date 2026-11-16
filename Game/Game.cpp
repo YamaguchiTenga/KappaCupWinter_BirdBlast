@@ -13,6 +13,7 @@
 #include "gameObject/GameObjectManager.h"
 Game::~Game()
 {
+	m_soundManager.StopBGM();
 	DeleteGO(m_gameCamera);
 	DeleteGO(m_stage);
 	DeleteGO(m_enemyManager);
@@ -31,6 +32,7 @@ Game::~Game()
 bool Game::Start()
 {
 	m_soundManager.Initialize();
+	m_soundManager.PlayStageBGM();
 	m_effectManager.Initialize();
 
 	m_player = NewGO<Player>(0, "player");

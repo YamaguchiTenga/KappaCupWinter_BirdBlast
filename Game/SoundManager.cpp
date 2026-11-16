@@ -11,6 +11,32 @@ void SoundManager::Initialize()
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::BombExplosion), "Assets/SE/BombExplosion.wav");
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::AttackHit), "Assets/SE/AttackHit.wav");
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::EnemyDeath), "Assets/SE/EnemyDeath.wav");
+    g_soundEngine->ResistWaveFileBank(StageBgmId, "Assets/BGM/BGM.wav");
+}
+
+void SoundManager::PlayStageBGM()
+{
+    if (m_bgm != nullptr || !g_soundEngine->GetWaveFileBank().FindWaveFile(StageBgmId))
+    {
+        return;
+    }
+
+    m_bgm = NewGO<SoundSource>(0);
+    m_bgm->Init(StageBgmId);
+    m_bgm->SetVolume(0.35f);
+    m_bgm->Play(true);
+}
+
+void SoundManager::StopBGM()
+{
+    if (m_bgm == nullptr)
+    {
+        return;
+    }
+
+    m_bgm->Stop();
+    DeleteGO(m_bgm);
+    m_bgm = nullptr;
 }
 
 void SoundManager::PlaySE(Effect effect)

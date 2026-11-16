@@ -1,5 +1,10 @@
 ﻿#pragma once
 
+namespace nsK2EngineLow
+{
+    class SoundSource;
+}
+
 class SoundManager
 {
 public:
@@ -16,5 +21,10 @@ public:
     };
 
     void Initialize();
+    void PlayStageBGM();
+    void StopBGM();
     static void PlaySE(Effect effect);//staticなので他のクラスでincludeするだけで呼べる
+private:
+    static constexpr int StageBgmId = 7;
+    nsK2EngineLow::SoundSource* m_bgm = nullptr;
 };
