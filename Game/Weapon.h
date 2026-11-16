@@ -16,6 +16,14 @@ struct WeaponAttackContext//Player::Attack()でこの変数を作る
 	Vector3 aimInput = Vector3::Zero;
 };
 
+enum class WeaponAttackResult
+{
+	None,
+	Laser,
+	PowerLaser,
+	Bomb
+};
+
 class AimGuide;
 
 //武器共通の基底クラス。
@@ -30,7 +38,7 @@ public:
 
 	//構造体の情報をまとめて受け取る。
 	//純粋仮想関数（= 0）：ここには処理を書かず、各武器の子クラスで実装する。
-	virtual void HandleAttack(const WeaponAttackContext& context) = 0;//Handleは扱うという意味
+	virtual WeaponAttackResult HandleAttack(const WeaponAttackContext& context) = 0;//Handleは扱うという意味
 
 	//パワーレーザー用の移動制限
 	//通常は移動を制限しない。必要な武器だけ上書きする。

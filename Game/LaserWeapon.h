@@ -8,7 +8,7 @@ class LaserWeapon : public Weapon
 public:
 	LaserWeapon();
 
-	void HandleAttack(const WeaponAttackContext& context) override;
+	WeaponAttackResult HandleAttack(const WeaponAttackContext& context) override;
 	void OnDeselected() override;
 	bool IsMovementLocked() const override;
 	bool IsMoveInputLocked() const override;

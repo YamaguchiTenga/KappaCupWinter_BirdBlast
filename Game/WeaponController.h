@@ -16,7 +16,7 @@ public:
 
 	void Update(float deltaTime);
 
-	void HandleAttack(const WeaponAttackContext& context);//WeaponAttackContextはWeapon.hの上の方にある構造体
+	WeaponAttackResult HandleAttack(const WeaponAttackContext& context);//WeaponAttackContextはWeapon.hの上の方にある構造体
 
 	void SelectWeapon(int index);
 

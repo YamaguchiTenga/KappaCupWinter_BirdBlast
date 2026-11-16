@@ -8,7 +8,7 @@ class EnemyManager;
 class BombWeapon : public Weapon
 {
 public:
-	void HandleAttack(const WeaponAttackContext& context)override;
+	WeaponAttackResult HandleAttack(const WeaponAttackContext& context)override;
 	bool IsMoveInputLocked() const override;
 	~BombWeapon() override;
 	void OnDeselected() override;

@@ -69,7 +69,13 @@ private:
 	void UpdateAnimation();
 	void UpdateWeaponSelection();
 private:
-	AnimationClip m_animationClips[2];
+	static constexpr int ShootAnimation = 2;
+	static constexpr int BombHoldAnimation = 3;
+	AnimationClip m_animationClips[4];
+	ModelRender m_heldBombRender;
+	ModelRender m_heldPowerBombRender;
+	bool m_isHoldingBomb = false;
+	bool m_isHoldingPowerBomb = false;
 	int m_currentAnimation = 0;
 
 	Vector3 m_moveSpeed = Vector3::Zero;

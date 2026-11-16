@@ -31,7 +31,7 @@ BombWeapon::~BombWeapon()
 	}
 }
 
-void BombWeapon::HandleAttack(const WeaponAttackContext& context)
+WeaponAttackResult BombWeapon::HandleAttack(const WeaponAttackContext& context)
 {
 	//前フレームは押していて今は押していなければ、離した瞬間
 	bool isReleased = m_wasAttackHeld && !context.isHeld;
@@ -82,19 +82,22 @@ void BombWeapon::HandleAttack(const WeaponAttackContext& context)
 
 	if (!isReleased)//射撃ボタンを離した瞬間でなければ終了(射撃ボタンを離した瞬間に下の処理に移行)
 	{
-		return;
+		return WeaponAttackResult::None;
 	}
 
 	if (!CanFire())//射撃が可能でなければ終了
 	{
-		return;
+		return WeaponAttackResult::None;
 	}
 
 	if (m_bulletManager->RequestFire(context.position, bulletSpeed, BulletTeam::Player, BulletType::Bomb, context.isPower))
 	{
 		SoundManager::PlaySE(SoundManager::Effect::BombThrow);
 		StartCooldown();//発射ができた時だけクールダウンを発生させる
+		return WeaponAttackResult::Bomb;
 	}
+
+	return WeaponAttackResult::None;
 }
 
 //発射された瞬間の速度を計算

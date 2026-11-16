@@ -22,7 +22,13 @@ bool Player::Start()
 	m_animationClips[0].SetLoopFlag(true);
 	m_animationClips[1].Load("Assets/modelData/Player/Walk_Player.tka");
 	m_animationClips[1].SetLoopFlag(true);
-	m_modelRender.Init("Assets/modelData/Player/Player_Animated.tkm", m_animationClips, 2);
+	m_animationClips[ShootAnimation].Load("Assets/modelData/Player/Shoot_Player.tka");
+	m_animationClips[ShootAnimation].SetLoopFlag(false);
+	m_animationClips[BombHoldAnimation].Load("Assets/modelData/Player/BombHold_Player.tka");
+	m_animationClips[BombHoldAnimation].SetLoopFlag(true);
+	m_modelRender.Init("Assets/modelData/Player/Player_Animated.tkm", m_animationClips, 4);
+	m_heldBombRender.Init("Assets/modelData/Bullets/QuaterniusBomb/Bomb.tkm");
+	m_heldPowerBombRender.Init("Assets/modelData/Bullets/PowerBomb/PowerBomb.tkm");
 	m_modelRender.PlayAnimation(0);
 	m_transform.m_scale = { 2.0f, 2.0f, 2.0f };
 
@@ -60,6 +66,11 @@ void Player::TakeDamage(int damage)
 
 void Player::UpdateAnimation()
 {
+	if (!m_isHoldingBomb && m_currentAnimation == ShootAnimation && m_modelRender.IsPlayingAnimation())
+	{
+		return;
+	}
+
 	int animation;
 
 	// 横方向に移動する入力があるか調べる。
@@ -71,6 +82,11 @@ void Player::UpdateAnimation()
 	else
 	{
 		animation = 0; // Idle
+	}
+
+	if (m_isHoldingBomb)
+	{
+		animation = BombHoldAnimation;
 	}
 
 	// 今と違うアニメーションなら切り替える。
@@ -187,11 +203,34 @@ void Player::Attack()
 	//現在のPOWER状態
 	context.isPower = m_abilityController.IsPowerActive();
 
+	constexpr int BombWeaponIndex = 1;
+	const bool isBombSelected = GetSelectedWeaponIndex() == BombWeaponIndex;
+	m_isHoldingBomb = isBombSelected && context.isHeld;
+	m_isHoldingPowerBomb = m_isHoldingBomb && context.isPower;
+	if (isBombSelected)
+	{
+		Vector3 holdOffset(45.0f, 125.0f, 0.0f);
+		m_transform.m_rotation.Apply(holdOffset);
+		context.position = m_transform.m_position + holdOffset;
+	}
+
+	if (m_isHoldingBomb)
+	{
+		ModelRender& bombRender = m_isHoldingPowerBomb ? m_heldPowerBombRender : m_heldBombRender;
+		const float scale = m_isHoldingPowerBomb ? 10.0f : 5.0f;
+		bombRender.SetTRS(context.position, m_transform.m_rotation, Vector3(scale, scale, scale));
+		bombRender.Update();
+	}
+
 	context.aimInput.x = g_pad[0]->GetLStickXF();
 	context.aimInput.y = g_pad[0]->GetLStickYF();
 
 	//撃つかどうかの判断と発射は、武器側へ任せる
-	m_weaponController.HandleAttack(context);
+	if (m_weaponController.HandleAttack(context) == WeaponAttackResult::Laser)
+	{
+		m_modelRender.PlayAnimation(ShootAnimation, 0.03f);
+		m_currentAnimation = ShootAnimation;
+	}
 
 	//これでPlayer → Controller → LaserWeapon → BulletManagerの流れ
 
@@ -242,6 +281,11 @@ void Player::UpdateWeaponSelection()
 void Player::Render(RenderContext& rc)
 {
 	Actor::Render(rc);
+	if (m_isHoldingBomb)
+	{
+		ModelRender& bombRender = m_isHoldingPowerBomb ? m_heldPowerBombRender : m_heldBombRender;
+		bombRender.Draw(rc);
+	}
 	m_debugFont.Draw(rc);
 }
 

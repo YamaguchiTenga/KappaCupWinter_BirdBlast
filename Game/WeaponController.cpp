@@ -43,14 +43,16 @@ void WeaponController::Update(float deltaTime)
 	}
 }	
 
-void WeaponController::HandleAttack(const WeaponAttackContext& context)
+WeaponAttackResult WeaponController::HandleAttack(const WeaponAttackContext& context)
 {
 	auto& weapon = m_weapons[m_selectedWeaponIndex];//選択番号に対応する配列の要素を参照する。
 
 	if (weapon)
 	{
-		weapon->HandleAttack(context);//子クラスに情報を渡して発射させる
+		return weapon->HandleAttack(context);
 	}
+
+	return WeaponAttackResult::None;
 }
 
 

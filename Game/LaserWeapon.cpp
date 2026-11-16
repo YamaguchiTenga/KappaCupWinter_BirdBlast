@@ -17,7 +17,7 @@ void LaserWeapon::SetBulletManager(BulletManager* bulletManager)
 	m_bulletManager = bulletManager;
 }
 
-void LaserWeapon::HandleAttack(const WeaponAttackContext& context)
+WeaponAttackResult LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 {
 	//前フレームは押していて今は押していなければ、離した瞬間
 	bool isReleased = m_wasAttackHeld && !context.isHeld;
@@ -34,12 +34,12 @@ void LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 	m_aimGuide->SetVisible(context.isHeld);
 	if (!isReleased)//離した瞬間でなければ終了
 	{
-		return;
+		return WeaponAttackResult::None;
 	}
 
 	if (!CanFire())//射撃が可能でなければ終了
 	{
-		return;
+		return WeaponAttackResult::None;
 	}
 
 	if (context.isPower)
@@ -48,8 +48,9 @@ void LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 		{
 			SoundManager::PlaySE(SoundManager::Effect::PowerLaser);
 			StartCooldown();
+			return WeaponAttackResult::PowerLaser;
 		}
-		return;
+		return WeaponAttackResult::None;
 	}
 
 	Vector3 bulletSpeed = context.direction * m_bulletSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。
@@ -58,7 +59,10 @@ void LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 	{
 		SoundManager::PlaySE(SoundManager::Effect::Laser);
 		StartCooldown();//発射ができた時だけクールダウンを発生させる
+		return WeaponAttackResult::Laser;
 	}
+
+	return WeaponAttackResult::None;
 }
 
 bool LaserWeapon::IsMovementLocked() const
