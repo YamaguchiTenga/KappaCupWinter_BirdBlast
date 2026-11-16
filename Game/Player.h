@@ -96,6 +96,7 @@ private:
 
 	int m_maxHp = 100;
 	int m_hp = m_maxHp;
+	float m_invincibleTimeRemaining = 0.0f;
 
 	AbilityController m_abilityController;
 

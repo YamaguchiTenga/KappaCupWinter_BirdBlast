@@ -39,6 +39,15 @@ bool Player::Start()
 
 void Player::Update()
 {
+	if (m_invincibleTimeRemaining > 0.0f)
+	{
+		m_invincibleTimeRemaining -= g_gameTime->GetFrameDeltaTime();
+		if (m_invincibleTimeRemaining < 0.0f)
+		{
+			m_invincibleTimeRemaining = 0.0f;
+		}
+	}
+
 	UpdateWeaponSelection();
 	Move();
 	Rotation();
@@ -52,7 +61,7 @@ void Player::Update()
 
 void Player::TakeDamage(int damage)
 {
-	if (damage <= 0)
+	if (damage <= 0 || m_invincibleTimeRemaining > 0.0f)
 	{
 		return;
 	}
@@ -62,6 +71,9 @@ void Player::TakeDamage(int damage)
 	{
 		m_hp = 0;
 	}
+
+	constexpr float invincibleDuration = 1.0f;
+	m_invincibleTimeRemaining = invincibleDuration;
 }
 
 void Player::UpdateAnimation()
@@ -280,11 +292,22 @@ void Player::UpdateWeaponSelection()
 
 void Player::Render(RenderContext& rc)
 {
-	Actor::Render(rc);
-	if (m_isHoldingBomb)
+	constexpr float blinkInterval = 0.1f;
+	const int blinkStep = static_cast<int>(m_invincibleTimeRemaining / blinkInterval);
+	if (blinkStep % 2 == 0)
 	{
-		ModelRender& bombRender = m_isHoldingPowerBomb ? m_heldPowerBombRender : m_heldBombRender;
-		bombRender.Draw(rc);
+		Actor::Render(rc);
+		if (m_isHoldingBomb)
+		{
+			if (m_isHoldingPowerBomb)
+			{
+				m_heldPowerBombRender.Draw(rc);
+			}
+			else
+			{
+				m_heldBombRender.Draw(rc);
+			}
+		}
 	}
 	m_debugFont.Draw(rc);
 }
