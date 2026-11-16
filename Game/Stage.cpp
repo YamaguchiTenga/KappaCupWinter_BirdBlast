@@ -20,14 +20,14 @@ bool Stage::Start()
 		});
 	m_archerBattleArea.Initialize(1100.0f, 1350.0f, 2200.0f,
 		{
-			{ Vector3(-740.0f, 144.0f, 1660.0f), EnemyType::GoblinArcher },
-			{ Vector3(740.0f, 144.0f, 1780.0f), EnemyType::GoblinArcher },
-			{ Vector3(-525.0f, 96.0f, 1870.0f), EnemyType::GoblinArcher },
-			{ Vector3(-175.0f, 0.0f, 1470.0f), EnemyType::Mushroom },
-			{ Vector3(160.0f, 0.0f, 1520.0f), EnemyType::Mushroom },
+			{ Vector3(-820.0f, 144.0f, 1470.0f), EnemyType::GoblinArcher },
+			{ Vector3(830.0f, 144.0f, 1770.0f), EnemyType::GoblinArcher },
+			{ Vector3(-525.0f, 96.0f, 1900.0f), EnemyType::GoblinArcher },
+			{ Vector3(-530.0f, 0.0f, 1240.0f), EnemyType::Mushroom },
+			{ Vector3(550.0f, 0.0f, 1320.0f), EnemyType::Mushroom },
 			{ Vector3(0.0f, 0.0f, 1690.0f), EnemyType::Mushroom },
-			{ Vector3(-155.0f, 0.0f, 1880.0f), EnemyType::Mushroom },
-			{ Vector3(170.0f, 0.0f, 1960.0f), EnemyType::Mushroom }
+			{ Vector3(-1080.0f, 0.0f, 1770.0f), EnemyType::Mushroom },
+			{ Vector3(650.0f, 0.0f, 2040.0f), EnemyType::Mushroom }
 		}, &m_battleArea);
 	return true;
 }

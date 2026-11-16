@@ -111,9 +111,11 @@ void BombBullet::OnLifetimeExpired()
 void BombBullet::Explosion()
 {
 	float explosionRadius = m_explosionRadius;
+	int damage = m_damage;
 	if (m_isPower)
 	{
 		explosionRadius = m_powerExplosionRadius;
+		damage = m_powerDamage;
 		if (auto* camera = FindGO<GameCamera>("gameCamera"))
 		{
 			camera->StartShake();
@@ -139,7 +141,7 @@ void BombBullet::Explosion()
 			if (m_explosionCollision->IsHit(enemy->GetCharacterController()))
 			{
 				const Vector3 knockbackDirection = enemy->GetPosition() - m_transform.m_position;
-				enemy->TakeDamage(m_damage, knockbackDirection);
+				enemy->TakeDamage(damage, knockbackDirection);
 			}
 
 		}

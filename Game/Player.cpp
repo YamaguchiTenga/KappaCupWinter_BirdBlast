@@ -292,8 +292,9 @@ void Player::UpdateWeaponSelection()
 
 void Player::Render(RenderContext& rc)
 {
-	constexpr float blinkInterval = 0.1f;
-	const int blinkStep = static_cast<int>(m_invincibleTimeRemaining / blinkInterval);
+	//blinkは点滅
+	const float blinkInterval = 0.1f;
+	const int blinkStep = static_cast<int>(m_invincibleTimeRemaining / blinkInterval);//切り捨てさせて常に整数として扱う
 	if (blinkStep % 2 == 0)
 	{
 		Actor::Render(rc);

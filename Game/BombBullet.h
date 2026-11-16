@@ -29,7 +29,8 @@ protected:
 private:
 	float m_explosionRadius = 100.0f;
 	float m_powerExplosionRadius = 300.0f;
-	int m_damage = 1;
+	int m_damage = 2;
+	int m_powerDamage = 3;
 
 	bool m_isPower = false;//発射時にPOWERボムだったか
 
