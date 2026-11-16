@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameCamera.h"
+#include "BulletManager.h"
 #include"player.h"
 #include <cmath>
 
@@ -18,6 +19,7 @@ bool GameCamera::Start()
 	m_toCameraPosition.Set(0.0f, 300.0f, -1000.0f);
 
 	m_player = FindGO<Player>("player");
+	m_bulletManager = FindGO<BulletManager>("bulletManager");
 	m_followY = m_player->GetPosition().y;
 
 	// カメラを半径50の球として扱い、壁や床との間に余裕を持たせる。
@@ -79,13 +81,17 @@ void GameCamera::Update()
 	target.y += 150.0f;
 
 	Vector3 toCameraPosOld = m_toCameraPosition;
+	Quaternion verticalRotation;
+	verticalRotation.SetRotationDeg(axisX, 3.0f * y);
+	verticalRotation.Apply(m_toCameraPosition);
+
 	Vector3 toPosDir = m_toCameraPosition;
 	toPosDir.Normalize();
-	if (toPosDir.y < -0.12f) {
+	if (toPosDir.y < 0.17f) {
 		//カメラが上向きすぎ。
 		m_toCameraPosition = toCameraPosOld;
 	}
-	else if (toPosDir.y > 0.9f) {
+	else if (toPosDir.y > 0.42f) {
 		//カメラが下向きすぎ。
 		m_toCameraPosition = toCameraPosOld;
 	}//toCameraPosOldで直前のカメラの位置を保存しておいて、カメラが上向きすぎたり下向きすぎたりしたら、直前の位置に戻す。
@@ -118,8 +124,23 @@ void GameCamera::Update()
 		m_shakeTimeRemaining -= g_gameTime->GetFrameDeltaTime();
 	}
 
+	if (m_bulletManager != nullptr && m_bulletManager->IsPowerLaserFiring())
+	{
+		const float laserShakeStrength = 10.0f;
+		const float laserShakeSpeed = 100.0f;
+		m_laserShakeElapsed += g_gameTime->GetFrameDeltaTime();
+
+		Vector3 right;
+		right.Cross(Vector3::AxisY, cameraForward);
+		pos += right * (std::sin(m_laserShakeElapsed * laserShakeSpeed) * laserShakeStrength);
+	}
+	else
+	{
+		m_laserShakeElapsed = 0.0f;
+	}
+
 	Vector3 correctedPosition = pos;
-	m_cameraCollisionSolver.Execute(correctedPosition, pos, target);
+	// m_cameraCollisionSolver.Execute(correctedPosition, pos, target);
 	// m_toCameraPositionは変更しないので、障害物がなくなると元の距離に戻る。
 	g_camera3D->SetPosition(correctedPosition);
 

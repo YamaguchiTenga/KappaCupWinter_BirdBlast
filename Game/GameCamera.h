@@ -2,6 +2,7 @@
 #include "camera/CameraCollisionSolver.h"
 
 class Player;
+class BulletManager;
 class GameCamera : public IGameObject
 {
 public:
@@ -17,6 +18,8 @@ private:
 	CameraCollisionSolver m_cameraCollisionSolver;
 
 	Player* m_player;
+	BulletManager* m_bulletManager = nullptr;
+	float m_laserShakeElapsed = 0.0f;
 	float m_followY = 0.0f;
 	static constexpr float ShakeDuration = 0.15f;
 	float m_shakeTimeRemaining = 0.0f;

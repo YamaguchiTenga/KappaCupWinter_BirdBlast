@@ -33,12 +33,6 @@ public:
 	//static constexprなら、h内で値まで定義でき、cpp側の定義がいらなくなる
 	static constexpr float Gravity = 3000.0f;
 
-	//移動経路が地面や壁に当たったか調べる。予測と、実弾の両方で使う
-	static bool CheckStageHit(
-		const Vector3& start,
-		const Vector3& end,
-		Vector3& hitPosition
-	);
 
 private:
 	// 実際の発射と着弾予測で共通して使う初速を作る。

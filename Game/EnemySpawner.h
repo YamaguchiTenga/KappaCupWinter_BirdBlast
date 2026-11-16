@@ -3,17 +3,23 @@
 
 class Enemy;
 class EnemyManager;
+enum class EnemyType;
+
+struct EnemySpawn
+{
+    Vector3 position;
+    EnemyType type;
+};
 
 class EnemySpawner
 {
 public:
-    void BeginSpawn(const Vector3& areaCenter);
+    void BeginSpawn(const std::vector<EnemySpawn>& spawns);
     void Update(EnemyManager& enemyManager, float deltaTime);
     bool AreAllSpawnedEnemiesDefeated() const;
 
 private:
-    Vector3 m_leftSpawnPosition = Vector3::Zero;
-    Vector3 m_rightSpawnPosition = Vector3::Zero;
+    std::vector<EnemySpawn> m_spawns;
     float m_spawnTimeRemaining = 0.0f;
 
     // このスポナーが出した敵を、後で全滅判定に使うために記録する。

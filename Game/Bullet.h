@@ -21,6 +21,14 @@ enum BulletType
 class Bullet : public Actor
 {
 public:
+	//移動経路が地面や壁に当たったか調べる。予測と、実弾の両方で使う
+	//子だけじゃなくてbombWeaponでも使うのでstatic
+	static bool CheckStageHit(
+		const Vector3& start,
+		const Vector3& end,
+		Vector3& hitPosition
+	);
+
 	Bullet();
 	~Bullet();
 

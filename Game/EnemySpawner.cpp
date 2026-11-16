@@ -3,15 +3,16 @@
 #include "EnemyManager.h"
 #include "EffectManager.h"
 
-void EnemySpawner::BeginSpawn(const Vector3& areaCenter)
+void EnemySpawner::BeginSpawn(const std::vector<EnemySpawn>& spawns)
 {
-    m_leftSpawnPosition = areaCenter + Vector3(-100.0f, 0.0f, 100.0f);
-    m_rightSpawnPosition = areaCenter + Vector3(100.0f, 0.0f, 100.0f);
+    m_spawns = spawns;
     m_spawnTimeRemaining = 0.4f;
 
     const Vector3 smokeScale{ 20.0f, 20.0f, 20.0f };
-    EffectManager::PlayEffect(EffectManager::Effect::EnemyDeathSmoke, m_leftSpawnPosition, smokeScale);
-    EffectManager::PlayEffect(EffectManager::Effect::EnemyDeathSmoke, m_rightSpawnPosition, smokeScale);
+    for (const EnemySpawn& spawn : m_spawns)
+    {
+        EffectManager::PlayEffect(EffectManager::Effect::EnemyDeathSmoke, spawn.position, smokeScale);
+    }
 }
 
 void EnemySpawner::Update(EnemyManager& enemyManager, float deltaTime)
@@ -24,8 +25,10 @@ void EnemySpawner::Update(EnemyManager& enemyManager, float deltaTime)
     m_spawnTimeRemaining -= deltaTime;
     if (m_spawnTimeRemaining <= 0.0f)
     {
-        m_spawnedEnemies.push_back(enemyManager.SpawnEnemy(m_leftSpawnPosition));
-        m_spawnedEnemies.push_back(enemyManager.SpawnEnemy(m_rightSpawnPosition));
+        for (const EnemySpawn& spawn : m_spawns)
+        {
+            m_spawnedEnemies.push_back(enemyManager.SpawnEnemy(spawn.position, spawn.type));
+        }
     }
 }
 

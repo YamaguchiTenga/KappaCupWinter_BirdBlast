@@ -13,10 +13,10 @@
 Game::~Game()
 {
 	DeleteGO(m_gameCamera);
+	DeleteGO(m_stage);
 	DeleteGO(m_enemyManager);
 	DeleteGO(m_bulletManager);
 	DeleteGO(m_player);
-	DeleteGO(m_stage);
 	if (m_gameUI != nullptr)
 	{
 		DeleteGO(m_gameUI);
@@ -35,11 +35,11 @@ bool Game::Start()
 	m_player = NewGO<Player>(0, "player");
 	m_gameCamera = NewGO<GameCamera>(0, "gameCamera");
 	m_stage = NewGO<Stage>(0, "stage");
-	m_battleArea.InitializeGate();
 	//m_enemy = NewGO<Enemy>(0, "enemy");
 	//m_bullet = NewGO<Bullet>(0, "bullet");
 	m_bulletManager = NewGO<BulletManager>(0, "bulletManager");
 	m_enemyManager = NewGO<EnemyManager>(0, "enemyManager");
+	m_stage->SetBattleDependencies(m_player, m_enemyManager);
 	m_gameUI = NewGO<GameUI>(0, "gameUI");
 	m_goalItem = NewGO<GoalItem>(0, "goalItem");
 	return true;
@@ -47,8 +47,6 @@ bool Game::Start()
 
 void Game::Update()
 {
-	m_battleArea.Update(m_player->GetPosition(), *m_enemyManager, g_gameTime->GetFrameDeltaTime());
-
 	if (m_goalItem->IsCollected())
 	{
 		NewGO<Result>(0, "result");
@@ -58,5 +56,4 @@ void Game::Update()
 
 void Game::Render(RenderContext& rc)
 {
-	m_battleArea.Render(rc);
 }

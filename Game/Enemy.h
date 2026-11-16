@@ -3,7 +3,6 @@
 #include "HitStop.h"
 
 class Player;
-class BulletManager;
 
 class Enemy : public Actor
 {
@@ -25,9 +24,8 @@ public:
 
 	void Rotate(float deltaTime);
 
-	void Attack(float deltaTime);
 
-	void UpdateAnimation();
+	virtual void UpdateAnimation();
 
 	void UpdatePlayerInfo();//プレイヤーへの向きと距離を更新するための関数
 
@@ -55,6 +53,16 @@ public:
 	{
 		return m_isActive;
 	}
+protected:
+	bool IsDying() const { return m_isDying; }
+	const Player& GetPlayer() const { return *m_player; }
+	virtual void InitializeModel() = 0;
+	virtual Vector3 CalculateHorizontalVelocity() const = 0;
+	virtual void Attack(float deltaTime) = 0;
+
+	const Vector3& GetDirectionToPlayer() const { return m_toPlayer; }
+	float GetDistanceToPlayer() const { return m_distanceToPlayer; }
+
 private:
 	void UpdateDeath(float deltaTime);
 	void UpdateHitStop(float deltaTime);
@@ -65,25 +73,18 @@ private:
 	float m_deathTimeRemaining = 0.0f; // 消えるまでの残り時間（秒）
 	Vector3 m_deathVelocity = Vector3::Zero; // 撃破時に吹っ飛ぶ速度
 
-	AnimationClip m_animationClips[2]; // 0: Idle, 1: Walk
 	int m_currentAnimation = 0;
 	bool m_isMoving = false;
 
 	CharacterController m_characterController;
 	int m_hp = 0;
 	bool m_isActive = true;
-	float m_moveSpeed = 300.0f;
-	float m_backMoveSpeed = 150.0f;
-	float m_attackTimer = 0.0f;
-	float m_attackInterval = 1.0f;
 	Vector3 m_toPlayer = Vector3::Zero; // プレイヤーへ向かう方向
 	float m_distanceToPlayer = 0.0f;    // 横方向の距離
 	float m_turnSpeed = 200.0f; // 1秒で旋回できる角度
-	float m_attackRange = 550.0f; // 攻撃できる距離
 	float m_verticalSpeed = 0.0f; //現在の上下方向の速度
 	float m_gravity = 1500.0f;//重力
 	float m_deathGravity = 2400.0f;
 
 	Player* m_player = nullptr;
-	BulletManager* m_bulletManager = nullptr;
 };

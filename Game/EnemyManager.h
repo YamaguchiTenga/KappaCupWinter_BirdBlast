@@ -5,6 +5,12 @@
 
 class Enemy;
 
+enum class EnemyType
+{
+	Mushroom,
+	GoblinArcher
+};
+
 class EnemyManager : public IGameObject
 {
 public:
@@ -15,7 +21,7 @@ public:
 
 	void Update();
 
-	Enemy* SpawnEnemy(const Vector3& position);
+	Enemy* SpawnEnemy(const Vector3& position, EnemyType type = EnemyType::Mushroom);
 
 public:
 	const std::vector<Enemy*>& GetEnemies()const

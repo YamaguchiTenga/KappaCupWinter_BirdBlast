@@ -90,7 +90,7 @@ void BombBullet::Move(float deltaTime)
 	}
 
 	//通常・POWERの両方で着弾を調べる。
-	if (BombWeapon::CheckStageHit(previousPosition, m_transform.m_position, hitPosition))
+	if (Bullet::CheckStageHit(previousPosition, m_transform.m_position, hitPosition))
 	{
 		m_transform.m_position = hitPosition;
 		Explosion();

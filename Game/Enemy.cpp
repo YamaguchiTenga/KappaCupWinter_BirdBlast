@@ -1,22 +1,15 @@
 #include "stdafx.h"
 #include "Enemy.h"
 #include"Player.h"
-#include"BulletManager.h"
 #include"SoundManager.h"
 #include "EffectManager.h"
 #include <cmath>
 
 bool Enemy::Start()
 {
-	m_animationClips[0].Load("Assets/modelData/Enemy/01/Mushroom_Monster/MushroomMon_Idle.tka");
-	m_animationClips[0].SetLoopFlag(true);
-	m_animationClips[1].Load("Assets/modelData/Enemy/01/Mushroom_Monster/MushroomMon_Run.tka");
-	m_animationClips[1].SetLoopFlag(true);
-	m_modelRender.Init("Assets/modelData/Enemy/01/Mushroom_Monster/MushroomMon.tkm", m_animationClips, 2, enModelUpAxisZ);
-	m_modelRender.PlayAnimation(0);
+	InitializeModel();
 	m_characterController.Init(50.0f, 50.0f, m_transform.m_position);
 	m_player = FindGO<Player>("player");
-	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
 	m_hp = 5;
 	return true;
@@ -172,26 +165,7 @@ void Enemy::Deactivate()
 
 void Enemy::Move(float deltaTime)
 {
-	const Vector3& toPlayer = m_toPlayer;
-
-	Vector3 velocity = Vector3::Zero;//速度。距離によって値を変更していく
-
-	if (m_distanceToPlayer >= 800.0f)
-	{
-		//追跡範囲外。停止
-	}
-	else if (m_distanceToPlayer >= 500.0f)
-	{
-		velocity = toPlayer * m_moveSpeed;//向きと速さから、移動速度を作る
-	}
-	else if (m_distanceToPlayer >= 400.0f)
-	{
-		//停止
-	}
-	else
-	{
-		velocity = toPlayer * -m_backMoveSpeed;//速度を後退用のものに変更
-	}
+	Vector3 velocity = CalculateHorizontalVelocity();
 
 	if (m_characterController.IsOnGround())
 	{
@@ -206,33 +180,6 @@ void Enemy::Move(float deltaTime)
 	//最終的な速度で動かす
 	m_isMoving = fabsf(velocity.x) >= 0.001f || fabsf(velocity.z) >= 0.001f;
 	m_transform.m_position = m_characterController.Execute(velocity, deltaTime);
-}
-
-void Enemy::Attack(float deltaTime)
-{
-	// 攻撃する距離でなければ、今回は何もしない。
-	if (m_distanceToPlayer >= m_attackRange)
-	{
-		return;
-	}
-
-	m_attackTimer += deltaTime;
-	if (m_attackTimer < m_attackInterval)
-	{
-		return;
-	}
-
-	Vector3 forward = Vector3::AxisZ;
-	m_transform.m_rotation.Apply(forward);
-
-	Vector3 bulletSpeed = forward * 500.0f;
-
-	Vector3 firePosition = m_transform.m_position;
-	firePosition.y += 50.0f;
-
-	m_bulletManager->RequestFire(firePosition, bulletSpeed, BulletTeam::Enemy, BulletType::EnemyShot);
-
-	m_attackTimer = 0.0f;
 }
 
 void Enemy::UpdateAnimation()

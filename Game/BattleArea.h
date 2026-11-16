@@ -7,7 +7,8 @@ class BattleArea
 public:
     void Update(const Vector3& playerPosition, EnemyManager& enemyManager, float deltaTime);
 
-    void InitializeGate();
+    void Initialize(float entryStartZ, float entryEndZ, float gateZ,
+        const std::vector<EnemySpawn>& spawns, const BattleArea* prerequisite = nullptr);
     void Render(RenderContext& rc);
 
     bool BeginBattle();
@@ -23,6 +24,10 @@ public:
     }
 
 private:
+    float m_entryStartZ = 0.0f;
+    float m_entryEndZ = 0.0f;
+    std::vector<EnemySpawn> m_spawns;
+    const BattleArea* m_prerequisite = nullptr;
     EnemySpawner m_enemySpawner;
     ModelRender m_gateRender;
     std::unique_ptr<PhysicsStaticObject> m_gateCollision;
