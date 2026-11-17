@@ -12,6 +12,10 @@ void BattleArea::Initialize(float entryStartZ, float entryEndZ, float gateZ,
     m_gateRender.Init("Assets/modelData/Floor/Forest/ForestGate.tkm", nullptr, 0, enModelUpAxisY);
     m_gateRender.SetPosition(0.0f, 0.0f, gateZ);
     m_gateRender.Update();
+
+    m_barrierRender.Init("Assets/modelData/Floor/Forest/ForestBarrier.tkm", nullptr, 0, enModelUpAxisY, false);
+    m_barrierRender.SetPosition(0.0f, 0.0f, gateZ);
+    m_barrierRender.Update();
 }
 
 void BattleArea::Render(RenderContext& rc)
@@ -19,6 +23,7 @@ void BattleArea::Render(RenderContext& rc)
     if (IsBattleActive())
     {
         m_gateRender.Draw(rc);
+        m_barrierRender.Draw(rc);
     }
 }
 

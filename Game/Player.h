@@ -23,7 +23,6 @@ public:
 
 	void Attack();
 
-	void UpdateDebugText();//デバック用
 
 	const Vector3& GetPosition() const
 	{
@@ -102,6 +101,5 @@ private:
 
 	WeaponController m_weaponController;
 
-	FontRender m_debugFont;//デバック用
 };
 

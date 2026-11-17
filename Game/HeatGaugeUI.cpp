@@ -24,6 +24,10 @@ bool HeatGaugeUI::Start()
     m_gaugeFillRender.Init(initData);//オーバーロードによりデータを入れていく方が使われる
     m_gaugeFillRender.SetPosition(m_position);
     m_gaugeFillRender.Update();
+    m_statusText.SetPivot(0.5f, 0.5f);
+    m_statusText.SetPosition(m_position + Vector3(-45.0f, 65.0f, 0.0f));
+    m_statusText.SetScale(0.7f);
+    Update();
     return true;
 }
 
@@ -35,7 +39,23 @@ void HeatGaugeUI::Update()
     }
 
     //現在のヒート量を表示割合に反映する。
-    m_fillRatio = m_player->GetAbilityController().GetGaugeRatio();
+    const auto& ability = m_player->GetAbilityController();
+    m_fillRatio = ability.GetGaugeRatio();
+
+    const wchar_t* state = L"NORMAL";
+    if (ability.IsOverheat())
+    {
+        state = L"OVERHEAT";
+    }
+    else if (ability.IsSpeedActive())
+    {
+        state = L"SPEED";
+    }
+    else if (ability.IsPowerActive())
+    {
+        state = L"POWER";
+    }
+    m_statusText.SetText(state);
 }
 
 void HeatGaugeUI::Render(RenderContext& rc)
@@ -48,4 +68,5 @@ void HeatGaugeUI::Render(RenderContext& rc)
 
     m_backgroundRender.Draw(rc);
     m_gaugeFillRender.Draw(rc);//背景の上にゲージ部分を描画する
+    m_statusText.Draw(rc);
 }

@@ -17,7 +17,9 @@ public:
         BombThrow = 3,
         BombExplosion = 4,
         AttackHit = 5,
-        EnemyDeath = 6
+        EnemyDeath = 6,
+        WeaponSelected = 7,
+        WeaponDecided = 8
     };
 
     void Initialize();
@@ -25,6 +27,6 @@ public:
     void StopBGM();
     static void PlaySE(Effect effect);//staticなので他のクラスでincludeするだけで呼べる
 private:
-    static constexpr int StageBgmId = 7;
+    static constexpr int StageBgmId = 100;
     nsK2EngineLow::SoundSource* m_bgm = nullptr;
 };

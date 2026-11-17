@@ -13,7 +13,6 @@ Player::~Player()
 
 bool Player::Start()
 {
-	m_debugFont.SetPosition(200.0f, 150.0f, 0.0f);//デバック用
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 
 	m_weaponController.Initialize(m_bulletManager);
@@ -56,7 +55,6 @@ void Player::Update()
 	UpdateAbility();
 	Attack();
 	UpdateAnimation();
-	UpdateDebugText();//デバック用
 	Actor::Update();
 }
 
@@ -311,34 +309,4 @@ void Player::Render(RenderContext& rc)
 			}
 		}
 	}
-	m_debugFont.Draw(rc);
-}
-
-//デバック用
-void Player::UpdateDebugText()
-{
-	const wchar_t* state = L"NORMAL";
-
-	if (m_abilityController.IsOverheat())
-	{
-		state = L"OVERHEAT";
-	}
-	else if (m_abilityController.IsSpeedActive())
-	{
-		state = L"SPEED";
-	}
-	else if (m_abilityController.IsPowerActive())
-	{
-		state = L"POWER";
-	}
-
-	wchar_t text[256];
-	swprintf_s(
-		text,
-		L"State: %ls\nGage: %.1f",
-		state,
-		m_abilityController.GetGauge()
-	);
-
-	m_debugFont.SetText(text);
 }

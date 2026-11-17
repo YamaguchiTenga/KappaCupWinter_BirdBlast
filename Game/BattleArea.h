@@ -30,6 +30,7 @@ private:
     const BattleArea* m_prerequisite = nullptr;
     EnemySpawner m_enemySpawner;
     ModelRender m_gateRender;
+    ModelRender m_barrierRender;
     std::unique_ptr<PhysicsStaticObject> m_gateCollision;
     bool m_isBattleActive = false;
     bool m_isCleared = false;

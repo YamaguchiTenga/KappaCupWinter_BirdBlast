@@ -11,6 +11,8 @@ void SoundManager::Initialize()
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::BombExplosion), "Assets/SE/BombExplosion.wav");
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::AttackHit), "Assets/SE/AttackHit.wav");
     g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::EnemyDeath), "Assets/SE/EnemyDeath.wav");
+    g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::WeaponSelected), "Assets/SE/WeaponSelected.wav");
+    g_soundEngine->ResistWaveFileBank(static_cast<int>(Effect::WeaponDecided), "Assets/SE/WeaponDecided.wav");
     g_soundEngine->ResistWaveFileBank(StageBgmId, "Assets/BGM/BGM.wav");
 }
 
