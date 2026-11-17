@@ -118,7 +118,7 @@ void PowerLaserBullet::CheckHit(float deltaTime)
 
 	for (Enemy* enemy : m_enemyManager->GetEnemies())
 	{
-		if (!enemy->IsActive())
+		if (!enemy->IsStart() || !enemy->IsActive())
 		{
 			continue;
 		}

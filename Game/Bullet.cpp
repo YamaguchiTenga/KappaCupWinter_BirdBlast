@@ -129,7 +129,7 @@ void Bullet::CheckHit()
 			Enemy* enemy = *first;//*firstでfirstの中身が取り出せる
 			first++;//次の要素へ進む
 
-			if (!enemy->IsActive())//敵がアクティブ中だったら
+			if (!enemy->IsStart() || !enemy->IsActive())//敵がアクティブ中だったら
 			{
 				continue;
 			}

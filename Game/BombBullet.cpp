@@ -133,7 +133,7 @@ void BombBullet::Explosion()
 	{
 		for (Enemy* enemy : m_enemyManager->GetEnemies())
 		{
-			if (!enemy->IsActive())
+			if (!enemy->IsStart() || !enemy->IsActive())
 			{
 				continue;
 			}

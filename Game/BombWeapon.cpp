@@ -155,7 +155,7 @@ bool BombWeapon::PredictLandingPosition(const Vector3& position, const Vector3& 
 
 		for (Enemy* enemy : m_enemyManager->GetEnemies())
 		{
-			if (!enemy->IsActive())
+			if (!enemy->IsStart() || !enemy->IsActive())
 			{
 				continue;
 			}

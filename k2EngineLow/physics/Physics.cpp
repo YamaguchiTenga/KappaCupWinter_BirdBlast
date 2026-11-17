@@ -139,6 +139,10 @@ namespace nsK2EngineLow {
 		btCollisionObject* colObj,
 		std::function<void(const btCollisionObject& contactCollisionObject)> cb
 	) {
+		if (colObj == nullptr) {
+			return;
+		}
+
 		MyContactResultCallback myContactResultCallback;
 		myContactResultCallback.m_cb = cb;
 		myContactResultCallback.m_me = colObj;
