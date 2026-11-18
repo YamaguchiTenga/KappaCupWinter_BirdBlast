@@ -55,7 +55,7 @@ void Player::Update()
 	float cooldownRate = 1.0f;
 	if (m_abilityController.IsSpeedActive())
 	{
-		cooldownRate = 1.5f;
+		cooldownRate = 5.0f;
 	}
 	m_weaponController.Update(g_gameTime->GetFrameDeltaTime(), cooldownRate);
 	Attack();
