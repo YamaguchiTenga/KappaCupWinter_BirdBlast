@@ -51,6 +51,7 @@ bool Game::Start()
 void Game::Update()
 {
 	UpdateWeaponWheel();
+	// ホイール操作中は、ゴールやゲームオーバーへの遷移判定を保留する。
 	if (m_wasLtHeld)
 	{
 		return;
@@ -74,7 +75,16 @@ void Game::Update()
 void Game::UpdateWeaponWheel()
 {
 	const bool isLtHeld = g_pad[0]->IsPress(enButtonLB2);
-	GameObjectManager::GetInstance()->SetPaused(isLtHeld ? this : nullptr);
+	if (isLtHeld)
+	{
+		// ホイールを操作できるよう、Gameだけ更新を続ける。
+		GameObjectManager::GetInstance()->SetPaused(this);
+	}
+	else
+	{
+		// ポーズを解除して、ゲーム全体の更新を再開する。
+		GameObjectManager::GetInstance()->SetPaused(nullptr);
+	}
 
 	m_gameUI->SetWeaponWheelVisible(
 		isLtHeld,
@@ -83,7 +93,11 @@ void Game::UpdateWeaponWheel()
 
 	if (m_wasLtHeld && !isLtHeld)
 	{
-			m_player->SelectWeapon(m_gameUI->GetHighlightedWeaponIndex());
+		if (m_gameUI->GetHighlightedWeaponIndex() != m_player->GetSelectedWeaponIndex())//ホイールで選んでいる武器と今装備している武器が異なった場合
+		{
+			SoundManager::PlaySE(SoundManager::Effect::WeaponDecided);
+			m_player->SelectWeapon(m_gameUI->GetHighlightedWeaponIndex());//ホイールで選ばれてる武器を装備させる
+		}
 	}
 
 	m_wasLtHeld = isLtHeld;

@@ -97,6 +97,7 @@ namespace nsK2EngineLow {
 		g_soundEngine->Update();
 		GameObjectManager::GetInstance()->ExecuteUpdate();
 		// エフェクトエンジンの更新。
+		// ポーズ中はエフェクトの Update を呼ばない。
 		if (!GameObjectManager::GetInstance()->IsPaused()) {
 			EffectEngine::GetInstance()->Update(g_gameTime->GetFrameDeltaTime());
 		}

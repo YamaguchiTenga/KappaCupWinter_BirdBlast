@@ -58,11 +58,14 @@ namespace nsK2EngineLow {
 
 		void SetPaused(IGameObject* objectToKeepUpdating)
 		{
+			// ポーズ中も更新するオブジェクトを記録する。
+			// nullptr を渡すとポーズを解除する。
 			m_pauseUpdateObject = objectToKeepUpdating;
 		}
 
 		bool IsPaused() const
 		{
+			// 更新を続けるオブジェクトが指定されていれば、ポーズ中。
 			return m_pauseUpdateObject != nullptr;
 		}
 
@@ -190,6 +193,7 @@ namespace nsK2EngineLow {
 		typedef std::list<IGameObject*>	 GameObjectList;
 		std::array<GameObjectList, GAME_OBJECT_PRIO_MAX>	m_gameObjectListArray;							//!<ゲームオブジェクトの優先度付きリスト。
 		static GameObjectManager* m_instance;		//唯一のインスタンスのアドレスを記録する変数。
+		// ポーズ中も更新するオブジェクト。通常時は nullptr。
 		IGameObject* m_pauseUpdateObject = nullptr;
 		bool												m_isActive = true;
 	};
