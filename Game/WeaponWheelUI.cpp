@@ -2,6 +2,7 @@
 #include "WeaponWheelUI.h"
 #include "Player.h"
 #include<cmath>//スティックの倒した量の絶対値を見るため
+#include"SoundManager.h"
 bool WeaponWheelUI::Start()
 {
 	m_player = FindGO<Player>("player");
@@ -81,10 +82,18 @@ void WeaponWheelUI::UpdateSelection(float stickX, float stickY)
 
 	if (stickY >= threshold)//上に量が多い
 	{
+		if (0 != m_highlightedWeaponIndex)
+		{
+			SoundManager::PlaySE(SoundManager::Effect::WeaponSelected);
+		}
 		m_highlightedWeaponIndex = 0; //レーザー
 	}
 	else if (stickY <= -threshold)
 	{
+		if (1 != m_highlightedWeaponIndex)
+		{
+			SoundManager::PlaySE(SoundManager::Effect::WeaponSelected);
+		}
 		m_highlightedWeaponIndex = 1; //下のボム
 	}
 }
