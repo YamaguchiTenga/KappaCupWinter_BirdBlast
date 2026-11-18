@@ -62,6 +62,13 @@ WeaponAttackResult BombWeapon::HandleAttack(const WeaponAttackContext& context)
 
 	Vector3 bulletSpeed = CalculateVelocity(context.direction,context.isPower);//この初速は予測と発射の両方で使う
 
+	if (context.isSpeed && !context.isPower)
+	{
+		constexpr float speedModeVelocity = 1.25f;
+		bulletSpeed.x *= speedModeVelocity;
+		bulletSpeed.z *= speedModeVelocity;
+	}
+
 	if (context.isHeld && !context.isPower)//着弾地点を予測
 	{
 		m_isLandingFound = PredictLandingPosition(context.position, bulletSpeed, m_landingPosition, m_trajectoryPoints);//この返り値はtrueかfalseなので入れられる

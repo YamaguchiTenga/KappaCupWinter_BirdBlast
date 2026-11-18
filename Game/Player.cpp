@@ -49,10 +49,15 @@ void Player::Update()
 	}
 
 	UpdateWeaponSelection();
+	UpdateAbility();
 	Move();
 	Rotation();
-	m_weaponController.Update(g_gameTime->GetFrameDeltaTime());
-	UpdateAbility();
+	float cooldownRate = 1.0f;
+	if (m_abilityController.IsSpeedActive())
+	{
+		cooldownRate = 1.5f;
+	}
+	m_weaponController.Update(g_gameTime->GetFrameDeltaTime(), cooldownRate);
 	Attack();
 	UpdateAnimation();
 	Actor::Update();
@@ -130,8 +135,15 @@ void Player::Move()
 	forward.Normalize();
 	right.Normalize();
 
-	right *= stickL.x * 500.0f;
-	forward *= stickL.y * 500.0f;
+	constexpr float normalMoveSpeed = 500.0f;
+	constexpr float boostedMoveSpeed = 650.0f;
+	float moveSpeed = normalMoveSpeed;
+	if (m_abilityController.IsSpeedActive())
+	{
+		moveSpeed = boostedMoveSpeed;
+	}
+	right *= stickL.x * moveSpeed;
+	forward *= stickL.y * moveSpeed;
 
 	m_inputMoveSpeed = right + forward;
 
@@ -192,7 +204,12 @@ void Player::Rotation()
 
 void Player::Jump()
 {
+	constexpr float speedJumpMultiplier = 1.15f;
 	m_verticalSpeed = m_jumpPower;
+	if (m_abilityController.IsSpeedActive())
+	{
+		m_verticalSpeed *= speedJumpMultiplier;
+	}
 }
 
 void Player::Attack()
@@ -213,6 +230,7 @@ void Player::Attack()
 
 	//現在のPOWER状態
 	context.isPower = m_abilityController.IsPowerActive();
+	context.isSpeed = m_abilityController.IsSpeedActive();
 
 	constexpr int BombWeaponIndex = 1;
 	const bool isBombSelected = GetSelectedWeaponIndex() == BombWeaponIndex;

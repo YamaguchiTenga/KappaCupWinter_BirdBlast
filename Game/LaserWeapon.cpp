@@ -53,7 +53,14 @@ WeaponAttackResult LaserWeapon::HandleAttack(const WeaponAttackContext& context)
 		return WeaponAttackResult::None;
 	}
 
-	Vector3 bulletSpeed = context.direction * m_bulletSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。
+	float shotSpeed = m_bulletSpeed;
+	if (context.isSpeed)
+	{
+		constexpr float speedBulletVelocity = 1.25f;
+		shotSpeed *= speedBulletVelocity;
+	}
+
+	Vector3 bulletSpeed = context.direction * shotSpeed;//発射方向に速さを掛けて、弾の移動速度を求める。
 
 	if (m_bulletManager->RequestFire(context.position, bulletSpeed, BulletTeam::Player,BulletType::Laser))
 	{

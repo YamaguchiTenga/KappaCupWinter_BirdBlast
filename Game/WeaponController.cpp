@@ -32,13 +32,13 @@ void WeaponController::Initialize(BulletManager* bulletManager)
 	m_weapons[1] = std::move(bombWeapon);
 }
 
-void WeaponController::Update(float deltaTime)
+void WeaponController::Update(float deltaTime, float cooldownRate)
 {
 	for (auto& weapon : m_weapons)//ここのautoはstd::unique_ptr<Weapon>への参照
 	{
 		if (weapon)//中身がnullptrじゃなければ
 		{
-			weapon->Update(deltaTime);//WeaponのUpdateを読んで、全ての武器共通の処理を行う
+			weapon->Update(deltaTime, cooldownRate);//WeaponのUpdateを読んで、全ての武器共通の処理を行う
 		}
 	}
 }	

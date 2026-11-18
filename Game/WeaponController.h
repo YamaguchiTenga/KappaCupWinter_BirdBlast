@@ -14,7 +14,7 @@ class WeaponController
 public:
 	void Initialize(BulletManager* bulletManager);//Initializeは初期化させるという意味
 
-	void Update(float deltaTime);
+	void Update(float deltaTime, float cooldownRate = 1.0f);
 
 	WeaponAttackResult HandleAttack(const WeaponAttackContext& context);//WeaponAttackContextはWeapon.hの上の方にある構造体
 

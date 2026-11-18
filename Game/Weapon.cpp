@@ -17,9 +17,9 @@ Weapon::~Weapon()
 		DeleteGO(m_aimGuide);
 	}
 }
-void Weapon::Update(float deltaTime)
+void Weapon::Update(float deltaTime, float cooldownRate)
 {
-	m_fireCooldown -= deltaTime;
+	m_fireCooldown -= deltaTime * cooldownRate;
 
 	if (m_fireCooldown <= 0.0f)
 	{

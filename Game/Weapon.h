@@ -9,6 +9,7 @@ struct WeaponAttackContext//Player::Attack()でこの変数を作る
 	bool isPressed = false;
 	bool isHeld = false;
 	bool isPower = false;
+	bool isSpeed = false;
 	Vector3 position = Vector3::Zero;
 	Vector3 direction = Vector3::AxisZ;
 
@@ -34,7 +35,7 @@ class Weapon
 public:
 	Weapon() = default;
 	virtual ~Weapon();
-	virtual void Update(float deltaTime);
+	virtual void Update(float deltaTime, float cooldownRate = 1.0f);
 
 	//構造体の情報をまとめて受け取る。
 	//純粋仮想関数（= 0）：ここには処理を書かず、各武器の子クラスで実装する。
