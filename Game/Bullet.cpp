@@ -148,7 +148,7 @@ void Bullet::CheckHit()
 		{
 			if (m_collisionObject->IsHit(m_player->GetCharacterController()))
 			{
-				m_player->TakeDamage(10);
+				m_player->TakeDamage(10, m_moveSpeed);
 				Deactivate();
 				return;
 			}

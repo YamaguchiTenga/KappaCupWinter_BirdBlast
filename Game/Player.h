@@ -55,7 +55,7 @@ public:
 		m_weaponController.SelectWeapon(weaponIndex);
 	}
 
-	void TakeDamage(int damage);
+	void TakeDamage(int damage, const Vector3& knockbackDirection = Vector3::Zero);
 
 	int GetHp() const
 	{
@@ -84,6 +84,8 @@ private:
 	Vector3 m_moveSpeed = Vector3::Zero;
 	Vector3 m_inputMoveSpeed = Vector3::Zero;
 	Vector3 m_externalMoveSpeed = Vector3::Zero;
+	float KnockbackSpeed = 800.0f;
+	float KnockbackDeceleration = 4000.0f;
 	CharacterController m_characterController;
 	float m_jumpPower = 500.0f;
 	float m_verticalSpeed = 0.0f;//verticalは縦という意味

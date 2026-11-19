@@ -51,6 +51,20 @@ void Player::Update()
 	UpdateWeaponSelection();
 	UpdateAbility();
 	Move();
+
+	const float externalSpeed = m_externalMoveSpeed.Length();
+	if (externalSpeed > 0.0f)
+	{
+		const float remainingSpeed = externalSpeed - KnockbackDeceleration * g_gameTime->GetFrameDeltaTime();
+		if (remainingSpeed > 0.0f)
+		{
+			m_externalMoveSpeed *= remainingSpeed / externalSpeed;
+		}
+		else
+		{
+			m_externalMoveSpeed = Vector3::Zero;
+		}
+	}
 	Rotation();
 	float cooldownRate = 1.0f;
 	if (m_abilityController.IsSpeedActive())
@@ -63,7 +77,7 @@ void Player::Update()
 	Actor::Update();
 }
 
-void Player::TakeDamage(int damage)
+void Player::TakeDamage(int damage, const Vector3& knockbackDirection)
 {
 	if (damage <= 0 || m_invincibleTimeRemaining > 0.0f)
 	{
@@ -78,6 +92,14 @@ void Player::TakeDamage(int damage)
 
 	constexpr float invincibleDuration = 1.0f;
 	m_invincibleTimeRemaining = invincibleDuration;
+
+	Vector3 direction = knockbackDirection;
+	direction.y = 0.0f;
+	if (direction.Length() > 0.001f)
+	{
+		direction.Normalize();
+		m_externalMoveSpeed = direction * KnockbackSpeed;
+	}
 }
 
 void Player::UpdateAnimation()
@@ -118,6 +140,11 @@ void Player::Move()
 	if (m_weaponController.IsMovementLocked())
 	{
 		m_inputMoveSpeed = Vector3::Zero;//アニメーション再生の関係で入力による移動を0にする
+		if (m_externalMoveSpeed.Length() > 0.0f)
+		{
+			m_transform.m_position = m_characterController.Execute(
+				m_externalMoveSpeed, g_gameTime->GetFrameDeltaTime());
+		}
 		return;
 	}
 
