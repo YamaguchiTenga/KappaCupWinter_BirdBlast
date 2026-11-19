@@ -18,7 +18,13 @@ PowerLaserBullet::~PowerLaserBullet()
 
 bool PowerLaserBullet::Start()
 {
-	m_modelRender.Init("Assets/modelData/Bullets/laser.tkm");
+	m_modelRender.IniTranslucent(
+		"Assets/modelData/Bullets/PowerLaser_Cyan.tkm", // 読み込むモデル
+		nullptr,        // アニメーションを使わない
+		0,              // アニメーションの数
+		enModelUpAxisY, // モデルの上方向はY軸
+		false           // モデルに影を受けさせない
+	);
 	m_enemyManager = FindGO<EnemyManager>("enemyManager");
 	m_collisionObject = NewGO<CollisionObject>(0);
 
@@ -57,7 +63,7 @@ void PowerLaserBullet::Fire(const Vector3& position, const Vector3& direction)
 	m_collisionObject->SetIsEnable(true);
 
 	m_remainingTime = m_fireDuration;
-	m_transform.m_scale = { 1.0f, 1.0f, 1.0f };
+	m_transform.m_scale = { BeamWidthScale, BeamWidthScale, 1.0f };
 
 	m_state = State::Firing;
 }
@@ -89,8 +95,8 @@ void PowerLaserBullet::UpdateState()
 			ratio = 0.0f;
 		}
 
-		m_transform.m_scale.x = ratio;
-		m_transform.m_scale.y = ratio;
+		m_transform.m_scale.x = BeamWidthScale * ratio;
+		m_transform.m_scale.y = BeamWidthScale * ratio;
 
 		if (m_remainingTime <= 0.0f)
 		{
