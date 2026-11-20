@@ -39,14 +39,11 @@ bool Player::Start()
 
 void Player::Update()
 {
-	if (m_invincibleTimeRemaining > 0.0f)
-	{
-		m_invincibleTimeRemaining -= g_gameTime->GetFrameDeltaTime();
-		if (m_invincibleTimeRemaining < 0.0f)
-		{
-			m_invincibleTimeRemaining = 0.0f;
-		}
-	}
+	float deltaTime = g_gameTime->GetFrameDeltaTime();
+
+	UpdateTakingDamage(deltaTime);
+
+	UpdateInvincibility(deltaTime);
 
 	UpdateWeaponSelection();
 	UpdateAbility();
@@ -55,7 +52,7 @@ void Player::Update()
 	const float externalSpeed = m_externalMoveSpeed.Length();
 	if (externalSpeed > 0.0f)
 	{
-		const float remainingSpeed = externalSpeed - KnockbackDeceleration * g_gameTime->GetFrameDeltaTime();
+		const float remainingSpeed = externalSpeed - KnockbackDeceleration * deltaTime;
 		if (remainingSpeed > 0.0f)
 		{
 			m_externalMoveSpeed *= remainingSpeed / externalSpeed;
@@ -71,7 +68,7 @@ void Player::Update()
 	{
 		cooldownRate = 5.0f;
 	}
-	m_weaponController.Update(g_gameTime->GetFrameDeltaTime(), cooldownRate);
+	m_weaponController.Update(deltaTime, cooldownRate);
 	Attack();
 	UpdateAnimation();
 	Actor::Update();
@@ -90,6 +87,11 @@ void Player::TakeDamage(int damage, const Vector3& knockbackDirection)
 		m_hp = 0;
 	}
 
+	m_TakingDamage = true;
+	m_TakingDamageTimer = 0.3f;
+	m_isHoldingBomb = false;
+	m_isHoldingPowerBomb = false;
+	m_weaponController.AttackCansel();
 	constexpr float invincibleDuration = 1.0f;
 	m_invincibleTimeRemaining = invincibleDuration;
 
@@ -99,6 +101,34 @@ void Player::TakeDamage(int damage, const Vector3& knockbackDirection)
 	{
 		direction.Normalize();
 		m_externalMoveSpeed = direction * KnockbackSpeed;
+	}
+}
+
+void Player::UpdateInvincibility(float deltaTime)
+{
+	if (m_invincibleTimeRemaining > 0.0f)
+	{
+		m_invincibleTimeRemaining -= deltaTime;
+		if (m_invincibleTimeRemaining < 0.0f)
+		{
+			m_invincibleTimeRemaining = 0.0f;
+		}
+	}
+}
+
+void Player::UpdateTakingDamage(float deltaTime)
+{
+	if (!m_TakingDamage)
+	{
+		return;
+	}
+
+	m_TakingDamageTimer -= deltaTime;
+
+	if (m_TakingDamageTimer <= 0.0f)
+	{
+		m_TakingDamageTimer = 0.0f;
+		m_TakingDamage = false;
 	}
 }
 
@@ -193,6 +223,12 @@ void Player::Move()
 		m_verticalSpeed -= m_gravity * g_gameTime->GetFrameDeltaTime();
 	}
 
+	if (m_TakingDamage)
+	{
+		m_verticalSpeed = 0.0f;
+		m_inputMoveSpeed = Vector3::Zero;
+	}
+
 	m_moveSpeed = m_inputMoveSpeed + m_externalMoveSpeed;
 	m_moveSpeed.y += m_verticalSpeed;
 	m_transform.m_position = m_characterController.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());
@@ -241,6 +277,13 @@ void Player::Jump()
 
 void Player::Attack()
 {
+	if (m_TakingDamage)
+	{
+		m_isHoldingBomb = false;
+		m_isHoldingPowerBomb = false;
+		return;
+	}
+
 	WeaponAttackContext context;
 
 	//攻撃ボタンの状態

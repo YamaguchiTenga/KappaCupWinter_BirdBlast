@@ -40,6 +40,7 @@ public:
 	//構造体の情報をまとめて受け取る。
 	//純粋仮想関数（= 0）：ここには処理を書かず、各武器の子クラスで実装する。
 	virtual WeaponAttackResult HandleAttack(const WeaponAttackContext& context) = 0;//Handleは扱うという意味
+	virtual void AttackCansel() = 0;
 
 	//パワーレーザー用の移動制限
 	//通常は移動を制限しない。必要な武器だけ上書きする。

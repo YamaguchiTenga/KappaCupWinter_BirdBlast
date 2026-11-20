@@ -12,6 +12,8 @@ public:
 	void OnDeselected() override;
 	bool IsMovementLocked() const override;
 	bool IsMoveInputLocked() const override;
+	void AttackCansel() override;
+
 public:
 	void SetBulletManager(BulletManager* bulletManager);
 

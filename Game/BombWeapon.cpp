@@ -198,3 +198,10 @@ void BombWeapon::OnDeselected()
 	m_isLandingFound = false;
 	m_aimGuide->SetVisible(false);
 }
+
+void BombWeapon::AttackCansel()
+{
+	m_wasAttackHeld = false;
+	m_isLandingFound = false;
+	m_aimGuide->SetVisible(false);
+}

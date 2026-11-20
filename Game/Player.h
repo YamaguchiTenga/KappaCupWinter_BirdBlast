@@ -23,6 +23,8 @@ public:
 
 	void Attack();
 
+	void UpdateTakingDamage(float deltaTime);
+
 
 	const Vector3& GetPosition() const
 	{
@@ -69,6 +71,7 @@ public:
 
 	void UpdateAbility();
 private:
+	void UpdateInvincibility(float deltaTime);
 	void UpdateAnimation();
 	void UpdateWeaponSelection();
 private:
@@ -103,5 +106,7 @@ private:
 
 	WeaponController m_weaponController;
 
+	bool m_TakingDamage = false;
+	float  m_TakingDamageTimer = 0.0f;
 };
 

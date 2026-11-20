@@ -20,6 +20,8 @@ public:
 
 	void SelectWeapon(int index);
 
+	void AttackCansel();
+
 	bool IsMovementLocked() const;
 	bool IsMoveInputLocked() const;
 

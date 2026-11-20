@@ -32,6 +32,7 @@ public:
 	void CheckHit(float deltaTime);
 
 	void Render(RenderContext& rc) override;
+	void AttackCansel();
 private:
 	static constexpr float BeamWidthScale = 3.0f;
 	Vector3 m_collisionSize = { 100.0f, 100.0f, 1000.0f };

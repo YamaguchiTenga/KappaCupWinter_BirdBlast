@@ -12,6 +12,7 @@ public:
 	bool IsMoveInputLocked() const override;
 	~BombWeapon() override;
 	void OnDeselected() override;
+	void AttackCansel() override;
 public:
 	void SetBulletManager(BulletManager* bulletManager);
 

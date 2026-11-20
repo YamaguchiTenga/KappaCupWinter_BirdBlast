@@ -97,3 +97,14 @@ void WeaponController::SelectWeapon(int index)
 	weapon->OnDeselected();
 	m_selectedWeaponIndex = index;
 }
+
+void WeaponController::AttackCansel()
+{
+	const auto& weapon = m_weapons[m_selectedWeaponIndex];
+
+	if (weapon)//nullptrじゃないなら
+	{
+		weapon->AttackCansel();
+	}
+
+}

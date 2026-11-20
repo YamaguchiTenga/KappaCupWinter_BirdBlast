@@ -82,7 +82,12 @@ bool LaserWeapon::IsMoveInputLocked()const
 	return m_wasAttackHeld;
 }
 
-void LaserWeapon::OnDeselected()
+void LaserWeapon::OnDeselected()//武器を切り替えた時の処理
+{
+	AttackCansel();
+}
+
+void LaserWeapon::AttackCansel()//ダメージを受けた時の処理
 {
 	m_wasAttackHeld = false;
 	m_aimGuide->SetVisible(false);
