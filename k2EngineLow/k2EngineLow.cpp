@@ -1,4 +1,4 @@
-#include "k2EngineLowPreCompile.h"
+ï»¿#include "k2EngineLowPreCompile.h"
 #include "k2EngineLow.h"
 #include "graphics/Texture.h"
 
@@ -8,13 +8,13 @@ namespace nsK2EngineLow {
 
 	K2EngineLow::~K2EngineLow()
 	{
-		// ƒOƒ[ƒoƒ‹‚ÈƒAƒNƒZƒXƒ|ƒCƒ“ƒg‚Énullptr‚ğ‘ã“üB
+		// ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªã‚¢ã‚¯ã‚»ã‚¹ãƒã‚¤ãƒ³ãƒˆã«nullptrã‚’ä»£å…¥ã€‚
 		g_graphicsEngine = nullptr;
 		g_gameTime = nullptr;
 		
 		delete m_graphicsEngine;
 		
-		//ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚ğíœB
+		//ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚’å‰Šé™¤ã€‚
 		GameObjectManager::DeleteInstance();
 		PhysicsWorld::DeleteInstance();
 		EffectEngine::DeleteInstance();
@@ -29,7 +29,7 @@ namespace nsK2EngineLow {
 	)
 	{
 		if (hwnd) {
-			//ƒOƒ‰ƒtƒBƒbƒNƒGƒ“ƒWƒ“‚Ì‰Šú‰»B
+			//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¨ãƒ³ã‚¸ãƒ³ã®åˆæœŸåŒ–ã€‚
 			m_graphicsEngine = new GraphicsEngine();
 			m_graphicsEngine->Init(
 				hwnd, 
@@ -39,7 +39,7 @@ namespace nsK2EngineLow {
 			);
 		}
 		g_gameTime = &m_gameTime;
-		//ƒQ[ƒ€ƒpƒbƒh‚Ì‰Šú‰»B
+		//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®åˆæœŸåŒ–ã€‚
 		for (int i = 0; i < GamePad::CONNECT_PAD_MAX; i++) {
 			g_pad[i] = &m_pad[i];
 		}
@@ -48,7 +48,7 @@ namespace nsK2EngineLow {
 		PhysicsWorld::CreateInstance();
 		g_soundEngine = new SoundEngine();
 		if (m_graphicsEngine) {
-			//ƒGƒtƒFƒNƒgƒGƒ“ƒWƒ“‚Ì‰Šú‰»B
+			//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚¨ãƒ³ã‚¸ãƒ³ã®åˆæœŸåŒ–ã€‚
 			EffectEngine::CreateInstance();
 		}
 #ifdef K2_DEBUG
@@ -96,31 +96,31 @@ namespace nsK2EngineLow {
 		}
 		g_soundEngine->Update();
 		GameObjectManager::GetInstance()->ExecuteUpdate();
-		// ƒGƒtƒFƒNƒgƒGƒ“ƒWƒ“‚ÌXVB
-		// •`‰æ‚Ì€”õ‚Í–ˆƒtƒŒ[ƒ€s‚¢Aƒ|[ƒYó‘Ô‚ğ“n‚µ‚ÄÄ¶‚Ìis‚ğØ‚è‘Ö‚¦‚éB
-		// ƒGƒtƒFƒNƒg‚Ì•`‰æ€”õ‚Ü‚Å~‚ß‚È‚¢‚æ‚¤Aƒ|[ƒY’†‚àŒÄ‚Ño‚·B
-		// “n‚µ‚½ƒ|[ƒYó‘Ô‚ğg‚¢AEffectEngine “à‚ÅÄ¶‚Ìis‚¾‚¯‚ğ~‚ß‚éB
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚¨ãƒ³ã‚¸ãƒ³ã®æ›´æ–°ã€‚
+		// æç”»ã®æº–å‚™ã¯æ¯ãƒ•ãƒ¬ãƒ¼ãƒ è¡Œã„ã€ãƒãƒ¼ã‚ºçŠ¶æ…‹ã‚’æ¸¡ã—ã¦å†ç”Ÿã®é€²è¡Œã‚’åˆ‡ã‚Šæ›¿ãˆã‚‹ã€‚
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”»æº–å‚™ã¾ã§æ­¢ã‚ãªã„ã‚ˆã†ã€ãƒãƒ¼ã‚ºä¸­ã‚‚å‘¼ã³å‡ºã™ã€‚
+		// æ¸¡ã—ãŸãƒãƒ¼ã‚ºçŠ¶æ…‹ã‚’ä½¿ã„ã€EffectEngine å†…ã§å†ç”Ÿã®é€²è¡Œã ã‘ã‚’æ­¢ã‚ã‚‹ã€‚
 		EffectEngine::GetInstance()->Update(
 			g_gameTime->GetFrameDeltaTime(), GameObjectManager::GetInstance()->IsPaused());
 	}
 	/// <summary>
-	/// •`‰æˆ—‚ğÀsB
+	/// æç”»å‡¦ç†ã‚’å®Ÿè¡Œã€‚
 	/// </summary>
 	void K2EngineLow::ExecuteRender()
 	{
 		auto& renderContext = g_graphicsEngine->GetRenderContext();
-		// ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgƒ}ƒl[ƒWƒƒ[‚Ì•`‰æˆ—‚ğÀsB
+		// ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã®æç”»å‡¦ç†ã‚’å®Ÿè¡Œã€‚
 		GameObjectManager::GetInstance()->ExecuteRender(renderContext);
 		
 	}
 
 	/// <summary>
-	/// “–‚½‚è”»’è•`‰æˆ—‚ğÀsB
+	/// å½“ãŸã‚Šåˆ¤å®šæç”»å‡¦ç†ã‚’å®Ÿè¡Œã€‚
 	/// </summary>
 	void K2EngineLow::DebubDrawWorld()
 	{
 		auto& renderContext = g_graphicsEngine->GetRenderContext();
-		//“–‚½‚è”»’è•`‰æˆ—‚ğÀsB
+		//å½“ãŸã‚Šåˆ¤å®šæç”»å‡¦ç†ã‚’å®Ÿè¡Œã€‚
 		PhysicsWorld::GetInstance()->DebubDrawWorld(renderContext);
 	}
 }
