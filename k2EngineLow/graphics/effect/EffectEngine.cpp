@@ -67,7 +67,10 @@ namespace nsK2EngineLow {
 	}
 
 
-	void EffectEngine::Update(float deltaTime)
+	// ポーズ中も Draw() は呼ばれるため、コマンドリストとカメラ情報の設定は毎フレーム必要。
+	// Update() 全体を飛ばすと、前回の Draw() で解除されたコマンドリストが設定されないまま描画される。
+	// これを防ぐため、isPaused が true のときは m_manager->Update() による再生の進行だけを止める。
+	void EffectEngine::Update(float deltaTime, bool isPaused)
 	{
 		int backBufferNo = g_graphicsEngine->GetBackBufferIndex();
 		// Begin a command list
@@ -75,7 +78,10 @@ namespace nsK2EngineLow {
 		EffekseerRendererDX12::BeginCommandList(m_commandList[backBufferNo], g_graphicsEngine->GetCommandList());
 		m_renderer[backBufferNo]->SetCommandList(m_commandList[backBufferNo]);
 
-		m_manager->Update();
+		// ポーズ中も描画の準備は行い、エフェクトの再生だけ止める。
+		if (!isPaused) {
+			m_manager->Update();
+		}
 
 		//レンダラーにカメラ行列を設定。
 		m_renderer[backBufferNo]->SetCameraMatrix(*(const Effekseer::Matrix44*)&g_camera3D->GetViewMatrix());

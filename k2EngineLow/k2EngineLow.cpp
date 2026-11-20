@@ -97,10 +97,11 @@ namespace nsK2EngineLow {
 		g_soundEngine->Update();
 		GameObjectManager::GetInstance()->ExecuteUpdate();
 		// エフェクトエンジンの更新。
-		// ポーズ中はエフェクトの Update を呼ばない。
-		if (!GameObjectManager::GetInstance()->IsPaused()) {
-			EffectEngine::GetInstance()->Update(g_gameTime->GetFrameDeltaTime());
-		}
+		// 描画の準備は毎フレーム行い、ポーズ状態を渡して再生の進行を切り替える。
+		// エフェクトの描画準備まで止めないよう、ポーズ中も呼び出す。
+		// 渡したポーズ状態を使い、EffectEngine 内で再生の進行だけを止める。
+		EffectEngine::GetInstance()->Update(
+			g_gameTime->GetFrameDeltaTime(), GameObjectManager::GetInstance()->IsPaused());
 	}
 	/// <summary>
 	/// 描画処理を実行。

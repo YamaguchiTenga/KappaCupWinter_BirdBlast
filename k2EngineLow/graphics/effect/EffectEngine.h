@@ -104,7 +104,8 @@ namespace nsK2EngineLow {
 		/// 更新
 		/// </summary>
 		/// <param name="deltaTime">1フレームの経過時間。</param>
-		void Update(float deltaTime);
+		/// <param name="isPaused">true なら再生の進行を止め、描画の準備は続ける。</param>
+		void Update(float deltaTime, bool isPaused = false);
 		/// <summary>
 		/// 描画。
 		/// </summary>
