@@ -37,6 +37,12 @@ public:
 	virtual ~Weapon();
 	virtual void Update(float deltaTime, float cooldownRate = 1.0f);
 
+	//Windだけでoverrideさせるので、他の武器は親のこの処理が呼ばれる
+	virtual bool IsWindActive() const
+	{
+		return false;
+	}
+
 	//構造体の情報をまとめて受け取る。
 	//純粋仮想関数（= 0）：ここには処理を書かず、各武器の子クラスで実装する。
 	virtual WeaponAttackResult HandleAttack(const WeaponAttackContext& context) = 0;//Handleは扱うという意味

@@ -229,6 +229,11 @@ void Player::Move()
 		m_inputMoveSpeed = Vector3::Zero;
 	}
 
+	if (m_weaponController.IsWindActive())
+	{
+		m_inputMoveSpeed *= 1.5f;
+	}
+
 	m_moveSpeed = m_inputMoveSpeed + m_externalMoveSpeed;
 	m_moveSpeed.y += m_verticalSpeed;
 	m_transform.m_position = m_characterController.Execute(m_moveSpeed, g_gameTime->GetFrameDeltaTime());

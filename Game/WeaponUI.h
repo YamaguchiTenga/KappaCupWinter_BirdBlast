@@ -13,11 +13,14 @@ public:
 private:
     static const int LaserIndex = 0;
     static const int BombIndex = 1;
+    static const int WindIndex = 2;
 
     Player* m_player = nullptr;
     int m_selectedWeaponIndex = LaserIndex;
 
     SpriteRender m_laserIconRender; 
+    SpriteRender m_windIconRender;
+    SpriteRender m_windSelectedIconRender;
     SpriteRender m_bombIconRender;  
     SpriteRender m_laserSelectedIconRender; //選択中のレーザー用。
     SpriteRender m_bombSelectedIconRender;  //選択中のボム用。

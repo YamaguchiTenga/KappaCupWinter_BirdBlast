@@ -8,6 +8,7 @@ bool WeaponUI::Start()
 
     const Vector3 laserPosition = m_position;
     const Vector3 bombPosition = m_position + Vector3(132.0f, 0.0f, 0.0f);
+    const Vector3 windPosition = m_position + Vector3(264.0f, 0.0f, 0.0f);
     m_laserIconRender.Init("Assets/UI/WeaponIcons/LaserIcon.DDS", 96.0f, 96.0f);
     m_bombIconRender.Init("Assets/UI/WeaponIcons/BombIcon.DDS", 96.0f, 96.0f);
 
@@ -23,6 +24,13 @@ bool WeaponUI::Start()
     m_bombSelectedIconRender.SetPosition(m_bombIconRender.GetPosition());
     m_laserSelectedIconRender.Update();
     m_bombSelectedIconRender.Update();
+
+    m_windIconRender.Init("Assets/UI/WeaponIcons/WindIcon.DDS", 96.0f, 96.0f);
+    m_windSelectedIconRender.Init("Assets/UI/WeaponIcons/WindIcon_Selected.DDS", 96.0f, 96.0f);
+    m_windIconRender.SetPosition(windPosition);
+    m_windSelectedIconRender.SetPosition(windPosition);
+    m_windIconRender.Update();
+    m_windSelectedIconRender.Update();
 
     return true;
 }
@@ -62,5 +70,14 @@ void WeaponUI::Render(RenderContext& rc)
     else
     {
         m_bombIconRender.Draw(rc);
+    }
+
+    if (m_selectedWeaponIndex == WindIndex)
+    {
+        m_windSelectedIconRender.Draw(rc);
+    }
+    else
+    {
+        m_windIconRender.Draw(rc);
     }
 }

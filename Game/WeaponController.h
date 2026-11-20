@@ -24,6 +24,7 @@ public:
 
 	bool IsMovementLocked() const;
 	bool IsMoveInputLocked() const;
+	bool IsWindActive() const;
 
 	int GetSelectedWeaponIndex() const
 	{

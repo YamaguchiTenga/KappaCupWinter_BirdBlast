@@ -59,6 +59,19 @@ WeaponAttackResult WeaponController::HandleAttack(const WeaponAttackContext& con
 	return WeaponAttackResult::None;
 }
 
+//風が使われてるかどうか。親クラスの関数がfalseを返すようになっているので、overrideしている風以外はfalseになる
+bool WeaponController::IsWindActive() const
+{
+	const auto& weapon = m_weapons[m_selectedWeaponIndex];
+
+	if (weapon != nullptr)
+	{
+		return weapon->IsWindActive();
+	}
+
+	return false;
+}
+
 bool WeaponController::IsMovementLocked() const
 {
 	for (const auto& weapon : m_weapons)

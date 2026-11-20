@@ -11,6 +11,7 @@ bool WeaponWheelUI::Start()
 	const Vector3 weaponIconOffsets[m_weaponCount] = {
 	{ 0.0f, 350.0f, 0.0f },
 	{ 0.0f, -350.0f, 0.0f },
+	{ 350.0f, 0.0f, 0.0f },
 	};
 
 	m_ringRender.Init("Assets/UI/WeaponWheelUI/WeaponWheel_Ring.DDS", 1000.0f, 1000.0f);
@@ -24,8 +25,12 @@ bool WeaponWheelUI::Start()
 	m_weapon[0].Init("Assets/UI/WeaponIcons/LaserIcon.DDS", m_weaponIconSize.x, m_weaponIconSize.y);//レーザー
 	m_weapon[1].Init("Assets/UI/WeaponIcons/BombIcon.DDS", m_weaponIconSize.x, m_weaponIconSize.y);//ボム
 
+	m_weapon[2].Init("Assets/UI/WeaponIcons/WindIcon.DDS", m_weaponIconSize.x, m_weaponIconSize.y);
+
 	m_selectedWeapon[0].Init("Assets/UI/WeaponIcons/LaserIcon_Selected.DDS", m_weaponIconSize.x, m_weaponIconSize.y);
 	m_selectedWeapon[1].Init("Assets/UI/WeaponIcons/BombIcon_Selected.DDS", m_weaponIconSize.x, m_weaponIconSize.y);
+
+	m_selectedWeapon[2].Init("Assets/UI/WeaponIcons/WindIcon_Selected.DDS", m_weaponIconSize.x, m_weaponIconSize.y);
 
 	for (int i = 0; i < m_weaponCount; i++)
 	{
@@ -75,9 +80,18 @@ void WeaponWheelUI::UpdateSelection(float stickX, float stickY)
 	const float threshold = 0.5f;
 
 	//横と縦に倒した量の絶対値を見る
-	if (std::abs(stickX) > std::abs(stickY))
+	if (std::abs(stickX) > std::abs(stickY))//左右の傾きの方が大きかったら
 	{
-		return; //左右の枠はまだ空いている
+		if (stickX >= threshold)
+		{
+			if (2 != m_highlightedWeaponIndex)
+			{
+				SoundManager::PlaySE(SoundManager::Effect::WeaponSelected);
+			}
+			m_highlightedWeaponIndex = 2;
+		}
+
+		return;
 	}
 
 	if (stickY >= threshold)//上に量が多い

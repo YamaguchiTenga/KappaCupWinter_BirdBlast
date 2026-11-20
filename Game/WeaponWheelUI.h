@@ -21,7 +21,7 @@ public:
 	}
 private:
 	const Player* m_player = nullptr;
-	static constexpr int m_weaponCount = 2;//配列のサイズに使うにはconstではなくこの書き方
+	static constexpr int m_weaponCount = 3;//配列のサイズに使うにはconstではなくこの書き方
 	Vector2 m_weaponIconSize{ 150.0f,150.0f };
 	SpriteRender m_ringRender;
 	SpriteRender m_weapon[m_weaponCount];
