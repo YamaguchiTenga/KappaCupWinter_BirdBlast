@@ -264,6 +264,7 @@
     <ClCompile Include="Weapon.cpp" />
     <ClCompile Include="WeaponController.cpp" />
     <ClCompile Include="WeaponWheelUI.cpp" />
+    <ClCompile Include="WindWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbilityController.h" />
@@ -303,6 +304,7 @@
     <ClInclude Include="Weapon.h" />
     <ClInclude Include="WeaponController.h" />
     <ClInclude Include="WeaponWheelUI.h" />
+    <ClInclude Include="WindWeapon.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

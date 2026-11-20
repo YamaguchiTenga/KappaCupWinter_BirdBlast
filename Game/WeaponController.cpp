@@ -7,6 +7,7 @@
 #include "LaserWeapon.h"
 #include"BombWeapon.h"
 #include "EnemyManager.h"
+#include"WindWeapon.h"
 
 void WeaponController::Initialize(BulletManager* bulletManager)
 {
@@ -30,6 +31,9 @@ void WeaponController::Initialize(BulletManager* bulletManager)
 	bombWeapon->SetEnemyManager(enemyManager);
 
 	m_weapons[1] = std::move(bombWeapon);
+
+	auto windWeapon = std::make_unique<WindWeapon>();
+	m_weapons[2] = std::move(windWeapon);
 }
 
 void WeaponController::Update(float deltaTime, float cooldownRate)
@@ -54,7 +58,6 @@ WeaponAttackResult WeaponController::HandleAttack(const WeaponAttackContext& con
 
 	return WeaponAttackResult::None;
 }
-
 
 bool WeaponController::IsMovementLocked() const
 {

@@ -45,6 +45,7 @@
     <ClCompile Include="WeaponUI.cpp" />
     <ClCompile Include="PlayerHpUI.cpp" />
     <ClCompile Include="WeaponWheelUI.cpp" />
+    <ClCompile Include="WindWeapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -86,5 +87,6 @@
     <ClInclude Include="PlayerHpUI.h" />
     <ClInclude Include="HitStop.h" />
     <ClInclude Include="WeaponWheelUI.h" />
+    <ClInclude Include="WindWeapon.h" />
   </ItemGroup>
 </Project>
