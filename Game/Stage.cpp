@@ -5,6 +5,10 @@
 
 bool Stage::Start()
 {
+	//sky = NewGO<SkyCube>(0, "sky");
+	//sky->SetType(enSkyCubeType_Day);//背景を空にする
+	//g_renderingEngine->SetAmbientByIBLTexture(sky->GetTextureFilePath(), 1.0f);//光の度合い
+
 	PhysicsWorld::GetInstance()->EnableDrawDebugWireFrame();//当たり判定可視化
 	m_modelRender.Init("Assets/modelData/Floor/Forest/Forest.tkm", nullptr, 0, enModelUpAxisY);
 	m_modelRender.Update();

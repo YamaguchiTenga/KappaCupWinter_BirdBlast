@@ -18,6 +18,7 @@ private:
 	PhysicsStaticObject m_physicsStaticObject;
 	const Player* m_player = nullptr;
 	EnemyManager* m_enemyManager = nullptr;
+	SkyCube* sky = nullptr;
 	BattleArea m_battleArea;
 	BattleArea m_archerBattleArea;
 };
