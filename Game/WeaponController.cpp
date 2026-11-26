@@ -26,13 +26,12 @@ void WeaponController::Initialize(BulletManager* bulletManager)
 
 	//ボム
 	auto bombWeapon = std::make_unique<BombWeapon>();
-
 	bombWeapon->SetBulletManager(bulletManager);
 	bombWeapon->SetEnemyManager(enemyManager);
-
 	m_weapons[1] = std::move(bombWeapon);
 
 	auto windWeapon = std::make_unique<WindWeapon>();
+	windWeapon->Initialize(enemyManager);
 	m_weapons[2] = std::move(windWeapon);
 }
 

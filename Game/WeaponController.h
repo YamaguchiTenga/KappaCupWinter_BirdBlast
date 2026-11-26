@@ -36,6 +36,7 @@ private:
 	//武器をWeaponCount個まで所有できて、Controllerが破棄されると武器も自動で削除される配列
 	// LaserWeaponやBombWeaponを、共通のWeaponとして所有・管理する。
 	// 各武器の保存場所はこの配列なので、武器ごとのメンバ変数は不要。
+	//生成から後片付けまでControllerに任せられる
 	std::array<std::unique_ptr<Weapon>, WeaponCount> m_weapons{};
 
 	int m_selectedWeaponIndex = 0;//選択中の武器の番号

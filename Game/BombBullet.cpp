@@ -143,7 +143,6 @@ void BombBullet::Explosion()
 				const Vector3 knockbackDirection = enemy->GetPosition() - m_transform.m_position;
 				enemy->TakeDamage(damage, knockbackDirection);
 			}
-
 		}
 	}
 	m_explosionCollision->SetIsEnable(false);

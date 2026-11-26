@@ -96,6 +96,8 @@ private:
 
 	float m_aimTurnSpeed = 200.0f;//構え中に左右入力を最大まで倒したとき、1秒で回転する角度。
 
+	float m_windTurnSpeed = 200.0f;
+	float m_windSpeed = 1000.0f;
 	BulletManager* m_bulletManager = nullptr;
 
 	int m_maxHp = 100;
@@ -108,5 +110,7 @@ private:
 
 	bool m_TakingDamage = false;
 	float  m_TakingDamageTimer = 0.0f;
+
+
 };
 

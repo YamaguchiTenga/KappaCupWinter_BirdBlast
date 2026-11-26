@@ -231,7 +231,10 @@ void Player::Move()
 
 	if (m_weaponController.IsWindActive())
 	{
-		m_inputMoveSpeed *= 1.5f;
+		Vector3 forward = Vector3::AxisZ;
+		m_transform.m_rotation.Apply(forward);
+
+		m_inputMoveSpeed = forward * m_windSpeed;
 	}
 
 	m_moveSpeed = m_inputMoveSpeed + m_externalMoveSpeed;
@@ -257,6 +260,21 @@ void Player::Rotation()
 		Quaternion rotation;
 		rotation.SetRotationDegY(turnAngle);//rotationがturnAngle分回すという設定をする
 		rotation.Apply(forward);//rotation分、forwardを変更
+
+		m_transform.m_rotation.SetRotationYFromDirectionXZ(forward);//rotationを変更させる
+		return;
+	}
+
+	if (m_weaponController.IsWindActive())
+	{
+		float turnAngle = g_pad[0]->GetLStickXF() * m_windTurnSpeed * g_gameTime->GetFrameDeltaTime();
+
+		Vector3 forward = Vector3::AxisZ;
+		m_transform.m_rotation.Apply(forward);
+
+		Quaternion rotation;
+		rotation.SetRotationDegY(turnAngle);
+		rotation.Apply(forward);
 
 		m_transform.m_rotation.SetRotationYFromDirectionXZ(forward);//rotationを変更させる
 		return;
