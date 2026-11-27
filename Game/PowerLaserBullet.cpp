@@ -2,6 +2,7 @@
 #include "PowerLaserBullet.h"
 #include "Enemy.h"
 #include "EnemyManager.h"
+#include "PowerLaserVisual.h"
 
 PowerLaserBullet::PowerLaserBullet()
 {
@@ -10,6 +11,10 @@ PowerLaserBullet::PowerLaserBullet()
 
 PowerLaserBullet::~PowerLaserBullet()
 {
+	if (m_visual != nullptr)
+	{
+		DeleteGO(m_visual);
+	}
 	if (m_collisionObject != nullptr)
 	{
 		DeleteGO(m_collisionObject);
@@ -18,13 +23,7 @@ PowerLaserBullet::~PowerLaserBullet()
 
 bool PowerLaserBullet::Start()
 {
-	m_modelRender.IniTranslucent(
-		"Assets/modelData/Bullets/PowerLaser_Cyan.tkm", // 読み込むモデル
-		nullptr,        // アニメーションを使わない
-		0,              // アニメーションの数
-		enModelUpAxisY, // モデルの上方向はY軸
-		false           // モデルに影を受けさせない
-	);
+	m_visual = NewGO<PowerLaserVisual>(0);
 	m_enemyManager = FindGO<EnemyManager>("enemyManager");
 	m_collisionObject = NewGO<CollisionObject>(0);
 
@@ -44,7 +43,6 @@ void PowerLaserBullet::Update()
 	}
 
 	CheckHit(g_gameTime->GetFrameDeltaTime());
-	Actor::Update();
 }
 
 void PowerLaserBullet::Fire(const Vector3& position, const Vector3& direction)
@@ -63,9 +61,9 @@ void PowerLaserBullet::Fire(const Vector3& position, const Vector3& direction)
 	m_collisionObject->SetIsEnable(true);
 
 	m_remainingTime = m_fireDuration;
-	m_transform.m_scale = { BeamWidthScale, BeamWidthScale, 1.0f };
 
 	m_state = State::Firing;
+	m_visual->Show(m_transform.m_position, m_transform.m_rotation);
 }
 
 void PowerLaserBullet::UpdateState()
@@ -95,13 +93,13 @@ void PowerLaserBullet::UpdateState()
 			ratio = 0.0f;
 		}
 
-		m_transform.m_scale.x = BeamWidthScale * ratio;
-		m_transform.m_scale.y = BeamWidthScale * ratio;
+		m_visual->SetWidthRatio(ratio);
 
 		if (m_remainingTime <= 0.0f)
 		{
 			m_remainingTime = 0.0f;
 			m_state = State::Idle;
+			m_visual->Hide();
 		}
 	}
 }
@@ -176,10 +174,5 @@ void PowerLaserBullet::CheckHit(float deltaTime)
 }
 void PowerLaserBullet::Render(RenderContext& rc)
 {
-	if (!IsActive())
-	{
-		return;
-	}
-
-	Actor::Render(rc);
+	// AI実装の見た目は、PowerLaserVisualがエンジンから呼ばれて描画する。
 }

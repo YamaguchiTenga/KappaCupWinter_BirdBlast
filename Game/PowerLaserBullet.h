@@ -4,6 +4,7 @@
 
 class Enemy;
 class EnemyManager;
+class PowerLaserVisual;
 
 class PowerLaserBullet : public Actor
 {
@@ -34,7 +35,7 @@ public:
 	void Render(RenderContext& rc) override;
 	void AttackCansel();
 private:
-	static constexpr float BeamWidthScale = 3.0f;
+	PowerLaserVisual* m_visual = nullptr;
 	Vector3 m_collisionSize = { 100.0f, 100.0f, 1000.0f };
 	float m_collisionForwardOffset = 500.0f; //判定の中心を前方へずらす距離。プレイヤーの位置にそのまま置くと後ろにも伸びてしまうので、仮の処置。
 
