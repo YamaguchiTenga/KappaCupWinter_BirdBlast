@@ -4,6 +4,7 @@
 
 class Enemy;
 class EnemyManager;
+class WindVisual;
 
 class WindWeapon : public Weapon
 {
@@ -20,6 +21,8 @@ public:
 		return m_isActive;
 	}
 private:
+	// AI実装の見た目専用オブジェクト。生成と表示切替だけをこの武器から行う。
+	WindVisual* m_visual = nullptr;
 	//前フレームの情報を覚えるためメンバに
     //敵ごとの、次にダメージを与えられるまでの時間
     struct HitRecord

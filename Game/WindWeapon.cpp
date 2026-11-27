@@ -2,9 +2,14 @@
 #include "WindWeapon.h"
 #include "Enemy.h"
 #include "EnemyManager.h"
+#include "WindVisual.h"
 
 WindWeapon::~WindWeapon()
 {
+    if (m_visual != nullptr)
+    {
+        DeleteGO(m_visual);
+    }
     if (m_collisionObject != nullptr)
     {
         DeleteGO(m_collisionObject);
@@ -15,6 +20,11 @@ WindWeapon::~WindWeapon()
 void WindWeapon::Initialize(EnemyManager* enemyManager)
 {
     m_enemyManager = enemyManager;
+
+    if (m_visual == nullptr)
+    {
+        m_visual = NewGO<WindVisual>(0);
+    }
 
     if (m_collisionObject == nullptr)
     {
@@ -43,6 +53,10 @@ WeaponAttackResult WindWeapon::HandleAttack(const WeaponAttackContext& context)
     {
         PullEnemies(context);
     }
+    if (m_visual != nullptr)
+    {
+        m_visual->Show(context.position, context.direction);
+    }
     m_collisionObject->SetPosition(context.position);
     m_collisionObject->SetIsEnable(true);
     CheckHit(g_gameTime->GetFrameDeltaTime(), context);
@@ -55,6 +69,10 @@ WeaponAttackResult WindWeapon::HandleAttack(const WeaponAttackContext& context)
 void WindWeapon::AttackCansel()
 {
     m_isActive = false;
+    if (m_visual != nullptr)
+    {
+        m_visual->Hide();
+    }
     m_hitRecords.clear();//命中した記録を空にして、次の発動に待ち時間を持ち越さなくする
     if (m_collisionObject != nullptr)
     {
