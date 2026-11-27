@@ -12,6 +12,7 @@ public:
 	void Initialize(EnemyManager* enemyManager);
 	WeaponAttackResult HandleAttack(const WeaponAttackContext& context) override;
 	void CheckHit(float deltatime, const WeaponAttackContext& context);
+	void PullEnemies(const WeaponAttackContext& context);
 	void AttackCansel() override;
 	void OnDeselected() override;
 	bool IsWindActive() const override
@@ -33,5 +34,6 @@ private:
 	EnemyManager* m_enemyManager = nullptr;
 	CollisionObject* m_collisionObject = nullptr;
 	float m_collisionRadius = 140.0f;
+	float m_pullRadius = 500.0f;
 };
 

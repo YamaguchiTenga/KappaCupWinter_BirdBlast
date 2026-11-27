@@ -36,11 +36,19 @@ WeaponAttackResult WindWeapon::HandleAttack(const WeaponAttackContext& context)
         m_isActive = true;
     }
 
-    //ここに、風を発動する処理を追加していく。
+    //風を発動する処理を追加していく。
+ 
+    //Power中だけ引き寄せる
+    if (context.isPower)
+    {
+        PullEnemies(context);
+    }
     m_collisionObject->SetPosition(context.position);
     m_collisionObject->SetIsEnable(true);
     CheckHit(g_gameTime->GetFrameDeltaTime(), context);
-
+    
+    //風はその場で攻撃処理をして、発射結果をプレイヤーへ知らせる必要がない
+    //のでNoneを返す
     return WeaponAttackResult::None;
 }
 
@@ -61,7 +69,13 @@ void WindWeapon::OnDeselected()
 
 void WindWeapon::CheckHit(float deltaTime, const WeaponAttackContext& context)
 {
-    float damageInterval = 0.8; //継続ダメージの間隔（秒）
+    float damageInterval = 0.8f; //継続ダメージの間隔（秒）
+
+    if (context.isPower)
+    {
+        damageInterval = 0.2f;
+    }
+
     int damage = 1;
 
     // 記録済みの敵の待ち時間を減らす。
@@ -122,5 +136,37 @@ void WindWeapon::CheckHit(float deltaTime, const WeaponAttackContext& context)
             hitRecord->cooldown = damageInterval;
         }
         //記録があっても待ち時間が残っていれば、今回はダメージを与えない。
+    }
+}
+
+void WindWeapon::PullEnemies(const WeaponAttackContext& context)
+{
+    //引き寄せるスピード
+    float pullSpeed = 500.0f;
+
+    for (Enemy* enemy : m_enemyManager->GetEnemies())
+    {
+        if (!enemy->IsStart() || !enemy->IsActive())
+        {
+            continue;
+        }
+
+        Vector3 toPlayer = context.position - enemy->GetPosition();
+
+        //Lengthでベクトルの長さのみを取る。方向は取らない
+        float distance = toPlayer.Length();
+
+        //引き寄せの範囲内
+        if (distance <= m_pullRadius)
+        {
+            //距離がほぼ0じゃないとき
+            if (distance > 0.001f)
+            {
+                //正規化する
+                toPlayer.Normalize();
+
+                enemy->SetPullSpeed(toPlayer * pullSpeed);
+            }
+        }
     }
 }

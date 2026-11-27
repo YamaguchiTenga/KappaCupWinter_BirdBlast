@@ -35,8 +35,12 @@ public:
 	void SetPosition(const Vector3& position)
 	{
 		//position += 1;とか書いたらエラーになる
-
 		m_transform.m_position = position;
+	}
+
+	void SetPullSpeed(const Vector3& velocity)
+	{
+		m_windPullSpeed = velocity;
 	}
 
 	const Vector3& GetPosition() const
@@ -85,6 +89,9 @@ private:
 	float m_verticalSpeed = 0.0f; //現在の上下方向の速度
 	float m_gravity = 1500.0f;//重力
 	float m_deathGravity = 2400.0f;
+
+	//風の武器による引き寄せられる速度
+	Vector3 m_windPullSpeed = Vector3::Zero;
 
 	Player* m_player = nullptr;
 };

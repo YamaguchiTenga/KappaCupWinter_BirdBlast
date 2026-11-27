@@ -177,6 +177,9 @@ void Enemy::Move(float deltaTime)
 	}
 	velocity.y = m_verticalSpeed;
 
+	velocity += m_windPullSpeed;
+	m_windPullSpeed = Vector3::Zero;
+
 	//最終的な速度で動かす
 	m_isMoving = fabsf(velocity.x) >= 0.001f || fabsf(velocity.z) >= 0.001f;
 	m_transform.m_position = m_characterController.Execute(velocity, deltaTime);

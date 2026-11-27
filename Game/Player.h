@@ -98,6 +98,7 @@ private:
 
 	float m_windTurnSpeed = 200.0f;
 	float m_windSpeed = 1000.0f;
+	float m_powerWindSpeed = 100.0f;
 	BulletManager* m_bulletManager = nullptr;
 
 	int m_maxHp = 100;

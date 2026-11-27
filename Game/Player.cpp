@@ -233,8 +233,14 @@ void Player::Move()
 	{
 		Vector3 forward = Vector3::AxisZ;
 		m_transform.m_rotation.Apply(forward);
-
-		m_inputMoveSpeed = forward * m_windSpeed;
+		if (m_abilityController.IsPowerActive())
+		{
+			m_inputMoveSpeed = forward * m_powerWindSpeed;
+		}
+		else
+		{
+			m_inputMoveSpeed = forward * m_windSpeed;
+		}
 	}
 
 	m_moveSpeed = m_inputMoveSpeed + m_externalMoveSpeed;
