@@ -47,7 +47,14 @@ float4 PSMain( PSInput In ) : SV_Target0
     float arcRatio = angle / 3.14159265f; //半円の角度（πラジアン）で割る。
     clip(fillRatio - arcRatio); //arcRatio > fillRatioなら、この点の描画をスキップ
 	
-	return colorTexture.Sample(Sampler, In.uv) * mulColor;
+    float4 color = colorTexture.Sample(Sampler, In.uv) * mulColor;
+    float3 heatColor = lerp(
+        float3(1.0f, 1.0f, 0.0f),
+        float3(1.0f, 0.0f, 0.0f),
+        saturate(fillRatio)
+    );
+    color.rgb *= heatColor;
+    return color;
 }
 float4 PSMainGamma( PSInput In ) : SV_Target0
 {
