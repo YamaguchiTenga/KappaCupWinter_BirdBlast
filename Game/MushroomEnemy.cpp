@@ -13,7 +13,7 @@ void MushroomEnemy::InitializeModel()
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 }
 
-Vector3 MushroomEnemy::CalculateHorizontalVelocity() const
+Vector3 MushroomEnemy::CalculateMoveVelocity() const
 {
 	const Vector3& toPlayer = GetDirectionToPlayer();
 

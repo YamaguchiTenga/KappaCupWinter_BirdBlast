@@ -10,7 +10,7 @@ public:
 
 private:
 	void InitializeModel() override;
-	Vector3 CalculateHorizontalVelocity() const override;
+	Vector3 CalculateMoveVelocity() const override;
 	void Attack(float deltaTime) override;
 	void UpdateAnimation() override;
 	void UpdateBowTransform();

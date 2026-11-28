@@ -165,7 +165,7 @@ void Enemy::Deactivate()
 
 void Enemy::Move(float deltaTime)
 {
-	Vector3 velocity = CalculateHorizontalVelocity();
+	Vector3 velocity = CalculateMoveVelocity();
 
 	if (m_characterController.IsOnGround())
 	{

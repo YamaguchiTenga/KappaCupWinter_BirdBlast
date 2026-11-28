@@ -17,7 +17,7 @@ void GoblinArcherEnemy::InitializeModel()
 	m_bulletManager = FindGO<BulletManager>("bulletManager");
 }
 
-Vector3 GoblinArcherEnemy::CalculateHorizontalVelocity() const
+Vector3 GoblinArcherEnemy::CalculateMoveVelocity() const
 {
 	const float distance = GetDistanceToPlayer();
 	if (distance > AttackRange && distance <= 2000.0f)

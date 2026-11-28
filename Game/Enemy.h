@@ -61,7 +61,7 @@ protected:
 	bool IsDying() const { return m_isDying; }
 	const Player& GetPlayer() const { return *m_player; }
 	virtual void InitializeModel() = 0;
-	virtual Vector3 CalculateHorizontalVelocity() const = 0;
+	virtual Vector3 CalculateMoveVelocity() const = 0;
 	virtual void Attack(float deltaTime) = 0;
 
 	const Vector3& GetDirectionToPlayer() const { return m_toPlayer; }

@@ -7,7 +7,7 @@ class MushroomEnemy : public Enemy
 {
 private:
 	void InitializeModel() override;
-	Vector3 CalculateHorizontalVelocity() const override;
+	Vector3 CalculateMoveVelocity() const override;
 	void Attack(float deltaTime) override;
 
 	AnimationClip m_animationClips[2];
